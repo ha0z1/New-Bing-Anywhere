@@ -1,0 +1,17 @@
+{
+  "root": "src",
+  "extends": "./tsconfig-base.json",
+  "compilerOptions": {
+    "strict": true,
+    "outDir": "./dist",
+    "module": "CommonJS",
+    "target": "ESNext",
+    "declaration": true,
+    "declarationDir": "dist/types",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@@/*": ["./src/universe/*"]
+    }
+  },
+  "include": ["src", ""]
+}
