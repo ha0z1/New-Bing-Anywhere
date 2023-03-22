@@ -11,18 +11,16 @@ const isEdge = ua.includes('Edg')
 
 if (!isEdge) {
   if (isMac) {
-    ua += ' Edg/111.0.0.0'
-  } else {
     ua += ' Edg/111.0.1661.39'
+  } else {
+    ua += ' Edg/112.0.1722.11'
   }
 }
 
 const MODIFY_HEADERS = {
   // 'X-Forwarded-For': '8.8.8.8',
-  // 'X-Forwarded-For': '23.142.200.233',
-  // 'X-Forwarded-For': '171.22.109.233',
   // MAC      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.0.0
-  // Windows  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.39
+  // Windows  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/112.0.1722.11
   'User-Agent': ua
 }
 
@@ -76,6 +74,7 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
   },
   {
     id: 4,
+    priority: 99,
     action: {
       type: chrome.declarativeNetRequest.RuleActionType.REDIRECT,
       redirect: {
@@ -83,6 +82,7 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
       }
     },
     condition: {
+      // https://cn.bing.com/search?q=fdsafdsafdsafdsafdsafdsafdsafdsaf&cvid=49400b6fae014ff3b23411b541cc7115&aqs=edge..69i57.3974j0j9&FORM=ANAB01&DAF0=1&PC=CNNDDB
       requestDomains: ['cn.bing.com', 'bing.com'],
       regexFilter: '^http(?:s)?:\\/\\/(?:cn\\.)?bing\\.com/(.*)',
       resourceTypes: allResourceTypes
@@ -96,7 +96,7 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
         {
           header: 'Set-Cookie',
           operation: chrome.declarativeNetRequest.HeaderOperation.APPEND,
-          value: 'SNRHOP=I=9; path=/; domain=.bing.com'
+          value: 'SNRHOP=I=9; domain=.bing.com; path=/; secure; SameSite=None; HttpOnly;'
         }
       ]
     },
@@ -104,6 +104,17 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
       requestDomains: ['bing.com', 'www.bing.com']
     }
   }
+  // {
+  //   id: 6,
+  //   action: {
+  //     type: 'modifyHeaders',
+  //     responseHeaders: [{
+  //        header: 'set-cookie',
+  //        operation: 'remove'
+  //     }]
+  //   },
+  //   condition: { urlFilter: 'https://www.bing.com/', resourceTypes: ['main_frame'] }
+  // }
 ]
 
 export default rules

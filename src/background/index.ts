@@ -1,5 +1,6 @@
 import rules from './rules'
-import { registryListener, getURL } from './utils'
+import { getURL, openPage, registryListener } from './utils'
+import { homepage } from '../../package.json'
 
 chrome.declarativeNetRequest.updateDynamicRules({
   removeRuleIds: rules.map((rule) => rule.id), // remove existing rules
@@ -49,5 +50,13 @@ registryListener({
     }
 
     await chrome.tabs.update(tab.id!, { url: newUrl })
+  }
+})
+
+chrome.runtime.onInstalled.addListener((details) => {
+  if (details.reason === 'install') {
+    openPage(homepage)
+  } else if (details.reason === 'update') {
+    openPage(homepage + '/releases/latest')
   }
 })

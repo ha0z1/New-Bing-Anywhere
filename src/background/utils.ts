@@ -80,3 +80,20 @@ export const registryListener = (callMethods: IMethods) => {
     return true
   })
 }
+
+export const openPage = async (url: string): Promise<chrome.tabs.Tab> => {
+  const tabs = await chrome.tabs.query({ currentWindow: true })
+
+  const urlObj = getURL(url)
+  let tab = tabs.find((tab) => tab.url?.startsWith(urlObj.origin))
+
+  if (tab == null) {
+    tab = await chrome.tabs.create({ url })
+  } else {
+    await Promise.all([
+      chrome.tabs.move(tab.id!, { index: tabs.length - 1 }),
+      chrome.tabs.update(tab.id!, { active: true })
+    ])
+  }
+  return tab
+}
