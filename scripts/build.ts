@@ -91,10 +91,10 @@ const buildManifest = () => {
       }
     ],
     icons: {
-      16: 'images/bing.png',
-      32: 'images/bing.png',
-      48: 'images/bing.png',
-      128: 'images/bing.png'
+      16: 'images/bing_16x16.png',
+      32: 'images/bing_32x32.png',
+      48: 'images/bing_48x48.png',
+      128: 'images/bing_128x128.png'
     }
   }
   fs.outputJSONSync(path.join(__dirname, '../dist/manifest.json'), manifest)
