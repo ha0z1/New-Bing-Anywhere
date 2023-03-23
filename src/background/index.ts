@@ -1,6 +1,6 @@
+import { homepage, version } from '../../package.json'
 import rules from './rules'
 import { getURL, openPage, registryListener } from './utils'
-import { homepage } from '../../package.json'
 
 chrome.declarativeNetRequest.updateDynamicRules({
   removeRuleIds: rules.map((rule) => rule.id), // remove existing rules
@@ -57,6 +57,6 @@ chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
     openPage(homepage)
   } else if (details.reason === 'update') {
-    openPage(homepage + '/releases/latest')
+    openPage(homepage + `/releases/tag/${version}`)
   }
 })

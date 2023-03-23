@@ -62,7 +62,7 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
     action: {
       type: chrome.declarativeNetRequest.RuleActionType.REDIRECT,
       redirect: {
-        url: 'https://www.bing.com/?setlang=zh-Hans&mkt=zh-HK'
+        url: `${BING}?setlang=zh-Hans&mkt=zh-HK`
       }
     },
     condition: {
