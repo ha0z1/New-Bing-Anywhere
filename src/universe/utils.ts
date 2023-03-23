@@ -85,3 +85,18 @@ export const sleep = async (delay: number): Promise<void> => {
     setTimeout(resolve, delay)
   })
 }
+
+/**
+ * check if is Chinese
+ */
+export const isChinese = () => {
+  const lang = chrome.i18n.getUILanguage().toLowerCase()
+  return lang === 'zh-cn' || lang === 'zh-tw' || lang === 'zh-hk' || lang === 'zh'
+}
+
+/**
+ * check if in Mainland China
+ */
+export const isCN = () => {
+  return false
+}

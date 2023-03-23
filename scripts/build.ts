@@ -67,6 +67,7 @@ const buildManifest = () => {
       // 'cookies',
       // 'tabs',
       // 'activeTab',
+      'contextMenus',
       'declarativeNetRequest'
       // "declarativeNetRequestFeedback",
     ],

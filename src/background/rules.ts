@@ -17,20 +17,25 @@ if (!isEdge) {
   }
 }
 
-const MODIFY_HEADERS = {
+const MODIFY_HEADERS_LIST = {
   // 'X-Forwarded-For': '8.8.8.8',
   // MAC      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.0.0
   // Windows  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/112.0.1722.11
   'User-Agent': ua
 }
+const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS
+const REDIRECT = 'redirect' as chrome.declarativeNetRequest.RuleActionType.REDIRECT
+const APPEND = 'append' as chrome.declarativeNetRequest.HeaderOperation.APPEND
+// const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
+const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
 const rules: chrome.declarativeNetRequest.Rule[] = [
   {
     id: 1,
     action: {
-      type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
-      requestHeaders: Object.entries(MODIFY_HEADERS).map(([header, value]) => ({
-        operation: chrome.declarativeNetRequest.HeaderOperation.SET,
+      type: MODIFY_HEADERS,
+      requestHeaders: Object.entries(MODIFY_HEADERS_LIST).map(([header, value]) => ({
+        operation: SET,
         header,
         value
       }))
@@ -43,7 +48,7 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
   {
     id: 2,
     action: {
-      type: chrome.declarativeNetRequest.RuleActionType.REDIRECT,
+      type: REDIRECT,
       redirect: {
         regexSubstitution: '\\1setlang=zh-Hans&mkt=zh-HK\\2'
       }
@@ -60,7 +65,7 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
   {
     id: 3,
     action: {
-      type: chrome.declarativeNetRequest.RuleActionType.REDIRECT,
+      type: REDIRECT,
       redirect: {
         url: `${BING}?setlang=zh-Hans&mkt=zh-HK`
       }
@@ -76,7 +81,7 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
     id: 4,
     priority: 99,
     action: {
-      type: chrome.declarativeNetRequest.RuleActionType.REDIRECT,
+      type: REDIRECT,
       redirect: {
         regexSubstitution: `${BING}\\1`
       }
@@ -91,11 +96,11 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
   {
     id: 5,
     action: {
-      type: chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+      type: MODIFY_HEADERS,
       responseHeaders: [
         {
           header: 'Set-Cookie',
-          operation: chrome.declarativeNetRequest.HeaderOperation.APPEND,
+          operation: APPEND,
           value: 'SNRHOP=I=9; domain=.bing.com; path=/; secure; SameSite=None; HttpOnly;'
         }
       ]
@@ -107,14 +112,21 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
   // {
   //   id: 6,
   //   action: {
-  //     type: 'modifyHeaders',
-  //     responseHeaders: [{
-  //        header: 'set-cookie',
-  //        operation: 'remove'
-  //     }]
+  //     type: MODIFY_HEADERS,
+  //     responseHeaders: [
+  //       {
+  //         header: 'Set-Cookie',
+  //         operation: REMOVE
+  //       }
+  //     ]
   //   },
-  //   condition: { urlFilter: 'https://www.bing.com/', resourceTypes: ['main_frame'] }
+  //   condition: { urlFilter: 'https://www.bing.com/', resourceTypes: allResourceTypes }
   // }
 ]
 
-export default rules
+export default () => {
+  chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: rules.map((rule) => rule.id),
+    addRules: rules
+  })
+}

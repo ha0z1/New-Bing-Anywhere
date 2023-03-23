@@ -1,11 +1,10 @@
-import { homepage, version } from '../../package.json'
-import rules from './rules'
+import { repository, version } from '../../package.json'
+import initContextMenu from './context_menus'
+import initRules from './rules'
 import { getURL, openPage, registryListener } from './utils'
 
-chrome.declarativeNetRequest.updateDynamicRules({
-  removeRuleIds: rules.map((rule) => rule.id), // remove existing rules
-  addRules: rules
-})
+initRules()
+initContextMenu()
 
 registryListener({
   openUrlInSameTab: async ({ url }: { url: string } = {} as any) => {
@@ -54,9 +53,10 @@ registryListener({
 })
 
 chrome.runtime.onInstalled.addListener((details) => {
+  const repositoryUrl: string = repository.url
   if (details.reason === 'install') {
-    openPage(homepage)
+    openPage(repositoryUrl)
   } else if (details.reason === 'update') {
-    openPage(homepage + `/releases/tag/${version}`)
+    openPage(`${repositoryUrl}/releases/tag/${version}`)
   }
 })

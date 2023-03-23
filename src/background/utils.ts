@@ -1,6 +1,8 @@
-import { getAllTabs, ls, unique } from '@@/utils'
+import { getAllTabs, isChinese as checkIsChinese, ls, unique } from '@@/utils'
+import { repository, version } from '../../package.json'
 
 const APP_URL = chrome.runtime.getURL('app/index.html')
+export const isChinese = checkIsChinese()
 
 export const dumpTabs = async ({ windowId }): Promise<void> => {
   const [currentTabs, [currentTab]] = await Promise.all([
@@ -67,7 +69,7 @@ type IMethods = Record<string, (...args: any[]) => Promise<any>>
 export const registryListener = (callMethods: IMethods) => {
   chrome.runtime.onMessage.addListener((req, _sender, sendResponse) => {
     ;(async () => {
-      // 如果不使用同步返回 true，会报 Unchecked runtime.lastError: The message port closed before a response was received.
+      // if not return true immediately，will throw error `Unchecked runtime.lastError: The message port closed before a response was received.`
       try {
         const { method, args } = req
         const data = await callMethods[method](...args)
@@ -90,10 +92,34 @@ export const openPage = async (url: string): Promise<chrome.tabs.Tab> => {
   if (tab == null) {
     tab = await chrome.tabs.create({ url })
   } else {
-    await Promise.all([
-      chrome.tabs.move(tab.id!, { index: tabs.length - 1 }),
-      chrome.tabs.update(tab.id!, { active: true })
-    ])
+    await Promise.all(
+      [
+        chrome.tabs.move(tab.id!, { index: tabs.length - 1 }),
+        tab.url !== url && chrome.tabs.update(tab.id!, { url }),
+        chrome.tabs.update(tab.id!, { active: true, url: tab.url !== url ? url : undefined })
+      ].filter(Boolean)
+    )
   }
   return tab
+}
+
+export const genIssueUrl = async () => {
+  const repositoryUrl: string = repository.url
+  const url: string = `${repositoryUrl}/issues/new?title=&body=`
+  let finalUrl: string = url
+  let comment = 'Please write your comment ABOVE this line.'
+  if (isChinese) {
+    comment = '请在此行上方发表您的讨论。'
+  }
+
+  const body =
+    ' \n\n\n\n' +
+    `<!--  ${comment} -->\n` +
+    `Version: ${version}\n` +
+    `UA: ${navigator.userAgent}\n` +
+    `Lang: ${chrome.i18n.getUILanguage()}\n` +
+    `AcceptLangs: ${(await chrome.i18n.getAcceptLanguages()).join(', ')}`
+
+  finalUrl += encodeURIComponent(body.slice(0, 2000))
+  return finalUrl
 }
