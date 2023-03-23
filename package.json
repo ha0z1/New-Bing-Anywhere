@@ -1,8 +1,8 @@
 {
   "name": "new-bing-anywhere",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
-  "description": "Use New Bing Without Edge",
+  "description": "New Bing isn't just for Edge anymore. Anywhere you want",
   "homepage": "https://github.com/haozi/new-bing-anywhere",
   "license": "MIT",
   "author": "haozi",
