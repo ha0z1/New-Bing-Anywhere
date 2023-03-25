@@ -61,6 +61,10 @@ const buildManifest = () => {
         matches: ['https://www.bing.com/*', 'https://www.google.com/*', 'https://www.google.com.hk/*']
       }
     ],
+    options_ui: {
+      page: 'app/index.html#/options'
+      // open_in_tab: true
+    },
     permissions: [
       // "storage",
       // "unlimitedStorage",

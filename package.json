@@ -12,7 +12,7 @@
   "author": "haozi",
   "scripts": {
     "build": "pnpm run copy && pnpm run lint && run-s build:* && pnpm run zip",
-    "_build:app": "pnpm --filter app run build",
+    "build:app": "pnpm --filter app run build",
     "build:bundle": "vite-node scripts/build.ts -- build",
     "zip": "rm -rf output && mkdir output && zip -r new-bing-anywhere.zip dist && mv new-bing-anywhere.zip output",
     "copy": "rm -rf dist && cp -r public dist # && cp src/popup/index.html dist/popup.html",
