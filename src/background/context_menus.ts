@@ -34,7 +34,7 @@ const contextMenus: Record<string, IInitContextMenu> = {
   },
 
   reportIssues: {
-    title: isChinese ? '✏️ 反馈建议' : '✏️ Report issues',
+    title: isChinese ? '🐛 反馈建议' : '🐛 Report issues',
     contexts: ['action'],
     onclick: async (_info) => {
       const url = await genIssueUrl()
