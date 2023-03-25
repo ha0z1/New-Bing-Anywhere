@@ -25,6 +25,14 @@ const contextMenus: Record<string, IInitContextMenu> = {
     }
   },
 
+  openImageCreate: {
+    title: '🖼️ New Bing Image Create',
+    contexts: ['action'],
+    onclick: (_info) => {
+      openPage('https://www.bing.com/images/create')
+    }
+  },
+
   likeIt: {
     title: '❤️ Like it',
     contexts: ['action'],
