@@ -32,7 +32,7 @@
   "devDependencies": {
     "@types/chrome": "^0.0.225",
     "@types/fs-extra": "^11.0.1",
-    "@types/node": "^18.15.8",
+    "@types/node": "^18.15.9",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "copy-and-watch": "^0.1.6",
     "esbuild": "^0.17.13",
