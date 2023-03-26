@@ -31,3 +31,4 @@
 * cn.bing 的本地重定向，避免被种上特供版 Cookie
 * Bing 搜索页点击 Logo 链接在原窗口打开
 * Bing 与 Google 的互相切换按钮
+* 支持 New Bing Image Create，(需要非大陆 IP,否则会 404)
