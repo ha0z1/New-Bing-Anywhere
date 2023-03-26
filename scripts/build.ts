@@ -50,6 +50,7 @@ const buildManifest = () => {
     name: '__MSG_appName__',
     description: '__MSG_appDesc__',
     version: pkg.version,
+    minimum_chrome_version: '100.0',
     homepage_url: pkg.homepage,
     default_locale: 'en',
     background: {
@@ -70,7 +71,7 @@ const buildManifest = () => {
       // 'activeTab',
       'contextMenus',
       'declarativeNetRequest'
-      // "declarativeNetRequestFeedback",
+      // 'declarativeNetRequestFeedback'
     ],
 
     host_permissions: [
@@ -100,35 +101,20 @@ const buildManifest = () => {
     }
   }
   fs.outputJSONSync(path.join(__dirname, '../dist/manifest.json'), manifest)
-  fs.outputJSONSync(path.join(__dirname, '../dist/_locales/en/messages.json'), {
-    appName: {
-      message: pkg.extensionName,
-      description: pkg.description
-    },
-    appDesc: {
-      message: pkg.description,
-      description: pkg.description
-    }
-  })
-  fs.outputJSONSync(path.join(__dirname, '../dist/_locales/zh_CN/messages.json'), {
-    appName: {
-      message: pkg.extensionName,
-      description: pkg.description
-    },
-    appDesc: {
-      message: pkg.extensionName,
-      description: pkg.description
-    }
-  })
-  fs.outputJSONSync(path.join(__dirname, '../dist/_locales/zh_TW/messages.json'), {
-    appName: {
-      message: pkg.extensionName,
-      description: pkg.description
-    },
-    appDesc: {
-      message: pkg.extensionName,
-      description: pkg.description
-    }
+
+  // https://developer.chrome.com/docs/webstore/i18n/
+  ;['en', 'zh_CN', 'zh_TW', 'ru'].forEach((locale) => {
+    const i18n = pkg['extension-i18n'][locale]
+    fs.outputJSONSync(path.join(__dirname, `../dist/_locales/${locale}/messages.json`), {
+      appName: {
+        message: i18n.extensionName,
+        description: i18n.extensionName
+      },
+      appDesc: {
+        message: i18n.extensionDescription,
+        description: i18n.extensionDescription
+      }
+    })
   })
 }
 ;(async () => {

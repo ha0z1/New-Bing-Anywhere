@@ -67,6 +67,22 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
     action: {
       type: REDIRECT,
       redirect: {
+        regexSubstitution: '\\1setlang=ru&cc=clean&mkt=en-us\\2'
+      }
+    },
+    condition: {
+      // https://regex101.com/r/LC68hZ/1
+      regexFilter: '(^https:\\/\\/www\\.bing\\.com\\/(?:search|\\?|account/action).*?)(?:mkt=ru-ru|mkt=ru|cc=ru)(.*)',
+      isUrlFilterCaseSensitive: false,
+      requestDomains: ['www.bing.com'],
+      resourceTypes: allResourceTypes
+    }
+  },
+  {
+    id: 4,
+    action: {
+      type: REDIRECT,
+      redirect: {
         url: `${BING}?setlang=zh-Hans&mkt=zh-HK`
       }
     },
@@ -78,7 +94,7 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
     }
   },
   {
-    id: 4,
+    id: 5,
     priority: 99,
     action: {
       type: REDIRECT,
@@ -89,12 +105,12 @@ const rules: chrome.declarativeNetRequest.Rule[] = [
     condition: {
       // https://cn.bing.com/search?q=fdsafdsafdsafdsafdsafdsafdsafdsaf&cvid=49400b6fae014ff3b23411b541cc7115&aqs=edge..69i57.3974j0j9&FORM=ANAB01&DAF0=1&PC=CNNDDB
       requestDomains: ['cn.bing.com', 'bing.com'],
-      regexFilter: '^http(?:s)?:\\/\\/(?:cn\\.)?bing\\.com/(.*)',
+      regexFilter: '^http(?:s)?:\\/\\/(?:cn\\.)?bing\\.com\\/(.*)',
       resourceTypes: allResourceTypes
     }
   },
   {
-    id: 5,
+    id: 6,
     action: {
       type: MODIFY_HEADERS,
       responseHeaders: [
@@ -129,4 +145,8 @@ export default () => {
     removeRuleIds: rules.map((rule) => rule.id),
     addRules: rules
   })
+
+  // chrome.declarativeNetRequest.onRuleMatchedDebug.addListener((...args) => {
+  //   console.log(1111, ...args)
+  // })
 }

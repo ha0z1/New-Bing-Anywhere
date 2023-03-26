@@ -1,6 +1,6 @@
 # New-Bing-Anywhere
 
-[English](README.md) | 简体中文
+[English](README.md) | 简体中文 | [Русский](README.ru.md)
 
 
 ## 安装
@@ -19,7 +19,7 @@
 
 通过本插件，您可以在任何 Chromium 内核的浏览器中使用 New Bing，比如 Chrome / Edge / Brave / Arc / 360 浏览器等
 
-如果您来自中国大陆地区，一个海外 IP 节点是必须的。
+如果您来自中国大陆或俄罗斯，一个海外 IP 节点是必须的。
 
 如果您想仍然使用必应的中文界面，可以先访问一次 <https://www.bing.com/?run> ，或者清空浏览器缓存和 Cookies 后重试。
 
