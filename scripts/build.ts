@@ -47,10 +47,11 @@ const buildFile = async (input, output) => {
 const buildManifest = () => {
   const manifest = {
     manifest_version: 3,
-    name: pkg.extensionName,
+    name: '__MSG_appName__',
+    description: '__MSG_appDesc__',
     version: pkg.version,
-    description: pkg.description,
     homepage_url: pkg.homepage,
+    default_locale: 'en',
     background: {
       service_worker: 'background.js'
     },
@@ -99,6 +100,36 @@ const buildManifest = () => {
     }
   }
   fs.outputJSONSync(path.join(__dirname, '../dist/manifest.json'), manifest)
+  fs.outputJSONSync(path.join(__dirname, '../dist/_locales/en/messages.json'), {
+    appName: {
+      message: pkg.extensionName,
+      description: pkg.description
+    },
+    appDesc: {
+      message: pkg.description,
+      description: pkg.description
+    }
+  })
+  fs.outputJSONSync(path.join(__dirname, '../dist/_locales/zh_CN/messages.json'), {
+    appName: {
+      message: pkg.extensionName,
+      description: pkg.description
+    },
+    appDesc: {
+      message: pkg.extensionName,
+      description: pkg.description
+    }
+  })
+  fs.outputJSONSync(path.join(__dirname, '../dist/_locales/zh_TW/messages.json'), {
+    appName: {
+      message: pkg.extensionName,
+      description: pkg.description
+    },
+    appDesc: {
+      message: pkg.extensionName,
+      description: pkg.description
+    }
+  })
 }
 ;(async () => {
   ;[

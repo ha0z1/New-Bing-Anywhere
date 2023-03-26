@@ -28,4 +28,5 @@ https://www.bing.com/?run
 * Mainland Chinese users' access to Bing is optimized
 * Open the original window by clicking the Logo link on the Bing search page
 * Bing and Google switch buttons
-* Support New Bing Image Create
+* New Bing Image Create support 
+* Multi-language support

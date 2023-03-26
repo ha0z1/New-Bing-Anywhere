@@ -32,3 +32,4 @@
 * Bing 搜索页点击 Logo 链接在原窗口打开
 * Bing 与 Google 的互相切换按钮
 * 支持 New Bing Image Create，(需要非大陆 IP,否则会 404)
+* 英/简/繁多语言支持
