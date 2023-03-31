@@ -30,18 +30,18 @@
     "fs-extra": "^11.1.1"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.225",
+    "@types/chrome": "^0.0.227",
     "@types/fs-extra": "^11.0.1",
-    "@types/node": "^18.15.7",
-    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.57.0",
     "copy-and-watch": "^0.1.6",
-    "esbuild": "^0.17.12",
+    "esbuild": "^0.17.14",
     "esbuild-plugin-svgr": "^1.1.0",
     "esbuild-style-plugin": "^1.6.1",
-    "eslint": "^8.36.0",
+    "eslint": "^8.37.0",
     "eslint-config-standard-with-typescript": "^34.0.1",
     "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
@@ -51,8 +51,8 @@
     "prettier": "^2.8.7",
     "stylus": "^0.59.0",
     "stylus-supremacy": "^2.17.5",
-    "typescript": "^5.0.2",
-    "vite-node": "^0.29.7"
+    "typescript": "^5.0.3",
+    "vite-node": "^0.29.8"
   },
   "extension-i18n": {
     "en": {
