@@ -2,7 +2,6 @@
 
 [English](README.md) | 简体中文 | [Русский](README.ru.md)
 
-
 ## 安装
 
 * Chrome: <https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi>
@@ -33,3 +32,7 @@
 * Bing 与 Google 的互相切换按钮
 * 支持 New Bing Image Create，(需要非大陆 IP,否则会 404)
 * 英/简/繁多语言支持
+
+## 找到我们
+
+[![Telegram](https://user-images.githubusercontent.com/4150641/229351983-a6a455e8-7b5e-4f58-bf80-1f4949ae8276.jpg "Telegram")](https://t.me/new_bing_anywhere)

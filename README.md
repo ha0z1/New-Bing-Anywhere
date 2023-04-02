@@ -29,3 +29,8 @@ https://www.bing.com/?run
 * Bing and Google switch buttons
 * New Bing Image Create support 
 * Multi-language support
+
+## Communication
+
+[![Telegram](https://user-images.githubusercontent.com/4150641/229351983-a6a455e8-7b5e-4f58-bf80-1f4949ae8276.jpg "Telegram")](https://t.me/new_bing_anywhere)
+
