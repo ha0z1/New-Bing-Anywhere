@@ -13,5 +13,5 @@
       "@@/*": ["./src/universe/*"]
     }
   },
-  "include": ["src", ""]
+  "include": ["src", "scripts"]
 }

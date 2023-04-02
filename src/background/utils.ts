@@ -64,6 +64,16 @@ export const getURL = (url: string = '', base?: string): URL => {
   }
 }
 
+export const getURLSearchParams = (url: string): URLSearchParams => {
+  try {
+    return new URLSearchParams(url)
+  } catch {
+    return {
+      get: () => null
+    } as any
+  }
+}
+
 type IMethods = Record<string, (...args: any[]) => Promise<any>>
 
 export const registryListener = (callMethods: IMethods) => {
@@ -107,9 +117,12 @@ export const genIssueUrl = async () => {
   const repositoryUrl: string = repository.url
   const url: string = `${repositoryUrl}/issues/new?title=&body=`
   let finalUrl: string = url
-  let comment = 'Please write your comment ABOVE this line.'
+  let comment =
+    'Please write your comment ABOVE this line, provide as much detailed information and screenshots as possible.' +
+    'The UA may not necessarily reflect your actual browser and platform, so please make sure to indicate them clearly.'
   if (isChinese) {
-    comment = '请在此行上方发表您的讨论。'
+    comment =
+      '请在此行上方发表您的讨论。详尽的描述和截图有助于我们定位问题，UA 不一定真实反映您的浏览器和平台，请备注清楚'
   }
 
   const body =
