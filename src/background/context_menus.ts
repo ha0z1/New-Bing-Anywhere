@@ -29,7 +29,7 @@ const contextMenus: Record<string, IInitContextMenu> = {
     title: '🖼️ New Bing Image Create',
     contexts: ['action'],
     onclick: (_info) => {
-      openPage('https://www.bing.com/images/create')
+      openPage('https://www.bing.com/create')
     }
   },
 
@@ -42,7 +42,7 @@ const contextMenus: Record<string, IInitContextMenu> = {
   },
 
   reportIssues: {
-    title: isChinese ? '✏️ 反馈建议' : '✏️ Report issues',
+    title: isChinese ? '🐛 反馈建议' : '🐛 Report issues',
     contexts: ['action'],
     onclick: async (_info) => {
       const url = await genIssueUrl()
