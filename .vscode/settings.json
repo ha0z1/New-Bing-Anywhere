@@ -6,6 +6,7 @@
     "haozi",
     "jsonuri",
     "KHTML",
+    "MKTS",
     "newtab",
     "nofollow",
     "noopener",
@@ -20,6 +21,9 @@
     "svgr",
     "vite",
     "vitejs",
+    "webbundle",
+    "webtransport",
+    "xmlhttprequest",
     "zepto"
   ]
 }

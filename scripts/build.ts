@@ -5,7 +5,8 @@ import stylePlugin from 'esbuild-style-plugin'
 import fs from 'fs-extra'
 import path from 'path'
 
-// import { stylusLoader } from 'esbuild-stylus-loader'
+import staticRules from './static_rules'
+
 import pkg from '../package.json'
 
 const isDev = process.argv[2] === 'dev'
@@ -17,7 +18,7 @@ const external = [
   )
 ]
 
-const buildFile = async (input, output) => {
+const buildFile = async (input: string, output: string) => {
   try {
     console.time(`构建用时: ${input} => ${output}`)
     const buildOptions = {
@@ -67,10 +68,20 @@ const buildManifest = () => {
       page: 'app/index.html?options',
       open_in_tab: true
     },
+    declarative_net_request: {
+      rule_resources: [
+        {
+          enabled: true,
+          id: 'ruleSet',
+          path: 'rules.json'
+        }
+      ]
+    },
     permissions: [
       // "storage",
       // "unlimitedStorage",
-      // 'cookies',
+      'cookies',
+      'webRequest',
       // 'tabs',
       // 'activeTab',
       'contextMenus',
@@ -120,7 +131,10 @@ const buildManifest = () => {
       }
     })
   })
+
+  fs.outputJSONSync(path.join(__dirname, '../dist/rules.json'), staticRules)
 }
+
 ;(async () => {
   ;[
     ['src/background/index.ts', 'dist/background.js'],
