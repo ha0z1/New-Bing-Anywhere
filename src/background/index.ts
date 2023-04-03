@@ -73,11 +73,12 @@ chrome.webRequest.onBeforeRequest.addListener(
         const value = cookie?.value
         if (!value) return
 
-        const searchObj = getURLSearchParams(value)
-        const mkt = searchObj.get('mkt')?.toLowerCase() ?? ''
+        const valueObj = getURLSearchParams(value)
+        const mkt = valueObj.get('mkt')?.toLowerCase() ?? ''
 
         if (!BAND_MKTS.map((m) => m.toLowerCase()).includes(mkt)) return
-        searchObj.delete('mkt')
+
+        valueObj.delete('mkt')
         chrome.cookies.set({
           url: BING,
           domain: cookie.domain,
@@ -88,7 +89,7 @@ chrome.webRequest.onBeforeRequest.addListener(
           secure: cookie.secure,
           sameSite: cookie.sameSite,
           expirationDate: cookie.expirationDate,
-          value: searchObj.toString()
+          value: valueObj.toString()
         })
       }
     )
