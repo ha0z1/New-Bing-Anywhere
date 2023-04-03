@@ -64,6 +64,10 @@ const buildManifest = () => {
         matches: ['https://www.bing.com/*', 'https://www.google.com/*', 'https://www.google.com.hk/*']
       }
     ],
+    options_ui: {
+      page: 'app/index.html?options',
+      open_in_tab: true
+    },
     declarative_net_request: {
       rule_resources: [
         {
@@ -74,7 +78,7 @@ const buildManifest = () => {
       ]
     },
     permissions: [
-      // "storage",
+      'storage',
       // "unlimitedStorage",
       'cookies',
       'webRequest',

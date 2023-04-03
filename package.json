@@ -1,6 +1,6 @@
 {
   "name": "new-bing-anywhere",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
   "homepage": "https://github.com/haozi/new-bing-anywhere",
@@ -12,13 +12,13 @@
   "author": "haozi",
   "scripts": {
     "build": "pnpm run copy && pnpm run lint && run-s build:* && pnpm run zip",
-    "_build:app": "pnpm --filter app run build",
+    "build:app": "pnpm --filter app run build",
     "build:bundle": "vite-node scripts/build.ts -- build",
     "zip": "rm -rf output && mkdir output && zip -r new-bing-anywhere.zip dist && mv new-bing-anywhere.zip output",
     "copy": "rm -rf dist && cp -r public dist # && cp src/popup/index.html dist/popup.html",
     "copy:watch": "pnpm run copy -- --watch",
     "dev": "pnpm run lint && pnpm run copy && run-p dev:*",
-    "_dev:app": "pnpm --filter app run dev",
+    "dev:app": "pnpm --filter app run dev",
     "dev:bundle": "vite-node scripts/build.ts -- dev",
     "lint": "pnpm run lint:prettier && pnpm run lint:eslint",
     "lint:eslint": "eslint --ext .js,.ts ./src --fix --cache",
@@ -54,6 +54,10 @@
     "typescript": "^5.0.3",
     "vite-node": "^0.29.8"
   },
+  "engines": {
+    "node": "^19",
+    "pnpm": "^8"
+  },
   "extension-i18n": {
     "en": {
       "extensionName": "New Bing Anywhere",
@@ -61,11 +65,11 @@
     },
     "zh_CN": {
       "extensionName": "New Bing Everywhere",
-      "extensionDescription": "新必应不仅仅是 Edge 的了，任何地方都可以使用"
+      "extensionDescription": "New Bing isn't just for Edge anymore. Anywhere you want. 随时随地，有求必应。"
     },
     "zh_TW": {
       "extensionName": "New Bing Everywhere",
-      "extensionDescription": "新必應不僅僅是 Edge 的了，任何地方都可以使用"
+      "extensionDescription": "隨時隨地，有求必應"
     },
     "ru": {
       "extensionName": "New Bing Anywhere",
