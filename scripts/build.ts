@@ -78,7 +78,7 @@ const buildManifest = () => {
       ]
     },
     permissions: [
-      // "storage",
+      'storage',
       // "unlimitedStorage",
       'cookies',
       'webRequest',

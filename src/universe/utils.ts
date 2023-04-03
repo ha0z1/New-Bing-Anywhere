@@ -100,3 +100,27 @@ export const isChinese = () => {
 export const isCN = () => {
   return false
 }
+
+const CONFIG_KEY = 'configV1'
+export interface Config {
+  showGoogleButtonOnBing: boolean
+  showBingButtonOnGoogle: boolean
+}
+export const getConfig = async (): Promise<Config> => {
+  const config = (await chrome.storage.sync.get(CONFIG_KEY))[CONFIG_KEY]
+  return {
+    showGoogleButtonOnBing: true,
+    showBingButtonOnGoogle: true,
+    ...config
+  }
+}
+
+export const setConfig = async (values: Config) => {
+  const config = await getConfig()
+  await chrome.storage.sync.set({
+    [CONFIG_KEY]: {
+      ...config,
+      ...values
+    }
+  })
+}
