@@ -6,13 +6,19 @@ import useSWR from 'swr'
 import s from './options.module.styl'
 
 const App: React.FC = () => {
-  const [messageApi, contextHolder] = message.useMessage()
-
   useTitle('Options')
-  const { data: config, error } = useSWR<Config>('config', getConfig)
 
   const [form] = Form.useForm()
+
+  const { data: config, error } = useSWR<Config>('config', async () => {
+    const config = await getConfig()
+    form.setFieldsValue(config)
+    return config
+  })
+
   const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } }
+
+  const [messageApi, contextHolder] = message.useMessage()
   const showSuccess = (content: string) => {
     messageApi.open({
       type: 'success',
@@ -43,7 +49,7 @@ const App: React.FC = () => {
       <Form
         {...formItemLayout}
         initialValues={config}
-        layout={'horizontal'}
+        layout="horizontal"
         form={form}
         style={{ width: 600 }}
         labelWrap={true}
@@ -55,8 +61,6 @@ const App: React.FC = () => {
         <Form.Item label="Show Bing Button On Google" valuePropName="checked" name="showBingButtonOnGoogle">
           <Switch />
         </Form.Item>
-
-        {/* <Select style={{ width: 220 }} /> */}
       </Form>
     </div>
   )

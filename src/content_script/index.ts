@@ -54,39 +54,28 @@ const openUrlInSameTab = async (url: string) => {
 
       const $q = $('#sb_form_q')
       const searchQuery: string = $q.val()
-      // left: 15px;
-      // top: 9px;
-      $('#sb_form')
-        .css('position', 'relative')
-        .prepend(
-          `
-  <a href="https://www.google.com/search?q=${encodeURIComponent(
-    escapeHtml(searchQuery)
-  )}" id="new-bing-anywhere-google-link" target="google" tabindex="0" rel="noopener noreferrer nofollow" style="
-    position: absolute;
-    left:0;
-    top:0;
-    width: 70px;
-    height: 23px;
-    display: inline-block;
-    z-index:999;
-    transition:all .3s;
-    transform: translate3d(835px, 13px, 0px);
-    will-change: transform;
-    cursor: pointer;"
-    title="search with Google"
-  >
-    <img src="${chrome.runtime.getURL('images/google.png')}" alt="google" style="
-    width: 100%;
-    display: block;
-  ">
-  </a>
-    `
-            .replace(/\n/g, '')
-            .trim()
-        )
 
-      const $a = $('#new-bing-anywhere-google-link')
+      const $a = $(`
+        <a href="https://www.google.com/search?q=${encodeURIComponent(
+          escapeHtml(searchQuery)
+        )}" target="google" tabindex="0" rel="noopener noreferrer nofollow" title="search with Google">
+          <img src="${chrome.runtime.getURL('images/google.png')}" alt="google" style="width: 100%;display: block;">
+        </a>`).css({
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '70px',
+        height: '23px',
+        display: 'inline-block',
+        'z-index': 999,
+        transition: 'all .3s',
+        transform: 'translate3d(835px, 13px, 0px)',
+        'will-change': 'transform',
+        cursor: 'pointer'
+      })
+
+      $('#sb_form').css('position', 'relative').prepend($a)
+
       $a.on('click', async function (e) {
         e.preventDefault()
         let val = ''
@@ -160,16 +149,19 @@ const openUrlInSameTab = async (url: string) => {
         const $q = $form.find('[name="q"]')
         const $submit = $form.find('button[type="submit"]')
 
-        const $a =
-          $(`<a href="https://www.bing.com/search?q=Bing+AI&showconv=1" rel="noopener noreferrer nofollow" target="bing" style="width: 40px;
-      display: flex;
-      position: relative;
-      z-index: 999;
-      cursor: pointer;
-      justify-content: center;
-      margin: 0 10px 0 -10px;" title="search with New Bing">
-      <img src="${chrome.runtime.getURL('images/bing-chat.svg')}" style="display: block; width: 24px;" alt="bing" /></a>
-    `)
+        const $a = $(`
+          <a href="https://www.bing.com/search?q=Bing+AI&showconv=1" rel="noopener noreferrer nofollow" target="bing" title="search with New Bing">
+            <img src="${chrome.runtime.getURL(
+              'images/bing-chat.svg'
+            )}" style="display: block; width: 24px;" alt="bing" /></a>`).css({
+          width: '40px',
+          display: 'flex',
+          position: 'relative',
+          'z-index': 999,
+          cursor: 'pointer',
+          'justify-content': 'center',
+          margin: '0 10px 0 -10px'
+        })
 
         $submit.after($a)
         $a.on('click', async function (e) {

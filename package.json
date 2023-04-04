@@ -1,6 +1,6 @@
 {
   "name": "new-bing-anywhere",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
   "homepage": "https://github.com/haozi/new-bing-anywhere",
@@ -30,12 +30,12 @@
     "fs-extra": "^11.1.1"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.227",
+    "@types/chrome": "^0.0.228",
     "@types/fs-extra": "^11.0.1",
     "@types/node": "^18.15.11",
-    "@typescript-eslint/eslint-plugin": "^5.57.0",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
     "copy-and-watch": "^0.1.6",
-    "esbuild": "^0.17.14",
+    "esbuild": "^0.17.15",
     "esbuild-plugin-svgr": "^1.1.0",
     "esbuild-style-plugin": "^1.6.1",
     "eslint": "^8.37.0",

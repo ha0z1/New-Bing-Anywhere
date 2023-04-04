@@ -72,7 +72,7 @@ const buildManifest = () => {
       rule_resources: [
         {
           enabled: true,
-          id: 'ruleSet',
+          id: 'new-bing-anywhere',
           path: 'rules.json'
         }
       ]
