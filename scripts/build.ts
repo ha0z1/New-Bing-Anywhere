@@ -72,7 +72,7 @@ const buildManifest = () => {
       rule_resources: [
         {
           enabled: true,
-          id: 'ruleSet',
+          id: 'new-bing-anywhere',
           path: 'rules.json'
         }
       ]
@@ -105,7 +105,7 @@ const buildManifest = () => {
       {
         matches: ['https://www.bing.com/*', 'https://www.google.com/search?*', 'https://www.google.com.hk/search?*'],
         js: ['zepto.min.js', 'content_script.js'],
-        run_at: 'document_end'
+        run_at: 'document_start'
       }
     ],
     icons: {

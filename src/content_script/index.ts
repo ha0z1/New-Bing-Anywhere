@@ -37,13 +37,17 @@ const openUrlInSameTab = async (url: string) => {
   }
 }
 
-;(async () => {
+;(async ($, document, $root) => {
   const config = await getConfig()
-  ;(window as any).Zepto(($) => {
-    // debugger
-    // For bing.com
-    try {
-      if (!location.href.startsWith('https://www.bing.com/search?')) return
+  const mutationConfig = { attributes: true, childList: true, subtree: true }
+
+  // For bing.com
+  ;(() => {
+    if (!location.href.startsWith('https://www.bing.com/search?')) return
+
+    new MutationObserver((_mutationList, observer) => {
+      if (!document.getElementById('sb_form')) return
+      observer.disconnect()
 
       $(document.body).on('click', 'a.b_logoArea', function (e) {
         const $this = $(this)
@@ -54,39 +58,28 @@ const openUrlInSameTab = async (url: string) => {
 
       const $q = $('#sb_form_q')
       const searchQuery: string = $q.val()
-      // left: 15px;
-      // top: 9px;
-      $('#sb_form')
-        .css('position', 'relative')
-        .prepend(
-          `
-  <a href="https://www.google.com/search?q=${encodeURIComponent(
-    escapeHtml(searchQuery)
-  )}" id="new-bing-anywhere-google-link" target="google" tabindex="0" rel="noopener noreferrer nofollow" style="
-    position: absolute;
-    left:0;
-    top:0;
-    width: 70px;
-    height: 23px;
-    display: inline-block;
-    z-index:999;
-    transition:all .3s;
-    transform: translate3d(835px, 13px, 0px);
-    will-change: transform;
-    cursor: pointer;"
-    title="search with Google"
-  >
-    <img src="${chrome.runtime.getURL('images/google.png')}" alt="google" style="
-    width: 100%;
-    display: block;
-  ">
-  </a>
-    `
-            .replace(/\n/g, '')
-            .trim()
-        )
 
-      const $a = $('#new-bing-anywhere-google-link')
+      const $a = $(`
+      <a href="https://www.google.com/search?q=${encodeURIComponent(
+        escapeHtml(searchQuery)
+      )}" target="google" tabindex="0" rel="noopener noreferrer nofollow" title="search with Google">
+        <img src="${chrome.runtime.getURL('images/google.png')}" alt="google" style="width: 100%;display: block;">
+      </a>`).css({
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '70px',
+        height: '23px',
+        display: 'inline-block',
+        'z-index': 999,
+        transition: 'all .3s',
+        transform: 'translate3d(835px, 13px, 0px)',
+        'will-change': 'transform',
+        cursor: 'pointer'
+      })
+
+      $('#sb_form').css('position', 'relative').prepend($a)
+
       $a.on('click', async function (e) {
         e.preventDefault()
         let val = ''
@@ -129,55 +122,58 @@ const openUrlInSameTab = async (url: string) => {
       }
 
       changeGoogleLinkPosition()
-      const observer = new MutationObserver((mutationList, observer) => {
+      new MutationObserver((mutationList, observer) => {
         for (const mutation of mutationList) {
           if (!mutation.target) continue
           if ((mutation.target as HTMLElement).id === 'b-scopeListItem-conv') {
             changeGoogleLinkPosition()
           }
         }
+      }).observe(document.getElementById('b_header')!, mutationConfig)
+    }).observe($root, mutationConfig)
+  })()
+
+  // For google.com google.com.hk
+  ;(() => {
+    if (!config.showBingButtonOnGoogle) return
+    if (
+      !(
+        location.href.startsWith('https://www.google.com/search?') ||
+        location.href.startsWith('https://www.google.com.hk/search?')
+      )
+    ) {
+      return
+    }
+
+    new MutationObserver((_mutationList, observer) => {
+      const searchSelector = '[action="/search"]'
+      if (!$(searchSelector).length) return
+      observer.disconnect()
+
+      const $form = $(searchSelector)
+      const $q = $form.find('[name="q"]')
+      const $submit = $form.find('button[type="submit"]')
+
+      const $a = $(`
+      <a href="https://www.bing.com/search?q=Bing+AI&showconv=1" rel="noopener noreferrer nofollow" target="bing" title="search with New Bing">
+        <img src="${chrome.runtime.getURL('images/bing-chat.svg')}" style="display: block; width: 24px;" alt="bing" />
+      </a>`).css({
+        width: '40px',
+        display: 'flex',
+        position: 'relative',
+        'z-index': 999,
+        cursor: 'pointer',
+        'justify-content': 'center',
+        margin: '0 10px 0 -10px'
       })
 
-      // Start observing the target node for configured mutations
-      observer.observe(document.getElementById('b_header')!, { attributes: true, childList: true, subtree: true })
-    } catch {}
-  })
-
-  config.showBingButtonOnGoogle &&
-    (window as any).Zepto(($) => {
-      try {
-        // For google.com google.com.hk
-        if (
-          !(
-            location.href.startsWith('https://www.google.com/search?') ||
-            location.href.startsWith('https://www.google.com.hk/search?')
-          )
-        ) {
-          return
-        }
-
-        const $form = $('[action="/search"]')
-        const $q = $form.find('[name="q"]')
-        const $submit = $form.find('button[type="submit"]')
-
-        const $a =
-          $(`<a href="https://www.bing.com/search?q=Bing+AI&showconv=1" rel="noopener noreferrer nofollow" target="bing" style="width: 40px;
-      display: flex;
-      position: relative;
-      z-index: 999;
-      cursor: pointer;
-      justify-content: center;
-      margin: 0 10px 0 -10px;" title="search with New Bing">
-      <img src="${chrome.runtime.getURL('images/bing-chat.svg')}" style="display: block; width: 24px;" alt="bing" /></a>
-    `)
-
-        $submit.after($a)
-        $a.on('click', async function (e) {
-          e.preventDefault()
-          const url = `https://www.bing.com/search?q=${encodeURIComponent($q.val())}&showconv=1`
-          $(this).attr('href', url)
-          await openUrlInSameTab(url)
-        })
-      } catch {}
-    })
-})()
+      $submit.after($a)
+      $a.on('click', async function (e) {
+        e.preventDefault()
+        const url = `https://www.bing.com/search?q=${encodeURIComponent($q.val())}&showconv=1`
+        $(this).attr('href', url)
+        await openUrlInSameTab(url)
+      })
+    }).observe($root, mutationConfig)
+  })()
+})((window as any).Zepto, document, document.documentElement)

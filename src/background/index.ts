@@ -58,7 +58,7 @@ chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
     openPage(repositoryUrl)
   } else if (details.reason === 'update') {
-    openPage(`${repositoryUrl}/releases/tag/${version}`)
+    openPage(`${repositoryUrl}/releases/tag/v${version}`)
   }
 })
 
