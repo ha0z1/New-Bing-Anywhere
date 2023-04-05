@@ -2,6 +2,12 @@
 
 [English](README.md) | 简体中文 | [Русский](README.ru.md)
 
+## 浏览器支持列表
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://www.google.com/chrome/)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](https://www.microsoft.com/edge)<br/>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png" alt="Brave" width="24px" height="24px" />](https://brave.com/)<br/>Brave | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](https://www.opera.com/)<br/>Opera | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png" alt="Vivaldi" width="24px" height="24px" />](https://vivaldi.com/)<br/>Vivaldi  | [<img src="https://arc.net/favicon.png" alt="Arc" width="24px" height="24px" />](https://arc.net/)<br/>Arc  | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/archive/360-secure/360-secure_48x48.png" alt="360 Secure" width="24px" height="24px" />](https://browser.360.cn/)<br/>360 
+| --------- | --------- | --------- | --------- | --------- | --------- | --------- |
+| latest | latest | latest | latest | latest | latest | latest |
+
 ## 安装
 
 * Chrome: <https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi>
