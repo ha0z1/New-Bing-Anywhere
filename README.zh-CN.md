@@ -1,4 +1,4 @@
-# New-Bing-Anywhere
+# New-Bing-Anywhere 随时随地，有求必应
 
 [English](README.md) | 简体中文 | [Русский](README.ru.md)
 
