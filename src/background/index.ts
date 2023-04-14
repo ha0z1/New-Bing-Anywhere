@@ -2,7 +2,7 @@ import { repository, version } from '../../package.json'
 import { BAND_MKTS, BING } from './constants'
 import initContextMenu from './context_menus'
 import initDynamicRules from './dynamic_rules'
-import { getURL, getURLSearchParams, openPage, registryListener } from './utils'
+import { getURL, getURLSearchParams, openPage, registryListener, setCookie } from './utils'
 
 initContextMenu()
 
@@ -79,18 +79,45 @@ chrome.webRequest.onBeforeRequest.addListener(
         if (!BAND_MKTS.map((m) => m.toLowerCase()).includes(mkt)) return
 
         valueObj.delete('mkt')
-        chrome.cookies.set({
-          url: BING,
-          domain: cookie.domain,
-          name: cookie.name,
-          storeId: cookie.storeId,
-          path: cookie.path,
-          httpOnly: cookie.httpOnly,
-          secure: cookie.secure,
-          sameSite: cookie.sameSite,
-          expirationDate: cookie.expirationDate,
-          value: valueObj.toString()
-        })
+        setCookie(
+          {
+            url: BING,
+            name: cookie.name,
+            value: valueObj.toString()
+          },
+          cookie
+        )
+      }
+    )
+
+    chrome.cookies.get(
+      {
+        name: '_RwBf',
+        url: BING
+      },
+      (cookie) => {
+        const value = cookie?.value
+        if (!value) {
+          setCookie({
+            url: BING,
+            name: '_RwBf',
+            value: 'wls=2',
+            domain: '.bing.com',
+            httpOnly: true
+          })
+          return
+        }
+
+        const valueObj = getURLSearchParams(value)
+        valueObj.set('wls', '2')
+        setCookie(
+          {
+            url: BING,
+            name: '_RwBf',
+            value: valueObj.toString()
+          },
+          cookie
+        )
       }
     )
   },

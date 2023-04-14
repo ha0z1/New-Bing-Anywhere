@@ -136,3 +136,28 @@ export const genIssueUrl = async () => {
   finalUrl += encodeURIComponent(body.slice(0, 2000))
   return finalUrl
 }
+
+interface ICookieOptions {
+  url: string
+  name: string
+  value: string
+  domain?: string
+  httpOnly?: boolean
+}
+
+export const setCookie = async ({ url, name, value }: ICookieOptions, cookie: chrome.cookies.Cookie = {} as any) => {
+  return await chrome.cookies.set({
+    ...{
+      domain: cookie.domain,
+      storeId: cookie.storeId,
+      path: cookie.path,
+      httpOnly: cookie.httpOnly,
+      secure: cookie.secure,
+      sameSite: cookie.sameSite,
+      expirationDate: cookie.expirationDate
+    },
+    name,
+    value,
+    url
+  })
+}
