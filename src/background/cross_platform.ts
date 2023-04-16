@@ -78,8 +78,13 @@ export default () => {
           const mkt = valueObj.get('mkt')?.toLowerCase() ?? ''
 
           if (!BAND_MKTS.map((m) => m.toLowerCase()).includes(mkt)) return
+          if (mkt === 'zh-cn') {
+            valueObj.set('mkt', 'zh-HK')
+            valueObj.set('ui', 'zh-hans')
+          } else {
+            valueObj.delete('mkt')
+          }
 
-          valueObj.delete('mkt')
           setCookie(
             {
               url: BING,
