@@ -1,6 +1,6 @@
 {
   "name": "new-bing-anywhere",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
   "homepage": "https://github.com/haozi/new-bing-anywhere",
@@ -11,9 +11,10 @@
   "license": "MIT",
   "author": "haozi",
   "scripts": {
-    "build": "mkdir -p dist && pnpm run lint && run-s build:*",
+    "build": "mkdir -p dist && pnpm run lint && run-s build:* && pnpm copy:soruce && zip -r -9 dist/source.zip dist/source",
     "build:bundle": "vite-node scripts/build.ts -- build",
     "copy": "rm -rf dist && cp -r public dist # && cp src/popup/index.html dist/popup.html",
+    "copy:soruce": "rsync -vhra . dist/source --include='**.gitignore' --exclude='/.git' --exclude='dist'  --filter=':- .gitignore' --delete-after",
     "copy:watch": "pnpm run copy -- --watch",
     "dev": "pnpm run lint && run-p dev:*",
     "dev:app": "pnpm --filter app run dev",

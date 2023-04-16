@@ -161,8 +161,8 @@ const buildFireFox = async () => {
       options_ui: undefined,
       browser_specific_settings: {
         gecko: {
-          // id: '{babadada-ce9e-4bc4-a7de-b4f9c2b8918c}'
-          id: 'syntaxright@gmail.com'
+          id: '{babadada-ce9e-4bc4-a7de-b4f9c2b8918c}'
+          // id: 'syntaxright@gmail.com'
         }
       }
     })
