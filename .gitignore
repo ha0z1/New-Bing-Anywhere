@@ -6,3 +6,4 @@ package-lock.json
 .eslintcache
 dist/*.zip
 dist/**/_metadata/
+dist/source/
