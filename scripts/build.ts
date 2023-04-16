@@ -1,22 +1,29 @@
+import { execSync } from 'child_process'
 import esbuild from 'esbuild'
-
 import svgrPlugin from 'esbuild-plugin-svgr'
 import stylePlugin from 'esbuild-style-plugin'
 import fs from 'fs-extra'
+// import md5File from 'md5-file'
 import path from 'path'
-
+import sortPackageJson from 'sort-package-json'
+import pkg from '../package.json'
 import staticRules from './static_rules'
 
-import pkg from '../package.json'
+const root = path.join(__dirname, '..')
+const dist = path.join(root, 'dist')
+const chromiumDir = path.join(dist, 'chromium')
+const firefoxDir = path.join(dist, 'firefox')
 
 const isDev = process.argv[2] === 'dev'
 const external = [
-  ...new Set(
-    ['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies']
-      .map((o) => Object.keys(pkg[o] ?? {}))
-      .flat()
-  )
+  ...new Set(['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies'].map((o) => Object.keys(pkg[o] ?? {})).flat())
 ]
+
+const sortManifestJSON = (json: object) => {
+  return sortPackageJson(json, {
+    sortOrder: ['manifest_version', 'version']
+  })
+}
 
 const buildFile = async (input: string, output: string) => {
   try {
@@ -45,13 +52,12 @@ const buildFile = async (input: string, output: string) => {
   }
 }
 
-const buildManifest = () => {
+const buildManifest = async () => {
   const manifest = {
     manifest_version: 3,
     name: '__MSG_appName__',
     description: '__MSG_appDesc__',
     version: pkg.version,
-    minimum_chrome_version: '100.0',
     homepage_url: pkg.homepage,
     default_locale: 'en',
     background: {
@@ -115,12 +121,12 @@ const buildManifest = () => {
       128: 'images/bing_128x128.png'
     }
   }
-  fs.outputJSONSync(path.join(__dirname, '../dist/manifest.json'), manifest)
+  fs.outputJSONSync(path.join(chromiumDir, 'manifest.json'), sortManifestJSON(manifest))
 
   // https://developer.chrome.com/docs/webstore/i18n/
   ;['en', 'zh_CN', 'zh_TW', 'ru'].forEach((locale) => {
     const i18n = pkg['extension-i18n'][locale]
-    fs.outputJSONSync(path.join(__dirname, `../dist/_locales/${locale}/messages.json`), {
+    fs.outputJSONSync(path.join(chromiumDir, `_locales/${locale}/messages.json`), {
       appName: {
         message: i18n.extensionName,
         description: i18n.extensionName
@@ -132,19 +138,77 @@ const buildManifest = () => {
     })
   })
 
-  fs.outputJSONSync(path.join(__dirname, '../dist/rules.json'), staticRules)
+  fs.outputJSONSync(path.join(chromiumDir, 'rules.json'), staticRules)
+}
+
+const buildFireFox = async () => {
+  fs.copySync(chromiumDir, firefoxDir)
+  const chromeManifest = fs.readJSONSync(path.join(chromiumDir, 'manifest.json'))
+  fs.outputJSONSync(
+    path.join(firefoxDir, 'manifest.json'),
+    sortManifestJSON({
+      ...chromeManifest,
+      manifest_version: 3,
+      background: {
+        scripts: ['background.js']
+      },
+      host_permissions: ['<all_urls>'],
+      permissions: chromeManifest.permissions.filter((item) => !['declarativeNetRequest'].includes(item)).concat('webRequestBlocking'),
+      declarative_net_request: undefined,
+      // web_accessible_resources: undefined,
+      // host_permissions: undefined,
+      content_scripts: undefined,
+      options_ui: undefined,
+      browser_specific_settings: {
+        gecko: {
+          id: '{babadada-ce9e-4bc4-a7de-b4f9c2b8918c}'
+        }
+      }
+    })
+  )
+
+  fs.removeSync(path.join(firefoxDir, 'app'))
+  fs.removeSync(path.join(firefoxDir, 'content_script.js'))
+  fs.removeSync(path.join(firefoxDir, 'zepto.min.js'))
+  fs.removeSync(path.join(firefoxDir, 'rules.json'))
+}
+
+const zipPkg = async () => {
+  const zipFolder = (target: 'chromium' | 'firefox') => {
+    process.chdir(target === 'chromium' ? chromiumDir : firefoxDir)
+    const zipPath = `${dist}/${target}.zip`
+    execSync(`zip -r -9 ${zipPath} . -x "*.DS_Store"`, { stdio: 'inherit' })
+    // const hash = md5File.sync(zipPath)
+    // fs.outputFileSync(`${zipPath}.md5`, `version: ${pkg.version}\nmd5: ${hash}\n`)
+  }
+  zipFolder('chromium')
+  zipFolder('firefox')
 }
 
 ;(async () => {
-  ;[
-    ['src/background/index.ts', 'dist/background.js'],
-    ['src/content_script/index.ts', 'dist/content_script.js']
+  fs.emptyDirSync(path.join(root, 'dist'))
+
+  fs.copySync(path.join(root, 'public'), chromiumDir)
+
+  await buildManifest()
+
+  if (!isDev) {
+    execSync(`pnpm --filter app run build`, { stdio: 'inherit' })
+  }
+
+  await buildFireFox()
+
+  let files = [
+    ['src/background/chrome.ts', path.join(chromiumDir, 'background.js')],
+    ['src/content_script/index.ts', path.join(chromiumDir, 'content_script.js')],
+
+    ['src/background/firefox.ts', path.join(firefoxDir, 'background.js')]
+    // ['src/content_script/index.ts', path.join(firefoxDir, 'content_script.js')]
     // ['src/popup/index.ts', 'dist/popup.js']
-  ].forEach(async ([input, output]) => {
+  ]
+  for (let [input, output] of files) {
     await buildFile(input, output)
-  })
+  }
 
-  buildManifest()
+  await zipPkg()
 })()
-
-export {}

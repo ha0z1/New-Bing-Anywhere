@@ -1,5 +1,5 @@
 const BING = 'https://www.bing.com/'
-const ALL_RESOURCE_TYPES = [
+export const ALL_RESOURCE_TYPES = [
   'csp_report',
   'font',
   'image',
@@ -23,7 +23,7 @@ const APPEND = 'append' as chrome.declarativeNetRequest.HeaderOperation.APPEND
 // const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
 const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
-const staticRules: chrome.declarativeNetRequest.Rule[] = [
+export const staticRules: chrome.declarativeNetRequest.Rule[] = [
   {
     id: 1,
     action: {
@@ -31,9 +31,14 @@ const staticRules: chrome.declarativeNetRequest.Rule[] = [
       requestHeaders: [
         {
           operation: SET,
+          header: 'Sec-Ch-Ua',
+          value: '"Chromium";v="112", "Microsoft Edge";v="112", "Not:A-Brand";v="99"'
+        },
+        {
+          operation: SET,
           header: 'User-Agent',
           value:
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51'
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34'
         }
       ]
     },
@@ -52,8 +57,7 @@ const staticRules: chrome.declarativeNetRequest.Rule[] = [
     },
     condition: {
       // https://regex101.com/r/LC68hZ/1
-      regexFilter:
-        '(^https:\\/\\/www\\.bing\\.com\\/(?:search|\\?|account/action).*?)(?:mkt=zh-CN|cc=cn|cc=zh-cn|cc=zh)(.*)',
+      regexFilter: '(^https:\\/\\/www\\.bing\\.com\\/(?:search|\\?|account/action).*?)(?:mkt=zh-CN|cc=cn|cc=zh-cn|cc=zh)(.*)',
       isUrlFilterCaseSensitive: false,
       requestDomains: ['www.bing.com'],
       resourceTypes: ALL_RESOURCE_TYPES
