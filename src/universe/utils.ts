@@ -62,10 +62,7 @@ export type ITab = chrome.tabs.Tab & {
   }
 }
 
-export const findSameUrlTab = async (
-  url?: string,
-  queryInfo: chrome.tabs.QueryInfo = {}
-): Promise<chrome.tabs.Tab | null> => {
+export const findSameUrlTab = async (url?: string, queryInfo: chrome.tabs.QueryInfo = {}): Promise<chrome.tabs.Tab | null> => {
   if (!url) return null
   const openedTabs = await chrome.tabs.query(queryInfo)
   return (
@@ -123,4 +120,14 @@ export const setConfig = async (values: Config) => {
       ...values
     }
   })
+}
+
+export const escapeHtml = (s: string): string => {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\//g, '&#x2f;')
 }
