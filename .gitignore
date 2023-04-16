@@ -4,5 +4,5 @@ node_modules/
 yarn.lock
 package-lock.json
 .eslintcache
-dist/
-output/
+dist/*.zip
+dist/**/_metadata/

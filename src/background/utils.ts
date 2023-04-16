@@ -5,10 +5,7 @@ const APP_URL = chrome.runtime.getURL('app/index.html')
 export const isChinese = checkIsChinese()
 
 export const dumpTabs = async ({ windowId }): Promise<void> => {
-  const [currentTabs, [currentTab]] = await Promise.all([
-    getAllTabs(),
-    chrome.tabs.query({ active: true, currentWindow: true })
-  ])
+  const [currentTabs, [currentTab]] = await Promise.all([getAllTabs(), chrome.tabs.query({ active: true, currentWindow: true })])
 
   await ls.set('currentTabs', unique(currentTabs, 'url'))
 
@@ -23,10 +20,7 @@ export const dumpTabs = async ({ windowId }): Promise<void> => {
   }
 
   if (AppTab.id != null) {
-    await Promise.all([
-      chrome.tabs.move(AppTab.id, { index: 0 }),
-      chrome.tabs.update(AppTab.id, { active: true, pinned: true })
-    ])
+    await Promise.all([chrome.tabs.move(AppTab.id, { index: 0 }), chrome.tabs.update(AppTab.id, { active: true, pinned: true })])
   }
 
   const openedTabs = await chrome.tabs.query({ windowId })
@@ -121,8 +115,7 @@ export const genIssueUrl = async () => {
     'Please write your comment ABOVE this line, provide as much detailed information and screenshots as possible.' +
     'The UA may not necessarily reflect your actual browser and platform, so please make sure to indicate them clearly.'
   if (isChinese) {
-    comment =
-      '请在此行上方发表您的讨论。详尽的描述和截图有助于我们定位问题，UA 不一定真实反映您的浏览器和平台，请备注清楚'
+    comment = '请在此行上方发表您的讨论。详尽的描述和截图有助于我们定位问题，UA 不一定真实反映您的浏览器和平台，请备注清楚'
   }
 
   const body =
@@ -137,27 +130,15 @@ export const genIssueUrl = async () => {
   return finalUrl
 }
 
-interface ICookieOptions {
-  url: string
-  name: string
-  value: string
-  domain?: string
-  httpOnly?: boolean
-}
-
-export const setCookie = async ({ url, name, value }: ICookieOptions, cookie: chrome.cookies.Cookie = {} as any) => {
+export const setCookie = async (options: chrome.cookies.SetDetails, cookie: chrome.cookies.Cookie = {} as any) => {
   return await chrome.cookies.set({
-    ...{
-      domain: cookie.domain,
-      storeId: cookie.storeId,
-      path: cookie.path,
-      httpOnly: cookie.httpOnly,
-      secure: cookie.secure,
-      sameSite: cookie.sameSite,
-      expirationDate: cookie.expirationDate
-    },
-    name,
-    value,
-    url
+    domain: cookie.domain,
+    storeId: cookie.storeId,
+    path: cookie.path,
+    httpOnly: cookie.httpOnly,
+    secure: cookie.secure,
+    sameSite: cookie.sameSite,
+    expirationDate: cookie.expirationDate,
+    ...options
   })
 }
