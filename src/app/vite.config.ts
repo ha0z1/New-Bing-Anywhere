@@ -12,7 +12,15 @@ import { ViteMinifyPlugin } from 'vite-plugin-minify'
 export default defineConfig({
   base: '/app',
   build: {
-    outDir: '../../dist/app'
+    outDir: '../../dist/chromium/app',
+
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]'
+      }
+    }
   },
   plugins: [
     react(),
