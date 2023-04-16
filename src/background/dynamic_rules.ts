@@ -1,25 +1,29 @@
-const allResourceTypes = Object.values(chrome.declarativeNetRequest.ResourceType)
+import { ALL_RESOURCE_TYPES } from '../../scripts/static_rules'
 
-let ua = navigator.userAgent
+let ua = navigator.userAgent.trim()
 
 const isMac = ua.includes('Macintosh')
 const isEdge = ua.includes('Edg')
+const isFirefox = ua.includes('Firefox')
 
 // const isIos = ua.includes('iPhone') || ua.includes('iPad')
 // const isAndroid = ua.includes('Android')
 
 if (!isEdge) {
   if (isMac) {
-    ua += ' Edg/111.0.1661.51'
+    ua += ' Edg/112.0.1722.39'
   } else {
-    ua += ' Edg/112.0.1722.11'
+    ua += ' Edg/112.0.1722.34'
   }
+}
+if (isFirefox) {
+  ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34'
 }
 
 const MODIFY_HEADERS_LIST = {
   // 'X-Forwarded-For': '8.8.8.8',
-  // MAC      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.51
-  // Windows  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/112.0.1722.11
+  // MAC      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.39
+  // Windows  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34
   'User-Agent': ua
 }
 const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS
@@ -28,7 +32,7 @@ const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActio
 // const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
 const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
-const dynamicRules: chrome.declarativeNetRequest.Rule[] = [
+export const dynamicRules: chrome.declarativeNetRequest.Rule[] = [
   {
     id: 2001,
     priority: 2001,
@@ -42,7 +46,7 @@ const dynamicRules: chrome.declarativeNetRequest.Rule[] = [
     },
     condition: {
       requestDomains: ['bing.com', 'www.bing.com', 'cn.bing.com'],
-      resourceTypes: allResourceTypes
+      resourceTypes: ALL_RESOURCE_TYPES
     }
   }
 ] // .filter((item) => item.action.type !== REDIRECT)

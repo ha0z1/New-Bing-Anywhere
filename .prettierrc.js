@@ -1,6 +1,6 @@
 module.exports = {
   // for plain JavaScript without type annotations
-  printWidth: 120,
+  printWidth: 140,
   useTabs: false,
   // Use .gitattributes to manage newlines
   endOfLine: 'auto',
