@@ -1,15 +1,58 @@
 import { escapeHtml } from '@@/utils'
-import { mutationConfig, openUrlInSameTab } from './utils'
+import { callMethod, mutationConfig, openUrlInSameTab } from './utils'
 
-export default (config, $, $root) => {
+export default async (config, $, $root) => {
   if (!location.href.startsWith('https://www.bing.com/search?')) return
 
   new MutationObserver((_mutationList, observer) => {
     if (!document.getElementById('sb_form')) return
     observer.disconnect()
+    type Note = {
+      html_url: string
+      title: string
+    } | null
+    callMethod('getNotification').then((note: Note) => {
+      if (!note) return
+      const $body = $(document.body)
+      const $div = $('<div/>').css({
+        width: '100%',
+        height: 40,
+        border: '1px solid #590727',
+        background: '#58070d',
+        position: 'fixed',
+        top: 0,
+        fontSize: '12px',
+        lineHeight: '40px',
+        textAlign: 'center',
+        zIndex: 99999,
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        display: 'block !important'
+      })
+      const close = () => {
+        $div.remove()
+        $body.css('padding-top', null)
+      }
+      const $a = $(
+        `<a style="color:#fff; background:url(${chrome.runtime.getURL(
+          'images/bing_32x32.png'
+        )}) no-repeat left 0; background-size: 12px; padding-left: 20px" href="${
+          note.html_url
+        }" target="_blank" rel="nofollow noreferrer">${note.title}</a>`
+      ).on('click', close)
+      const $close = $(
+        '<a href="#" style="background:#58070d; color:#fff; cursor:pointer;padding: 0 68px 0 18px;position: absolute;right:0" title="no reminder">✕</a>'
+      ).on('click', (e) => {
+        e.preventDefault()
+        confirm('Are you sure never see this notice again?') && callMethod('hideNotification')
+        close()
+      })
+      $div.append($a).append($close)
+      $body.append($div).css('padding-top', 40)
+    })
 
-    $(document.body).on('click', 'a.b_logoArea', function (e) {
-      const $this = $(this)
+    $(document.body).on('click', 'a.b_logoArea', (e) => {
+      const $this = $(e.currentTarget)
       $this.attr('href', '/').attr('target', '_self')
     })
 
@@ -39,7 +82,8 @@ export default (config, $, $root) => {
 
     $('#sb_form').css('position', 'relative').prepend($a)
 
-    $a.on('click', async function (e) {
+    $a.on('click', async (e) => {
+      const $this = $(e.currentTarget)
       e.preventDefault()
       let val = ''
       // if ($('#b-scopeListItem-conv').hasClass('b_active')) {
@@ -49,7 +93,7 @@ export default (config, $, $root) => {
         val = $q.val().trim()
       }
       const url = `https://www.google.com/search?q=${encodeURIComponent(val)}`
-      $(this).attr('href', url)
+      $this.attr('href', url)
       await openUrlInSameTab(url)
     })
 

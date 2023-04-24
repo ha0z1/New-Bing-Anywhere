@@ -1,0 +1,25 @@
+# Set default behavior to automatically normalize line endings.
+* text=auto
+
+*.cmd             text eol=crlf
+*.dll             binary
+*.eot             binary
+*.exe             binary
+*.gif             binary
+*.ico             binary
+*.jpg             binary
+*.png             binary
+*.ttf             binary
+*.woff            binary
+*.wsp             binary
+dist/*.js         binary
+
+/*/*/bin/+([!.]) -text
+
+pnpm-lock.yaml               merge=text
+shrinkwrap.yaml              merge=binary
+npm-shrinkwrap.json          merge=binary
+yarn.lock                    merge=binary
+
+
+*.json            linguist-language=JSON-with-Comments

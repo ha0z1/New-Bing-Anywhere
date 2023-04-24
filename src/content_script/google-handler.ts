@@ -1,6 +1,6 @@
 import { mutationConfig, openUrlInSameTab } from './utils'
 
-export default (config, $, $root) => {
+export default async (config, $, $root) => {
   if (!config.showBingButtonOnGoogle) return
   if (!(location.href.startsWith('https://www.google.com/search?') || location.href.startsWith('https://www.google.com.hk/search?'))) {
     return
