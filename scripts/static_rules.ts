@@ -23,6 +23,7 @@ const APPEND = 'append' as chrome.declarativeNetRequest.HeaderOperation.APPEND
 // const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
 const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
+export const fullVersion = '112.0.1722.48'
 export const staticRules: chrome.declarativeNetRequest.Rule[] = [
   {
     id: 1,
@@ -34,11 +35,35 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
           header: 'Sec-CH-UA',
           value: '"Chromium";v="112", "Microsoft Edge";v="112", "Not:A-Brand";v="99"'
         },
+        // {
+        //   operation: SET,
+        //   header: 'Sec-CH-UA-Arch',
+        //   value: '"x86"'
+        // },
+        // {
+        //   operation: SET,
+        //   header: 'Sec-CH-UA-Bitness',
+        //   value: '"64"'
+        // },
+        {
+          operation: SET,
+          header: 'Sec-CH-UA-Full-Version',
+          value: `"${fullVersion}"`
+        },
+        {
+          operation: SET,
+          header: 'Sec-CH-UA-Full-Version-List',
+          value: `"Chromium";v="112.0.5615.121", "Microsoft Edge";v="${fullVersion}", "Not:A-Brand";v="99.0.0.0"`
+        },
+        {
+          operation: SET,
+          header: 'Sec-MS-GEC-Version',
+          value: `1-${fullVersion}`
+        },
         {
           operation: SET,
           header: 'User-Agent',
-          value:
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34'
+          value: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/${fullVersion}`
         }
       ]
     },

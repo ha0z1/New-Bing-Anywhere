@@ -1,4 +1,4 @@
-const callMethod = async (method: string, args: any[]) => {
+export const callMethod = async <T = any>(method: string, args: any[] = []): Promise<T> => {
   return await new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(
       {

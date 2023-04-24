@@ -200,7 +200,7 @@ const zipPkg = async () => {
   await buildFireFox()
 
   let files = [
-    ['src/background/chrome.ts', path.join(chromiumDir, 'background.js')],
+    ['src/background/chromium.ts', path.join(chromiumDir, 'background.js')],
     ['src/content_script/index.ts', path.join(chromiumDir, 'content_script.js')],
 
     ['src/background/firefox.ts', path.join(firefoxDir, 'background.js')]
