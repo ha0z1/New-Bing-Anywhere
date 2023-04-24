@@ -1,4 +1,4 @@
-import { ALL_RESOURCE_TYPES } from '../../scripts/static_rules'
+import { ALL_RESOURCE_TYPES, fullVersion } from '../../scripts/static_rules'
 
 let ua = navigator.userAgent.trim()
 
@@ -11,19 +11,19 @@ const isFirefox = ua.includes('Firefox')
 
 if (!isEdge) {
   if (isMac) {
-    ua += ' Edg/112.0.1722.39'
+    ua += ` ${fullVersion}`
   } else {
-    ua += ' Edg/112.0.1722.34'
+    ua += ` ${fullVersion}`
   }
 }
 if (isFirefox) {
-  ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34'
+  ua = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 ${fullVersion}`
 }
 
 const MODIFY_HEADERS_LIST = {
   // 'X-Forwarded-For': '8.8.8.8',
-  // MAC      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.39
-  // Windows  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.34
+  // MAC      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48
+  // Windows  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48
   'User-Agent': ua
 }
 const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS
