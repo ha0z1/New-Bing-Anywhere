@@ -5,10 +5,10 @@ import googleHandler from './google-handler'
   const config = await getConfig()
 
   if (location.hostname === 'www.bing.com') {
-    bingHandler(config, $, $root)
+    await bingHandler(config, $, $root)
   }
 
   if (location.hostname.startsWith('www.google.')) {
-    googleHandler(config, $, $root)
+    await googleHandler(config, $, $root)
   }
 })((window as any).Zepto, document.documentElement)
