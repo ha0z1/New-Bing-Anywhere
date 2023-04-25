@@ -14,11 +14,11 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.10.0",
-    "swr": "^2.1.4"
+    "swr": "^2.1.5"
   },
   "devDependencies": {
-    "@types/react": "^18.0.38",
-    "@types/react-dom": "^18.0.11",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react-swc": "^3.3.0",
     "stylus": "^0.59.0",
     "typescript": "^5.0.4",
