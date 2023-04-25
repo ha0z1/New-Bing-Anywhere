@@ -11,13 +11,13 @@ const isFirefox = ua.includes('Firefox')
 
 if (!isEdge) {
   if (isMac) {
-    ua += ` ${fullVersion}`
+    ua += ` Edg/${fullVersion}`
   } else {
-    ua += ` ${fullVersion}`
+    ua += ` Edg/${fullVersion}`
   }
 }
 if (isFirefox) {
-  ua = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 ${fullVersion}`
+  ua = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/${fullVersion}`
 }
 
 const MODIFY_HEADERS_LIST = {

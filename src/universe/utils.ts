@@ -123,7 +123,7 @@ export const setConfig = async (values: Config) => {
 }
 
 export const escapeHtml = (s: string): string => {
-  return s
+  return String(s)
     .replace(/&/g, '&amp;')
     .replace(/'/g, '&#39;')
     .replace(/"/g, '&quot;')
