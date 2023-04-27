@@ -1,4 +1,4 @@
-// import { repository, version } from '../../package.json'
+// import { repository } from '../../package.json'
 import { genIssueUrl, isChinese, openPage } from './utils'
 // const repositoryUrl: string = repository.url
 

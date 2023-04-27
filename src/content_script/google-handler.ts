@@ -1,6 +1,6 @@
 import { mutationConfig, openUrlInSameTab } from './utils'
 
-export default async (config, $, $root) => {
+export default async (config, $, $document) => {
   if (!config.showBingButtonOnGoogle) return
   if (!(location.href.startsWith('https://www.google.com/search?') || location.href.startsWith('https://www.google.com.hk/search?'))) {
     return
@@ -29,11 +29,12 @@ export default async (config, $, $root) => {
     })
 
     $submit.after($a)
-    $a.on('click', async function (e) {
+    $a.on('click', async (e) => {
+      const $this = $(e.currentTarget)
       e.preventDefault()
       const url = `https://www.bing.com/search?q=${encodeURIComponent($q.val())}&showconv=1`
-      $(this).attr('href', url)
+      $this.attr('href', url)
       await openUrlInSameTab(url)
     })
-  }).observe($root, mutationConfig)
+  }).observe($document[0], mutationConfig)
 }

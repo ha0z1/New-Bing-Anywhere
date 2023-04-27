@@ -10,7 +10,8 @@
 
 ## Установка
 
-* Chrome: <https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi>
+* Chrome: <https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews>
+* Chrome Canary (Больше экспериментальных функций, но может быть нестабильно) <https://chrome.google.com/webstore/detail/new-bing-anywhere/hidjonalfoapabjmeagmgiopkngjmfah>
 * Firefox: <https://addons.mozilla.org/firefox/addon/new-bing-anywhere/>
 
 ## Использование New Bing в любом браузере и регионе
