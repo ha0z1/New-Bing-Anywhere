@@ -1,11 +1,16 @@
-import { repository, version } from '../../package.json'
+import { repository } from '../../package.json'
 import { BAND_MKTS, BING } from './constants'
 import initContextMenu from './context_menus'
-import { getURL, getURLSearchParams, openPage, registryListener, setCookie } from './utils'
+import { getURL, getURLSearchParams, isCanary, openPage, registryListener, setCookie, version } from './utils'
 
 export default () => {
   initContextMenu()
   registryListener({
+    getEnv: async () => {
+      return {
+        version
+      }
+    },
     openUrlInSameTab: async ({ url }: { url: string } = {} as any) => {
       const tabs = await chrome.tabs.query({ currentWindow: true })
       const urlObj = getURL(url)
@@ -47,7 +52,7 @@ export default () => {
       await chrome.tabs.update(tab.id!, { url: newUrl })
     },
     ...(() => {
-      const MAX_AGE = 1000 * 60 * 15 // 15min
+      const MAX_AGE = 1000 * 60 * 60 * 1 // 1 hour
       const KEY = 'notification'
       const FLAG_KEY = 'notification:hide'
       const getRemoteNotification = async () => {
@@ -94,7 +99,10 @@ export default () => {
     //   openPage(debugurl)
     //   return
     // }
-
+    if (isCanary) {
+      openPage(`${repositoryUrl}/tree/canary`)
+      return
+    }
     if (details.reason === 'install') {
       openPage(repositoryUrl)
     } else if (details.reason === 'update') {

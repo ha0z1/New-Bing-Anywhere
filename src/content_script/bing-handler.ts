@@ -1,7 +1,7 @@
 import { escapeHtml } from '@@/utils'
 import { callMethod, mutationConfig, openUrlInSameTab } from './utils'
 
-export default async (config, $, $root) => {
+export default async (config, $, $document) => {
   if (!location.href.startsWith('https://www.bing.com/search?')) return
 
   new MutationObserver((_mutationList, observer) => {
@@ -133,5 +133,5 @@ export default async (config, $, $root) => {
         }
       }
     }).observe(document.getElementById('b_header')!, mutationConfig)
-  }).observe($root, mutationConfig)
+  }).observe($document[0], mutationConfig)
 }

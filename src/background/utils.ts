@@ -1,10 +1,13 @@
 import { getAllTabs, isChinese as checkIsChinese, ls, unique } from '@@/utils'
-import { repository, version } from '../../package.json'
+import { repository, version as pkgVersion } from '../../package.json'
 
-const APP_URL = chrome.runtime.getURL('app/index.html')
-export const isChinese = checkIsChinese()
+export const isChinese: boolean = checkIsChinese()
+export const isCanary: boolean = !!globalThis.__NBA_isCanary
+export const version: string = isCanary ? `0.${pkgVersion}` : pkgVersion
 
 export const dumpTabs = async ({ windowId }): Promise<void> => {
+  const APP_URL = chrome.runtime.getURL('app/index.html')
+
   const [currentTabs, [currentTab]] = await Promise.all([getAllTabs(), chrome.tabs.query({ active: true, currentWindow: true })])
 
   await ls.set('currentTabs', unique(currentTabs, 'url'))
@@ -121,7 +124,7 @@ export const genIssueUrl = async () => {
   const body =
     ' \n\n\n\n' +
     `<!--  ${comment} -->\n` +
-    `Version: ${version}\n` +
+    `Version: ${version}${isCanary ? ' (Canary)' : ''} \n` +
     `UA: ${navigator.userAgent}\n` +
     `Lang: ${chrome.i18n.getUILanguage()}\n` +
     `AcceptLangs: ${(await chrome.i18n.getAcceptLanguages()).join(', ')}`

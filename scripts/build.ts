@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-import esbuild from 'esbuild'
+import esbuild, { BuildOptions } from 'esbuild'
 import svgrPlugin from 'esbuild-plugin-svgr'
 import stylePlugin from 'esbuild-style-plugin'
 import fs from 'fs-extra'
@@ -12,6 +12,7 @@ import staticRules from './static_rules'
 const root = path.join(__dirname, '..')
 const dist = path.join(root, 'dist')
 const chromiumDir = path.join(dist, 'chromium')
+const chromiumCanaryDir = path.join(dist, 'chromium-canary')
 const firefoxDir = path.join(dist, 'firefox')
 
 const isDev = process.argv[2] === 'dev'
@@ -25,17 +26,17 @@ const sortManifestJSON = (json: object) => {
   })
 }
 
-const buildFile = async (input: string, output: string) => {
+const buildFile = async (input: string, output: string, extraBuildOptions?: BuildOptions) => {
   try {
-    console.time(`构建用时: ${input} => ${output}`)
-    const buildOptions = {
+    const buildOptions: BuildOptions = {
       entryPoints: [input],
       bundle: true,
       external,
       outfile: output,
       minify: !isDev,
       sourcemap: isDev ? 'inline' : (false as any),
-      plugins: [svgrPlugin(), stylePlugin()]
+      plugins: [svgrPlugin(), stylePlugin()],
+      ...extraBuildOptions
     }
     if (!isDev) {
       await esbuild.build(buildOptions)
@@ -52,12 +53,13 @@ const buildFile = async (input: string, output: string) => {
   }
 }
 
-const buildManifest = async () => {
+const buildChromiumBase = async () => {
+  fs.copySync(path.join(root, 'public'), chromiumDir)
   const manifest = {
     manifest_version: 3,
     name: '__MSG_appName__',
     description: '__MSG_appDesc__',
-    version: pkg.version,
+    version: `${pkg.version}`,
     homepage_url: pkg.homepage,
     default_locale: 'en',
     background: {
@@ -139,6 +141,23 @@ const buildManifest = async () => {
   })
 
   fs.outputJSONSync(path.join(chromiumDir, 'rules.json'), staticRules)
+
+  fs.removeSync(path.join(chromiumDir, 'canary'))
+}
+
+const buildChromiumCanary = async () => {
+  fs.copySync(chromiumDir, chromiumCanaryDir)
+  fs.copySync(path.join(root, 'public/canary'), chromiumCanaryDir)
+  const chromeManifest = fs.readJSONSync(path.join(chromiumDir, 'manifest.json'))
+  fs.outputJSONSync(
+    path.join(chromiumCanaryDir, 'manifest.json'),
+    sortManifestJSON({
+      ...chromeManifest,
+      name: `${pkg.extensionName} (Canary)`,
+      version: `0.${pkg.version}`,
+      homepage_url: 'https://github.com/haozi/New-Bing-Anywhere/tree/canary'
+    })
+  )
 }
 
 const buildFireFox = async () => {
@@ -175,41 +194,59 @@ const buildFireFox = async () => {
 }
 
 const zipPkg = async () => {
-  const zipFolder = (target: 'chromium' | 'firefox') => {
-    process.chdir(target === 'chromium' ? chromiumDir : firefoxDir)
+  type ZipFolder = (target: 'chromium' | 'chromium-canary' | 'firefox' | 'source') => void
+  const zipFolder: ZipFolder = (target) => {
+    process.chdir(path.join(dist, target))
+
     const zipPath = `${dist}/${target}.zip`
     execSync(`zip -r -9 ${zipPath} . -x "*.DS_Store"`, { stdio: 'inherit' })
     // const hash = md5File.sync(zipPath)
     // fs.outputFileSync(`${zipPath}.md5`, `version: ${pkg.version}\nmd5: ${hash}\n`)
   }
   zipFolder('chromium')
+  zipFolder('chromium-canary')
   zipFolder('firefox')
+  zipFolder('source')
 }
 
 ;(async () => {
   fs.emptyDirSync(path.join(root, 'dist'))
-
-  fs.copySync(path.join(root, 'public'), chromiumDir)
-
-  await buildManifest()
-
-  if (!isDev) {
-    execSync(`pnpm --filter app run build`, { stdio: 'inherit' })
-  }
-
-  await buildFireFox()
-
-  let files = [
+  const files: any = [
     ['src/background/chromium.ts', path.join(chromiumDir, 'background.js')],
     ['src/content_script/index.ts', path.join(chromiumDir, 'content_script.js')],
+
+    [
+      'src/background/chromium.ts',
+      path.join(chromiumCanaryDir, 'background.js'),
+      {
+        banner: {
+          js: ['globalThis.__NBA_isCanary=1'].join(';') + ';'
+        }
+      }
+    ],
 
     ['src/background/firefox.ts', path.join(firefoxDir, 'background.js')]
     // ['src/content_script/index.ts', path.join(firefoxDir, 'content_script.js')]
     // ['src/popup/index.ts', 'dist/popup.js']
   ]
-  for (let [input, output] of files) {
-    await buildFile(input, output)
+
+  await buildChromiumBase()
+
+  for (let [input, output, extraBuildOptions] of files) {
+    await buildFile(input, output, extraBuildOptions)
   }
+
+  if (!isDev) {
+    execSync(`pnpm --filter app run build`, { stdio: 'inherit' })
+  }
+
+  await Promise.all([buildChromiumCanary(), buildFireFox()])
+
+  for (let [input, output, extraBuildOptions] of files) {
+    await buildFile(input, output, extraBuildOptions)
+  }
+
+  execSync(`pnpm copy:soruce`, { stdio: 'inherit' })
 
   await zipPkg()
 })()

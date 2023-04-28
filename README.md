@@ -11,7 +11,8 @@ English | [简体中文](README.zh-CN.md) | [Русский](README.ru.md)
 
 ## Install
 
-* Chrome: <https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi>
+* Chrome: <https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews>
+* Chrome Canary (More experimental features, but may be unstable) <https://chrome.google.com/webstore/detail/new-bing-anywhere/hidjonalfoapabjmeagmgiopkngjmfah>
 * Firefox: <https://addons.mozilla.org/en-US/firefox/addon/new-bing-anywhere/>
 
 ## Use New Bing Any Browser Any Area
