@@ -10,7 +10,8 @@
 
 ## 安装
 
-* Chrome: <https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi>
+* Chrome: <https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews>
+* Chrome Canary (更多实验性功能，但可能不稳定) <https://chrome.google.com/webstore/detail/new-bing-anywhere/hidjonalfoapabjmeagmgiopkngjmfah>
 * Firefox: <https://addons.mozilla.org/zh-CN/firefox/addon/new-bing-anywhere/>
 
 ## 在任何浏览器和地区使用新版必应

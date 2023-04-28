@@ -3,15 +3,15 @@
   "version": "1.8.1",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
-  "homepage": "https://github.com/haozi/new-bing-anywhere",
+  "homepage": "https://github.com/haozi/New-Bing-Anywhere",
   "repository": {
     "type": "git",
-    "url": "https://github.com/haozi/new-bing-anywhere"
+    "url": "https://github.com/haozi/New-Bing-Anywhere"
   },
   "license": "MIT",
   "author": "haozi",
   "scripts": {
-    "build": "mkdir -p dist && pnpm run lint && run-s build:* && pnpm copy:soruce && zip -r -9 dist/source.zip dist/source",
+    "build": "mkdir -p dist && pnpm run lint && run-s build:*",
     "build:bundle": "vite-node scripts/build.ts -- build",
     "copy": "rm -rf dist && cp -r public dist # && cp src/popup/index.html dist/popup.html",
     "copy:soruce": "rsync -vhra . dist/source --include='**.gitignore' --exclude='/.git' --exclude='dist'  --filter=':- .gitignore' --delete-after",
@@ -28,7 +28,7 @@
   "devDependencies": {
     "@types/chrome": "^0.0.233",
     "@types/fs-extra": "^11.0.1",
-    "@types/node": "^18.16.0",
+    "@types/node": "^18.16.1",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "copy-and-watch": "^0.1.6",
     "esbuild": "^0.17.18",

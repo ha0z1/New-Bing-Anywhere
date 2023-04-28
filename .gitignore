@@ -7,3 +7,4 @@ package-lock.json
 dist/*.zip
 dist/**/_metadata/
 dist/source/
+key/
