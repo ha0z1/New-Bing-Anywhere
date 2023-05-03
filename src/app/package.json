@@ -13,7 +13,7 @@
     "antd": "^5.4.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.10.0",
+    "react-router-dom": "^6.11.0",
     "swr": "^2.1.5"
   },
   "devDependencies": {
@@ -22,7 +22,7 @@
     "@vitejs/plugin-react-swc": "^3.3.0",
     "stylus": "^0.59.0",
     "typescript": "^5.0.4",
-    "vite": "^4.3.3",
+    "vite": "^4.3.4",
     "vite-plugin-imp": "^2.4.0",
     "vite-plugin-minify": "^1.5.2"
   }

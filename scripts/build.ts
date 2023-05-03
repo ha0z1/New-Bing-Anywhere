@@ -1,5 +1,5 @@
 import { execSync } from 'child_process'
-import esbuild, { BuildOptions } from 'esbuild'
+import esbuild, { type BuildOptions } from 'esbuild'
 import svgrPlugin from 'esbuild-plugin-svgr'
 import stylePlugin from 'esbuild-style-plugin'
 import fs from 'fs-extra'
@@ -232,21 +232,21 @@ const zipPkg = async () => {
 
   await buildChromiumBase()
 
-  for (let [input, output, extraBuildOptions] of files) {
+  for (const [input, output, extraBuildOptions] of files) {
     await buildFile(input, output, extraBuildOptions)
   }
 
   if (!isDev) {
-    execSync(`pnpm --filter app run build`, { stdio: 'inherit' })
+    execSync('pnpm --filter app run build', { stdio: 'inherit' })
   }
 
   await Promise.all([buildChromiumCanary(), buildFireFox()])
 
-  for (let [input, output, extraBuildOptions] of files) {
+  for (const [input, output, extraBuildOptions] of files) {
     await buildFile(input, output, extraBuildOptions)
   }
 
-  execSync(`pnpm copy:soruce`, { stdio: 'inherit' })
+  execSync('pnpm copy:soruce', { stdio: 'inherit' })
 
   await zipPkg()
 })()

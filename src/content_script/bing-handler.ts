@@ -64,7 +64,7 @@ export default async (config, $, $document) => {
     const $a = $(`
       <a href="https://www.google.com/search?q=${encodeURIComponent(
         escapeHtml(searchQuery)
-      )}" target="google" tabindex="0" rel="noopener noreferrer nofollow" title="search with Google">
+      )}" target="google" tabindex="10" rel="noopener noreferrer nofollow" title="search with Google">
         <img src="${chrome.runtime.getURL('images/google.png')}" alt="google" style="width: 100%;display: block;">
       </a>`).css({
       position: 'absolute',
@@ -106,7 +106,8 @@ export default async (config, $, $document) => {
 
     const changeGoogleLinkPosition = () => {
       const $conv = $('#b-scopeListItem-conv')
-      if ($conv.hasClass('b_active')) {
+      const isNewBingOpen = $conv.hasClass('b_active')
+      if (isNewBingOpen) {
         let left = 0
         if ($conv.offset()!.left) {
           left = ($conv.offset()!.left as number) + ($conv.width()! as number) + 30
@@ -122,16 +123,35 @@ export default async (config, $, $document) => {
           transform: 'translate3d(835px, 15px, 0)'
         })
       }
+
+      if (!isNewBingOpen && $('.b_searchboxForm').hasClass('as_rsform')) {
+        $a.css({
+          transform: 'translate3d(1155px, 15px, 0)'
+        })
+      }
     }
 
     changeGoogleLinkPosition()
     new MutationObserver((mutationList, observer) => {
       for (const mutation of mutationList) {
-        if (!mutation.target) continue
-        if ((mutation.target as HTMLElement).id === 'b-scopeListItem-conv') {
+        const target = mutation.target
+        if (!target) continue
+        if ((target as HTMLElement).id === 'b-scopeListItem-conv') {
+          changeGoogleLinkPosition()
+        }
+        if ((target as HTMLElement).classList.contains('b_searchboxForm')) {
           changeGoogleLinkPosition()
         }
       }
     }).observe(document.getElementById('b_header')!, mutationConfig)
   }).observe($document[0], mutationConfig)
+
+  // $(() => {
+  //   setTimeout(() => {
+  //     $('.b_searchboxForm').addClass('as_rsform')
+  //     $('#b_header').addClass('as_rsform')
+  //     $('body').addClass('as_on')
+  //     $('#sb_form_q').focus().click()
+  //   }, 1000)
+  // })
 }
