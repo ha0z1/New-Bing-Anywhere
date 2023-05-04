@@ -20,7 +20,7 @@ export const ALL_RESOURCE_TYPES = [
 const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS
 const REDIRECT = 'redirect' as chrome.declarativeNetRequest.RuleActionType.REDIRECT
 const APPEND = 'append' as chrome.declarativeNetRequest.HeaderOperation.APPEND
-// const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
+const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
 const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
 export const fullVersion = '112.0.1722.48'
@@ -64,6 +64,10 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
           operation: SET,
           header: 'User-Agent',
           value: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/${fullVersion}`
+        },
+        {
+          operation: REMOVE,
+          header: 'X-Forwarded-For'
         }
       ]
     },
