@@ -2,6 +2,12 @@ import { escapeHtml } from '@@/utils'
 import { callMethod, mutationConfig, openUrlInSameTab } from './utils'
 
 export default async (config, $, $document) => {
+  const document = $document[0]
+  const s = document.createElement('script')
+  s.src = chrome.runtime.getURL('inject.js')
+  s.onload = s.remove
+  document.documentElement.appendChild(s)
+
   if (!location.href.startsWith('https://www.bing.com/search?')) return
 
   new MutationObserver((_mutationList, observer) => {
@@ -144,7 +150,7 @@ export default async (config, $, $document) => {
         }
       }
     }).observe(document.getElementById('b_header')!, mutationConfig)
-  }).observe($document[0], mutationConfig)
+  }).observe(document, mutationConfig)
 
   // $(() => {
   //   setTimeout(() => {
