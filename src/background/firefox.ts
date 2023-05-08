@@ -7,12 +7,12 @@ const rules = [...staticRules, ...dynamicRules]
 const modifyRequestHeadersRules = rules.filter((item) => item.action?.type === 'modifyHeaders' && item.action?.requestHeaders?.length)
 const modifyResponseHeadersRules = rules.filter((item) => item.action?.type === 'modifyHeaders' && item.action?.responseHeaders?.length)
 
-const redirectRules = rules.filter((item) => item.action?.type === 'redirect')
+// const redirectRules = rules.filter((item) => item.action?.type === 'redirect')
 
-console.log('rules', rules.length)
-console.log('modifyRequestHeadersRules', modifyRequestHeadersRules.length, modifyRequestHeadersRules)
-console.log('modifyResponseHeadersRules', modifyResponseHeadersRules.length, modifyResponseHeadersRules)
-console.log('redirectRules', redirectRules.length, redirectRules)
+// console.log('rules', rules.length)
+// console.log('modifyRequestHeadersRules', modifyRequestHeadersRules.length, modifyRequestHeadersRules)
+// console.log('modifyResponseHeadersRules', modifyResponseHeadersRules.length, modifyResponseHeadersRules)
+// console.log('redirectRules', redirectRules.length, redirectRules)
 
 crossPlatform()
 browser.webRequest.onBeforeSendHeaders.addListener(
@@ -52,6 +52,12 @@ browser.webRequest.onBeforeSendHeaders.addListener(
                 name: requestHeader.header,
                 value: requestHeader.value
               })
+              break
+            case 'remove':
+              {
+                const index = newHeaders.findIndex((item) => item.name.toLowerCase() === requestHeader.header.toLowerCase())
+                index > -1 && newHeaders.splice(index, 1)
+              }
               break
             default:
           }

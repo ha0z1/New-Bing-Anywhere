@@ -10,19 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "antd": "^5.4.6",
+    "antd": "^5.4.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.11.0",
+    "react-router-dom": "^6.11.1",
     "swr": "^2.1.5"
   },
   "devDependencies": {
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.1",
-    "@vitejs/plugin-react-swc": "^3.3.0",
+    "@types/react": "^18.2.6",
+    "@types/react-dom": "^18.2.4",
+    "@vitejs/plugin-react-swc": "^3.3.1",
     "stylus": "^0.59.0",
     "typescript": "^5.0.4",
-    "vite": "^4.3.4",
+    "vite": "^4.3.5",
     "vite-plugin-imp": "^2.4.0",
     "vite-plugin-minify": "^1.5.2"
   }

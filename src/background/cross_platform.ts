@@ -1,5 +1,5 @@
+import { BAND_MKTS, BING } from '@@/constants'
 import { repository } from '../../package.json'
-import { BAND_MKTS, BING } from './constants'
 import initContextMenu from './context_menus'
 import { getURL, getURLSearchParams, isCanary, openPage, registryListener, setCookie, version } from './utils'
 
