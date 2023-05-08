@@ -68,7 +68,7 @@ const buildChromiumBase = async () => {
 
     web_accessible_resources: [
       {
-        resources: ['images/*', 'css/*', 'js/*'],
+        resources: ['inject.js', 'images/*', 'css/*', 'js/*'],
         matches: ['https://www.bing.com/*', 'https://www.google.com/*', 'https://www.google.com.hk/*']
       }
     ],
@@ -99,16 +99,19 @@ const buildChromiumBase = async () => {
 
     host_permissions: [
       // 'notifications',
-      // '<all_urls>'
+      // '<all_urls>',
       'http://*.bing.com/*',
       'https://*.bing.com/*',
       'https://www.google.com/search?*',
       'https://www.google.com.hk/search?*'
     ],
-
+    key: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxbxQeSdmZpNR6r8FWS5Xviv8NIKPEB1+UpOLsRJHnroPCOSvgZG9u5hbI2ZN0I7DRBXLO3NCxrqcYIp2d62YCzOO4nfKSwnGlAPMFSYw7jyHq0ITjfGIWkql2GsiwRr6MAEM2ktGthDV3iBuL2lRIYfcIOdIUOccxT+2FpDSsncQUHKxjFEisMExX/AAMSNy79PqDUu/5lbEo8zWNlWza5mD69QRU3fK5WGjqrS5naGJ46kPSbE5WU3NPOtHjldPgRVMTbrg6X2GGDGKPp3ISoqj/joNKBNqsMMKn5SURjvqzvzAyVup1/j9XFQ5bGnZYnJTIZ5mvR0wWXnlgf7+RQIDAQAB',
     // content_security_policy: {
-    //   extension_pages: "script-src 'self'; script-src-elem https://firebasestorage.googleapis.com; object-src 'self'"
+    //   extension_pages: "script-src 'self'; object-src 'self';",
+    //   sandbox:
+    //     "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';"
     // },
+
     content_scripts: [
       {
         matches: ['https://www.bing.com/*', 'https://www.google.com/search?*', 'https://www.google.com.hk/search?*'],
@@ -155,7 +158,8 @@ const buildChromiumCanary = async () => {
       ...chromeManifest,
       name: `${pkg.extensionName} (Canary)`,
       version: `0.${pkg.version}`,
-      homepage_url: 'https://github.com/haozi/New-Bing-Anywhere/tree/canary'
+      homepage_url: 'https://github.com/haozi/New-Bing-Anywhere/tree/canary',
+      key: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp2asctK5nmilg+tZyT74rpsgyfAYWl5pRKsoZDMxj97dwu5YMH1AXoE1ItbFCH8ysjWfsPbYfC0fhFcRljCroPxAJoSl73RRX2rFV8g8aSG101QTYTc2tUvw7xPLk0NS9X4bi/zZmlCHmcoxiOaslN8chs3JgOEQSJROu5PrGpahC9SzZh77iQEtOsYR1grEyuRioFi+x+end1X1tMwaJ4/yYTK4jj9PlFnOKDBFYVhGKCHaWkP2Wv4PPabl/nzUo+l/W0B7fkbaSxI8gir42YzA+OJcPQ/H2UMqtROZxqR847uXsAnB5PfPdo4tT5qUfPd16btsbIr9t6YAMMD0mQIDAQAB'
     })
   )
 }
@@ -214,6 +218,7 @@ const zipPkg = async () => {
   const files: any = [
     ['src/background/chromium.ts', path.join(chromiumDir, 'background.js')],
     ['src/content_script/index.ts', path.join(chromiumDir, 'content_script.js')],
+    ['src/inject/index.ts', path.join(chromiumDir, 'inject.js')],
 
     [
       'src/background/chromium.ts',

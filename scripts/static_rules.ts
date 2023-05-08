@@ -1,29 +1,11 @@
-const BING = 'https://www.bing.com/'
-export const ALL_RESOURCE_TYPES = [
-  'csp_report',
-  'font',
-  'image',
-  'main_frame',
-  'media',
-  'object',
-  'other',
-  'ping',
-  'script',
-  'stylesheet',
-  'sub_frame',
-  'webbundle',
-  'websocket',
-  'webtransport',
-  'xmlhttprequest'
-] as chrome.declarativeNetRequest.ResourceType[]
+import { ALL_RESOURCE_TYPES, BING, FULL_VERSION } from '../src/universe/constants'
 
 const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS
 const REDIRECT = 'redirect' as chrome.declarativeNetRequest.RuleActionType.REDIRECT
 const APPEND = 'append' as chrome.declarativeNetRequest.HeaderOperation.APPEND
-// const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
+const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
 const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
-export const fullVersion = '112.0.1722.48'
 export const staticRules: chrome.declarativeNetRequest.Rule[] = [
   {
     id: 1,
@@ -48,22 +30,26 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
         {
           operation: SET,
           header: 'Sec-CH-UA-Full-Version',
-          value: `"${fullVersion}"`
+          value: `"${FULL_VERSION}"`
         },
         {
           operation: SET,
           header: 'Sec-CH-UA-Full-Version-List',
-          value: `"Chromium";v="112.0.5615.121", "Microsoft Edge";v="${fullVersion}", "Not:A-Brand";v="99.0.0.0"`
+          value: `"Chromium";v="112.0.5615.121", "Microsoft Edge";v="${FULL_VERSION}", "Not:A-Brand";v="99.0.0.0"`
         },
         {
           operation: SET,
           header: 'Sec-MS-GEC-Version',
-          value: `1-${fullVersion}`
+          value: `1-${FULL_VERSION}`
         },
         {
           operation: SET,
           header: 'User-Agent',
-          value: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/${fullVersion}`
+          value: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
+        },
+        {
+          operation: REMOVE,
+          header: 'X-Forwarded-For'
         }
       ]
     },

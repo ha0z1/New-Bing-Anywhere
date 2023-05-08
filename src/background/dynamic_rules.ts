@@ -1,30 +1,12 @@
-import { ALL_RESOURCE_TYPES, fullVersion } from '../../scripts/static_rules'
+import { ALL_RESOURCE_TYPES } from '@@/constants'
 
-let ua = navigator.userAgent.trim()
-
-const isMac = ua.includes('Macintosh')
-const isEdge = ua.includes('Edg')
-const isFirefox = ua.includes('Firefox')
-
-// const isIos = ua.includes('iPhone') || ua.includes('iPad')
-// const isAndroid = ua.includes('Android')
-
-if (!isEdge) {
-  if (isMac) {
-    ua += ` Edg/${fullVersion}`
-  } else {
-    ua += ` Edg/${fullVersion}`
-  }
-}
-if (isFirefox) {
-  ua = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/${fullVersion}`
-}
+import { genUA } from '@@/utils'
 
 const MODIFY_HEADERS_LIST = {
   // 'X-Forwarded-For': '8.8.8.8',
   // MAC      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48
   // Windows  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48
-  'User-Agent': ua
+  'User-Agent': genUA()
 }
 const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS
 // const REDIRECT = 'redirect' as chrome.declarativeNetRequest.RuleActionType.REDIRECT

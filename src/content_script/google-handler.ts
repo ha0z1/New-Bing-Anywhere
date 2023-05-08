@@ -1,6 +1,9 @@
+import { getConfig } from '@/universe/utils'
 import { mutationConfig, openUrlInSameTab } from './utils'
 
-export default async (config, $, $document) => {
+export default async ($) => {
+  const config = await getConfig()
+
   if (!config.showBingButtonOnGoogle) return
   if (!(location.href.startsWith('https://www.google.com/search?') || location.href.startsWith('https://www.google.com.hk/search?'))) {
     return
@@ -36,5 +39,5 @@ export default async (config, $, $document) => {
       $this.attr('href', url)
       await openUrlInSameTab(url)
     })
-  }).observe($document[0], mutationConfig)
+  }).observe(document, mutationConfig)
 }

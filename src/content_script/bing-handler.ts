@@ -1,8 +1,15 @@
-import { escapeHtml } from '@@/utils'
+import { escapeHtml, getConfig } from '@@/utils'
 import { callMethod, mutationConfig, openUrlInSameTab } from './utils'
 
-export default async (config, $, $document) => {
+export default async ($) => {
+  const document = window.document
+  const s = document.createElement('script')
+  s.src = chrome.runtime.getURL('inject.js')
+  s.onload = s.remove
+  document.documentElement.appendChild(s)
+
   if (!location.href.startsWith('https://www.bing.com/search?')) return
+  const config = await getConfig()
 
   new MutationObserver((_mutationList, observer) => {
     if (!document.getElementById('sb_form')) return
@@ -144,7 +151,7 @@ export default async (config, $, $document) => {
         }
       }
     }).observe(document.getElementById('b_header')!, mutationConfig)
-  }).observe($document[0], mutationConfig)
+  }).observe(document, mutationConfig)
 
   // $(() => {
   //   setTimeout(() => {
