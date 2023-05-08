@@ -4,6 +4,7 @@ node_modules/
 yarn.lock
 package-lock.json
 .eslintcache
+dist/chromium-canary/
 dist/*.zip
 dist/**/_metadata/
 dist/source/

@@ -1,4 +1,3 @@
-import { getConfig } from '@@/utils'
 import { extensionName } from '../../package.json'
 import bingHandler from './bing-handler'
 import googleHandler from './google-handler'
@@ -14,13 +13,11 @@ import { callMethod } from './utils'
     $meta.attr('content', env.version)
   })
 
-  const config = await getConfig()
-
   if (location.hostname === 'www.bing.com') {
-    await bingHandler(config, $, $document)
+    await bingHandler($)
   }
 
   if (location.hostname.startsWith('www.google.')) {
-    await googleHandler(config, $, $document)
+    await googleHandler($)
   }
 })((window as any).Zepto)
