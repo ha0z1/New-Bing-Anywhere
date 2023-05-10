@@ -1,7 +1,8 @@
-import { getAllTabs, isChinese as checkIsChinese, ls, unique } from '@@/utils'
-import { repository, version as pkgVersion } from '../../package.json'
+import { isChinese as checkIsChinese, isSimpleChinese as checkIsSimpleChinese, getAllTabs, ls, unique } from '@@/utils'
+import { version as pkgVersion, repository } from '../../package.json'
 
 export const isChinese: boolean = checkIsChinese()
+export const isSimpleChinese: boolean = checkIsSimpleChinese()
 export const isCanary: boolean = !!globalThis.__NBA_isCanary
 export const version: string = isCanary ? `0.${pkgVersion}` : pkgVersion
 
