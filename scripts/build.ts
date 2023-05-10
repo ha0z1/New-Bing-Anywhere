@@ -182,6 +182,7 @@ const buildFireFox = async () => {
       // host_permissions: undefined,
       content_scripts: undefined,
       options_ui: undefined,
+      key: undefined,
       browser_specific_settings: {
         gecko: {
           id: '{babadada-ce9e-4bc4-a7de-b4f9c2b8918c}'
