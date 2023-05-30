@@ -4,22 +4,21 @@
 
 ## 浏览器支持列表
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://www.google.com/chrome/)<br/>Chrome  | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://www.mozilla.org/firefox/new)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](https://www.microsoft.com/edge)<br/>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png" alt="Brave" width="24px" height="24px" />](https://brave.com/)<br/>Brave | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](https://www.opera.com/)<br/>Opera | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png" alt="Vivaldi" width="24px" height="24px" />](https://vivaldi.com/)<br/>Vivaldi  | [<img src="https://arc.net/favicon.png" alt="Arc" width="24px" height="24px" />](https://arc.net/)<br/>Arc  | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/archive/360-secure/360-secure_48x48.png" alt="360 Secure" width="24px" height="24px" />](https://browser.360.cn/)<br/>360 
-| --------- | --------- | --------- | --------- | --------- | --------- | --------- | --------- |
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://addons.mozilla.org/zh-CN/firefox/addon/new-bing-anywhere/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews)<br/>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png" alt="Brave" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews)<br/>Brave | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews)<br/>Opera | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png" alt="Vivaldi" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews)<br/>Vivaldi | [<img src="https://arc.net/favicon.png" alt="Arc" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews)<br/>Arc | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/archive/360-secure/360-secure_48x48.png" alt="360 Secure" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews)<br/>360 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
 | latest | latest | latest | latest | latest | latest | latest | latest |
 
 ## 安装
 
-* Chrome: <https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews>
-* Chrome Canary (更多实验性功能，但可能不稳定) <https://chrome.google.com/webstore/detail/new-bing-anywhere/hidjonalfoapabjmeagmgiopkngjmfah>
-* Firefox: <https://addons.mozilla.org/zh-CN/firefox/addon/new-bing-anywhere/>
+- Chrome: <https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews>
+- Chrome Canary (更多实验性功能，但可能不稳定) <https://chrome.google.com/webstore/detail/new-bing-anywhere/hidjonalfoapabjmeagmgiopkngjmfah>
+- Firefox: <https://addons.mozilla.org/zh-CN/firefox/addon/new-bing-anywhere/>
 
 ## 在任何浏览器和地区使用新版必应
 
-使用新版必应需要两个先决条件
+使用新版必应需要一个先决条件：
 
-* 申请通过新版必应体验的帐号
-* 非中国大陆地区的 IP
+- 非中国大陆和俄罗斯地区的 IP
 
 如果不具备以上条件，会降级到旧版本必应。
 
@@ -33,13 +32,13 @@
 
 ## 本插件功能
 
-* 非 Edge 浏览器下使用 New Bing
-* cn.bing 的本地重定向，避免被种上特供版 Cookie
-* Bing 搜索页点击 Logo 链接在原窗口打开
-* Bing 与 Google 的互相切换按钮
-* 支持 New Bing Image Create，(需要非大陆 IP,否则会 404)
-* 英/简/繁多语言支持
+- 非 Edge 浏览器下使用 New Bing
+- cn.bing 的本地重定向，避免被种上特供版 Cookie
+- Bing 搜索页点击 Logo 链接在原窗口打开
+- Bing 与 Google 的互相切换按钮
+- 支持 New Bing Image Create，(需要非大陆 IP,否则会 404)
+- 英/简/繁多语言支持
 
 ## 找到我们
 
-[![Telegram](https://user-images.githubusercontent.com/4150641/229351983-a6a455e8-7b5e-4f58-bf80-1f4949ae8276.jpg "Telegram")](https://t.me/new_bing_anywhere)
+[![Telegram](https://user-images.githubusercontent.com/4150641/229351983-a6a455e8-7b5e-4f58-bf80-1f4949ae8276.jpg 'Telegram')](https://t.me/new_bing_anywhere)
