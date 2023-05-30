@@ -1,4 +1,4 @@
-import { ALL_RESOURCE_TYPES, BING, FULL_VERSION } from '../src/universe/constants'
+import { ALL_RESOURCE_TYPES, BING, FULL_VERSION, MAIN_VERSION } from '../src/universe/constants'
 
 const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS
 const REDIRECT = 'redirect' as chrome.declarativeNetRequest.RuleActionType.REDIRECT
@@ -15,7 +15,7 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
         {
           operation: SET,
           header: 'Sec-CH-UA',
-          value: '"Chromium";v="112", "Microsoft Edge";v="112", "Not:A-Brand";v="99"'
+          value: `"Chromium";v="${MAIN_VERSION}", "Microsoft Edge";v="${MAIN_VERSION}", "Not:A-Brand";v="99"`
         },
         // {
         //   operation: SET,
