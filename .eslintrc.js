@@ -11,7 +11,7 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/strict-boolean-expressions': 0,
     '@typescript-eslint/no-floating-promises': 0,
-    '@typescript-eslint/no-unused-vars' : 1,
+    '@typescript-eslint/no-unused-vars': 1,
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/space-before-function-paren': 0,
     'react/self-closing-comp': [
