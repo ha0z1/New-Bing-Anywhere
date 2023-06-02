@@ -8,7 +8,6 @@ const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
 export const staticRules: chrome.declarativeNetRequest.Rule[] = [
   {
-    id: 1,
     action: {
       type: MODIFY_HEADERS,
       requestHeaders: [
@@ -59,7 +58,6 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
     }
   },
   {
-    id: 2,
     action: {
       type: REDIRECT,
       redirect: {
@@ -75,7 +73,6 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
     }
   },
   {
-    id: 3,
     action: {
       type: REDIRECT,
       redirect: {
@@ -91,7 +88,6 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
     }
   },
   {
-    id: 4,
     action: {
       type: REDIRECT,
       redirect: {
@@ -106,7 +102,6 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
     }
   },
   {
-    id: 5,
     priority: 99,
     action: {
       type: REDIRECT,
@@ -122,7 +117,6 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
     }
   },
   {
-    id: 6,
     action: {
       type: MODIFY_HEADERS,
       responseHeaders: [
@@ -138,7 +132,6 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
     }
   }
   // {
-  //   id: 6,
   //   action: {
   //     type: MODIFY_HEADERS,
   //     responseHeaders: [
@@ -150,6 +143,9 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
   //   },
   //   condition: { urlFilter: 'https://www.bing.com/', resourceTypes: ALL_RESOURCE_TYPES }
   // }
-]
+].map((rule, index) => ({
+  id: index + 1,
+  ...rule
+}))
 
 export default staticRules
