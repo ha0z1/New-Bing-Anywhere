@@ -16,7 +16,6 @@ const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
 export const dynamicRules: chrome.declarativeNetRequest.Rule[] = [
   {
-    id: 2001,
     priority: 2001,
     action: {
       type: MODIFY_HEADERS,
@@ -31,7 +30,10 @@ export const dynamicRules: chrome.declarativeNetRequest.Rule[] = [
       resourceTypes: ALL_RESOURCE_TYPES
     }
   }
-] // .filter((item) => item.action.type !== REDIRECT)
+].map((rule, index) => ({
+  id: index + 1 + 2000,
+  ...rule
+}))
 
 export default () => {
   chrome.declarativeNetRequest.getDynamicRules((dRules) => {
