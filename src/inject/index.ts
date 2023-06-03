@@ -25,16 +25,16 @@ try {
           ...deepClonedUserAgentData,
           brands: [
             {
-              brand: 'Chromium',
-              version: MAIN_VERSION
-            },
-            {
               brand: 'Microsoft Edge',
               version: MAIN_VERSION
             },
             {
-              brand: 'Not:A-Brand',
-              version: '99'
+              brand: 'Chromium',
+              version: MAIN_VERSION
+            },
+            {
+              brand: 'Not-A.Brand',
+              version: '24'
             }
           ]
         }
