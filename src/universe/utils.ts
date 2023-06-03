@@ -1,4 +1,4 @@
-import { FULL_VERSION } from './constants'
+import { FULL_VERSION, MAIN_VERSION } from './constants'
 
 export const ls = {
   set: async (key: string, value: any) => {
@@ -140,24 +140,23 @@ export const escapeHtml = (s: string): string => {
 }
 
 export const genUA = () => {
-  let ua = navigator.userAgent.trim()
+  let ua = navigator.userAgent
 
   const isMac = ua.includes('Macintosh')
   const isEdge = ua.includes('Edg')
-  const isFirefox = ua.includes('Firefox')
 
   // const isIos = ua.includes('iPhone') || ua.includes('iPad')
   // const isAndroid = ua.includes('Android')
 
+  // MAC      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48
+  // Windows  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48
+
   if (!isEdge) {
     if (isMac) {
-      ua += ` Edg/${FULL_VERSION}`
+      ua = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${MAIN_VERSION}.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
     } else {
-      ua += ` Edg/${FULL_VERSION}`
+      ua = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${MAIN_VERSION}.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
     }
-  }
-  if (isFirefox) {
-    ua = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
   }
   return ua
 }

@@ -13,39 +13,45 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
       requestHeaders: [
         {
           operation: SET,
-          header: 'Sec-CH-UA',
-          value: `"Chromium";v="${MAIN_VERSION}", "Microsoft Edge";v="${MAIN_VERSION}", "Not:A-Brand";v="99"`
+          header: 'sec-ch-ua',
+          value: `"Microsoft Edge";v="${MAIN_VERSION}", "Chromium";v="${MAIN_VERSION}", "Not-A.Brand";v="24"`
         },
         // {
         //   operation: SET,
-        //   header: 'Sec-CH-UA-Arch',
+        //   header: 'sec-ch-ua-arch',
         //   value: '"x86"'
         // },
         // {
         //   operation: SET,
-        //   header: 'Sec-CH-UA-Bitness',
+        //   header: 'sec-ch-ua-bitness',
         //   value: '"64"'
         // },
         {
           operation: SET,
-          header: 'Sec-CH-UA-Full-Version',
+          header: 'sec-ch-ua-full-version',
           value: `"${FULL_VERSION}"`
         },
         {
           operation: SET,
-          header: 'Sec-CH-UA-Full-Version-List',
-          value: `"Chromium";v="112.0.5615.121", "Microsoft Edge";v="${FULL_VERSION}", "Not:A-Brand";v="99.0.0.0"`
+          header: 'sec-ch-ua-full-version-list',
+          value: `"Microsoft Edge";v="${FULL_VERSION}", "Chromium";v="113.0.5672.127", "Not-A.Brand";v="24.0.0.0"`
         },
         {
           operation: SET,
-          header: 'Sec-MS-GEC-Version',
+          header: 'sec-ms-gec-version',
           value: `1-${FULL_VERSION}`
         },
         {
           operation: SET,
           header: 'User-Agent',
-          value: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
+          value: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${MAIN_VERSION}.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
         }
+
+        // {
+        //   operation: SET,
+        //   header: 'sec-ms-gec',
+        //   value: 'B55DF865827912FB0EDCCEC47284BFB22D3D2D453623DE97B2CCEDDBB57DAD23'
+        // }
         // {
         //   operation: REMOVE,
         //   header: 'X-Forwarded-For'
@@ -123,7 +129,7 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
         {
           header: 'Set-Cookie',
           operation: APPEND,
-          value: 'SNRHOP=I=9; domain=.bing.com; path=/; secure; SameSite=None; HttpOnly;'
+          value: 'SNRHOP=I=8; domain=.bing.com; path=/; secure; SameSite=None; HttpOnly;'
         }
       ]
     },
