@@ -1,4 +1,4 @@
-import { escapeHtml, getConfig } from '@@/utils'
+import { escapeHtml, getConfig, setConfig } from '@@/utils'
 import { callMethod, mutationConfig, openUrlInSameTab } from './utils'
 
 export default async ($) => {
@@ -7,6 +7,31 @@ export default async ($) => {
   s.src = chrome.runtime.getURL('inject.js')
   s.onload = s.remove
   document.documentElement.appendChild(s)
+
+  $(() => {
+    ;(async () => {
+      const { showGuideToGithub } = await getConfig()
+      if (!showGuideToGithub) return
+      const $esatSwitch = $('#est_switch')
+      if ($esatSwitch.text().trim() !== '国内版国际版') return
+      setTimeout(() => {
+        const $a = $(
+          '<a href="https://github.com/haozi/New-Bing-Anywhere/issues/8" title="查看如何正确配置网络代理" target="_blank" rel="noopener noreferrer nofollow">依然出现国内版/国际版？</a>'
+        )
+          .css({
+            color: '#E89ABE',
+            textShadow: '0.5px 0.1px 1px #58070D',
+            fontSize: '12px',
+            fontWeight: 'lighter'
+          })
+          .click(() => {
+            setConfig({ showGuideToGithub: false })
+          })
+
+        $('#est_switch').append($a).css('width', 'auto')
+      }, 2000)
+    })()
+  })
 
   if (!location.href.startsWith('https://www.bing.com/search?')) return
   const config = await getConfig()
@@ -45,7 +70,7 @@ export default async ($) => {
           'images/bing_32x32.png'
         )}) no-repeat left 0; background-size: 12px; padding-left: 20px" href="${
           note.html_url
-        }" target="_blank" rel="nofollow noreferrer">${note.title}</a>`
+        }" target="_blank" rel="noopener noreferrer nofollow">${note.title}</a>`
       ).on('click', close)
       const $close = $(
         '<a href="#" style="background:#58070d; color:#fff; cursor:pointer;padding: 0 68px 0 18px;position: absolute;right:0" title="no reminder">✕</a>'

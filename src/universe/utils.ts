@@ -109,17 +109,19 @@ const CONFIG_KEY = 'configV1'
 export interface Config {
   showGoogleButtonOnBing: boolean
   showBingButtonOnGoogle: boolean
+  showGuideToGithub: boolean
 }
 export const getConfig = async (): Promise<Config> => {
   const config = (await chrome.storage.sync.get(CONFIG_KEY))[CONFIG_KEY]
   return {
     showGoogleButtonOnBing: true,
     showBingButtonOnGoogle: true,
+    showGuideToGithub: true,
     ...config
   }
 }
 
-export const setConfig = async (values: Config) => {
+export const setConfig = async (values: Partial<Config>) => {
   const config = await getConfig()
   await chrome.storage.sync.set({
     [CONFIG_KEY]: {
