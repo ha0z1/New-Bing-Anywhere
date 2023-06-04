@@ -1,5 +1,11 @@
 import { FULL_VERSION, MAIN_VERSION } from './constants'
 
+const userAgent = navigator.userAgent
+
+export const isMac = userAgent.includes('Macintosh')
+export const isFirefox = userAgent.includes('Firefox')
+export const isEdge = userAgent.includes('Edg/')
+
 export const ls = {
   set: async (key: string, value: any) => {
     return await new Promise((resolve, reject) => {
@@ -142,17 +148,7 @@ export const escapeHtml = (s: string): string => {
 }
 
 export const genUA = () => {
-  let ua = navigator.userAgent
-
-  const isMac = ua.includes('Macintosh')
-  const isEdge = ua.includes('Edg')
-
-  // const isIos = ua.includes('iPhone') || ua.includes('iPad')
-  // const isAndroid = ua.includes('Android')
-
-  // MAC      Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48
-  // Windows  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.48
-
+  let ua = userAgent
   if (!isEdge) {
     if (isMac) {
       ua = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${MAIN_VERSION}.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
