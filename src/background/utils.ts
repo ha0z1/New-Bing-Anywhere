@@ -4,6 +4,7 @@ import { version as pkgVersion, repository } from '../../package.json'
 export const isChinese: boolean = checkIsChinese()
 export const isSimpleChinese: boolean = checkIsSimpleChinese()
 export const isCanary: boolean = !!globalThis.__NBA_isCanary
+
 export const version: string = isCanary ? `0.${pkgVersion}` : pkgVersion
 
 export const dumpTabs = async ({ windowId }): Promise<void> => {

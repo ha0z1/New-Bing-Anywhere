@@ -13,6 +13,7 @@ const root = path.join(__dirname, '..')
 const dist = path.join(root, 'dist')
 const chromiumDir = path.join(dist, 'chromium')
 const chromiumCanaryDir = path.join(dist, 'chromium-canary')
+const edgeDir = path.join(dist, 'edge')
 const firefoxDir = path.join(dist, 'firefox')
 
 const isDev = process.argv[2] === 'dev'
@@ -164,6 +165,32 @@ const buildChromiumCanary = async () => {
   )
 }
 
+const buildEdge = async () => {
+  fs.copySync(chromiumDir, edgeDir)
+  const chromeManifest = fs.readJSONSync(path.join(chromiumDir, 'manifest.json'))
+  fs.outputJSONSync(
+    path.join(edgeDir, 'manifest.json'),
+    sortManifestJSON({
+      ...chromeManifest,
+      name: `${pkg.extensionName} (Edge)`,
+      key: undefined
+    })
+  )
+
+  fs.outputJSONSync(
+    path.join(edgeDir, 'rules.json'),
+    fs
+      .readJSONSync(path.join(edgeDir, 'rules.json'))
+      .slice(1)
+      .map((item, index: number) => {
+        item.id = index + 1
+        return item
+      })
+  )
+
+  fs.removeSync(path.join(edgeDir, 'inject.js'))
+}
+
 const buildFireFox = async () => {
   fs.copySync(chromiumDir, firefoxDir)
   const chromeManifest = fs.readJSONSync(path.join(chromiumDir, 'manifest.json'))
@@ -193,13 +220,14 @@ const buildFireFox = async () => {
   )
 
   fs.removeSync(path.join(firefoxDir, 'app'))
-  fs.removeSync(path.join(firefoxDir, 'content_script.js'))
   fs.removeSync(path.join(firefoxDir, 'zepto.min.js'))
+  fs.removeSync(path.join(firefoxDir, 'content_script.js'))
+  fs.removeSync(path.join(firefoxDir, 'inject.js'))
   fs.removeSync(path.join(firefoxDir, 'rules.json'))
 }
 
 const zipPkg = async () => {
-  type ZipFolder = (target: 'chromium' | 'chromium-canary' | 'firefox' | 'source') => void
+  type ZipFolder = (target: 'chromium' | 'chromium-canary' | 'edge' | 'firefox' | 'source') => void
   const zipFolder: ZipFolder = (target) => {
     process.chdir(path.join(dist, target))
 
@@ -210,6 +238,7 @@ const zipPkg = async () => {
   }
   zipFolder('chromium')
   zipFolder('chromium-canary')
+  zipFolder('edge')
   zipFolder('firefox')
   zipFolder('source')
 }
@@ -246,7 +275,7 @@ const zipPkg = async () => {
     execSync('pnpm --filter app run build', { stdio: 'inherit' })
   }
 
-  await Promise.all([buildChromiumCanary(), buildFireFox()])
+  await Promise.all([buildChromiumCanary(), buildEdge(), buildFireFox()])
 
   for (const [input, output, extraBuildOptions] of files) {
     await buildFile(input, output, extraBuildOptions)
