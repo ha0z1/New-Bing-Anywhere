@@ -12,7 +12,7 @@ const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActio
 // const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
 const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
-export const dynamicRules: chrome.declarativeNetRequest.Rule[] = [
+export const dynamicRules = [
   {
     priority: 2001,
     action: {
@@ -28,12 +28,16 @@ export const dynamicRules: chrome.declarativeNetRequest.Rule[] = [
       resourceTypes: ALL_RESOURCE_TYPES
     }
   }
-].map((rule, index) => ({
-  id: index + 1 + 2000,
-  ...rule
-}))
+]
+  .filter(Boolean)
+  .map((rule, index) => ({
+    id: index + 1 + 2000,
+    ...rule
+  })) as chrome.declarativeNetRequest.Rule[]
 
 export default () => {
+  if (!dynamicRules.length) return
+
   chrome.declarativeNetRequest.getDynamicRules((dRules) => {
     // console.log(111, dRules)
     // console.log(222, [...new Set([...rules.map((rule) => rule.id), ...dRules.map((rule) => rule.id)])])

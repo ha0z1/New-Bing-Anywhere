@@ -1,12 +1,14 @@
-import { escapeHtml, getConfig, setConfig } from '@@/utils'
+import { escapeHtml, getConfig, isEdge, setConfig } from '@@/utils'
 import { callMethod, mutationConfig, openUrlInSameTab } from './utils'
 
 export default async ($) => {
-  const document = window.document
-  const s = document.createElement('script')
-  s.src = chrome.runtime.getURL('inject.js')
-  s.onload = s.remove
-  document.documentElement.appendChild(s)
+  if (!isEdge) {
+    const document = window.document
+    const s = document.createElement('script')
+    s.src = chrome.runtime.getURL('inject.js')
+    s.onload = s.remove
+    document.documentElement.appendChild(s)
+  }
 
   $(() => {
     ;(async () => {
