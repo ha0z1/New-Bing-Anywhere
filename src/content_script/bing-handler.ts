@@ -15,7 +15,7 @@ export default async ($) => {
       const { showGuideToGithub } = await getConfig()
       if (!showGuideToGithub) return
       const $esatSwitch = $('#est_switch')
-      if ($esatSwitch.text().trim() !== '国内版国际版') return
+      if ($.trim($esatSwitch.text()) !== '国内版国际版') return
       setTimeout(() => {
         const $a = $(
           '<a href="https://github.com/haozi/New-Bing-Anywhere/issues/8" title="查看如何正确配置网络代理" target="_blank" rel="noopener noreferrer nofollow">依然出现国内版/国际版？</a>'

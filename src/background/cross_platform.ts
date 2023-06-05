@@ -162,7 +162,8 @@ export default () => {
           }
 
           const valueObj = getURLSearchParams(value)
-          if (valueObj.get('wls') !== '2') {
+          const wls = valueObj.get('wls')
+          if (wls !== '2' && wls !== '') {
             valueObj.set('wls', '2')
           }
           setCookie(
