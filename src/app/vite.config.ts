@@ -13,6 +13,7 @@ export default defineConfig({
   base: '/app',
   build: {
     outDir: '../../dist/chromium/app',
+    emptyOutDir: true,
 
     rollupOptions: {
       output: {
