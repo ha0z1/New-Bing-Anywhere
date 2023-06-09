@@ -1,7 +1,7 @@
 import { CN_REDIRECT_URL } from '@@/constants'
 import crossPlatform from './cross_platform'
 import initDynamicRules from './dynamic_rules'
-import { isSimpleChinese } from './utils'
+import { isSimpleChinese } from '@@/utils'
 
 crossPlatform()
 

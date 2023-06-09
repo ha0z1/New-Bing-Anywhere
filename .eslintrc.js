@@ -14,6 +14,9 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 1,
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/space-before-function-paren': 0,
+    '@typescript-eslint/promise-function-async': 0,
+    'no-unreachable': 1,
+    'multiline-ternary': 0,
     'react/self-closing-comp': [
       'error',
       {

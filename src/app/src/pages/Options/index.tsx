@@ -61,6 +61,9 @@ const App: React.FC = () => {
         <Form.Item label="Show Bing Button On Google" valuePropName="checked" name="showBingButtonOnGoogle">
           <Switch />
         </Form.Item>
+        <Form.Item label="Show Bing Chat Anywhere" valuePropName="checked" name="showChat">
+          <Switch />
+        </Form.Item>
       </Form>
     </div>
   )

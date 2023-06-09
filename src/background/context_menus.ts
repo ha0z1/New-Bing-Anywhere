@@ -1,5 +1,5 @@
-// import { repository } from '../../package.json'
-import { genIssueUrl, isChinese, openPage } from './utils'
+import { genIssueUrl, isChinese } from '@@/utils'
+import { openPage } from './utils'
 // const repositoryUrl: string = repository.url
 
 type Contexts = chrome.contextMenus.ContextType[]
