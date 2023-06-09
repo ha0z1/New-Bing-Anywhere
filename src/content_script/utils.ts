@@ -1,24 +1,8 @@
-export const callMethod = async <T = any>(method: string, args: any[] = []): Promise<T> => {
-  return await new Promise((resolve, reject) => {
-    chrome.runtime.sendMessage(
-      {
-        method,
-        args: [...args]
-      },
-      (res) => {
-        if (!res || res.code !== 200) {
-          reject(res?.msg)
-        } else {
-          resolve(res.data)
-        }
-      }
-    )
-  })
-}
+import { callBackground } from '@@/utils'
 
 export const openUrlInSameTab = async (url: string) => {
   try {
-    return await callMethod('openUrlInSameTab', [{ url }])
+    return await callBackground('openUrlInSameTab', [{ url }])
   } catch (e) {
     // console.error(e)
     location.href = url
@@ -26,3 +10,30 @@ export const openUrlInSameTab = async (url: string) => {
 }
 
 export const mutationConfig = { attributes: true, childList: true, subtree: true }
+
+const $ = (s, parent = document) => parent.querySelector(s)
+
+export const $w = async (domSelector: string, timeout: number = 30 /* second */, parent = document): Promise<Element | null> => {
+  return await new Promise((resolve) => {
+    const $dom = $(domSelector, parent)
+    if ($dom) {
+      resolve($dom)
+      return
+    }
+
+    const observer = new MutationObserver((_mutationList, observer) => {
+      const $dom = $(domSelector, parent)
+      if ($dom) {
+        observer.disconnect()
+        resolve($dom)
+      }
+    })
+    observer.observe(document, mutationConfig)
+
+    setTimeout(() => {
+      const $dom = $(domSelector, parent)
+      observer.disconnect()
+      resolve($dom)
+    }, timeout * 1000)
+  })
+}

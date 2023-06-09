@@ -1,11 +1,4 @@
-import { isChinese as checkIsChinese, isSimpleChinese as checkIsSimpleChinese, getAllTabs, ls, unique } from '@@/utils'
-import { version as pkgVersion, repository } from '../../package.json'
-
-export const isChinese: boolean = checkIsChinese()
-export const isSimpleChinese: boolean = checkIsSimpleChinese()
-export const isCanary: boolean = !!globalThis.__NBA_isCanary
-
-export const version: string = isCanary ? `0.${pkgVersion}` : pkgVersion
+import { getAllTabs, ls, unique } from '@@/utils'
 
 export const dumpTabs = async ({ windowId }): Promise<void> => {
   const APP_URL = chrome.runtime.getURL('app/index.html')
@@ -73,25 +66,6 @@ export const getURLSearchParams = (url: string): URLSearchParams => {
   }
 }
 
-type IMethods = Record<string, (...args: any[]) => Promise<any>>
-
-export const registryListener = (callMethods: IMethods) => {
-  chrome.runtime.onMessage.addListener((req, _sender, sendResponse) => {
-    ;(async () => {
-      // if not return true immediately，will throw error `Unchecked runtime.lastError: The message port closed before a response was received.`
-      try {
-        const { method, args } = req
-        const data = await callMethods[method](...args)
-        sendResponse({ code: 200, msg: 'ok', data })
-      } catch (e: any) {
-        const err = e ?? {}
-        sendResponse({ code: 500, msg: err.stack ?? err.message ?? e })
-      }
-    })()
-    return true
-  })
-}
-
 export const openPage = async (url: string): Promise<chrome.tabs.Tab> => {
   const tabs = await chrome.tabs.query({ currentWindow: true })
 
@@ -110,29 +84,6 @@ export const openPage = async (url: string): Promise<chrome.tabs.Tab> => {
     )
   }
   return tab
-}
-
-export const genIssueUrl = async () => {
-  const repositoryUrl: string = repository.url
-  const url: string = `${repositoryUrl}/issues/new?title=&body=`
-  let finalUrl: string = url
-  let comment =
-    'Please write your comment ABOVE this line, provide as much detailed information and screenshots as possible.' +
-    'The UA may not necessarily reflect your actual browser and platform, so please make sure to indicate them clearly.'
-  if (isChinese) {
-    comment = '请在此行上方发表您的讨论。详尽的描述和截图有助于我们定位问题，UA 不一定真实反映您的浏览器和平台，请备注清楚'
-  }
-
-  const body =
-    ' \n\n\n\n' +
-    `<!--  ${comment} -->\n` +
-    `Version: ${version}${isCanary ? ' (Canary)' : ''} \n` +
-    `UA: ${navigator.userAgent}\n` +
-    `Lang: ${chrome.i18n.getUILanguage()}\n` +
-    `AcceptLangs: ${(await chrome.i18n.getAcceptLanguages()).join(', ')}`
-
-  finalUrl += encodeURIComponent(body.slice(0, 2000))
-  return finalUrl
 }
 
 export const setCookie = async (options: chrome.cookies.SetDetails, cookie: chrome.cookies.Cookie = {} as any) => {

@@ -1,0 +1,125 @@
+$--cib-color-brand-app-background = radial-gradient(61.04% 89.69% at 100% 100%, rgba(200, 250, 255, 0.08) 0%, rgba(28, 210, 229, 0.08) 40.63%, rgba(28, 210, 229, 0) 100%), radial-gradient(43.78% 64.34% at 60.31% 100%, rgba(23, 74, 228, 0.08) 0%, rgba(23, 74, 228, 0) 100%), linear-gradient(180deg, rgba(23, 74, 228, 0) 29.44%, rgba(23, 74, 228, 0.06) 100%), linear-gradient(90deg, #F3F3F7 0%, #EBF0F9 100%)
+$--cib-color-brand-primary-background = linear-gradient(90deg, #904887 10.79%, #8B257E 87.08%)
+
+.wrap {
+  position: relative
+  overflow-y: auto
+  box-sizing: border-box
+  padding: 8px 15px 18px
+  padding-top: 8px
+  min-height: 120px
+  max-height: initial
+  border-radius: 12px
+  background: $--cib-color-brand-app-background
+  word-wrap: break-word
+  word-break: break-all
+  font-size: 14px
+  line-height: 1.5em
+  transition: max-height 5s
+
+  header {
+    display: flex
+    align-items: center
+    height: 40px
+
+    img {
+      width: 24px
+      height: 24px
+    }
+
+    h1 {
+      flex: 1
+      margin-left: 0.5em
+      font-weight: 700
+      font-size: 18px
+    }
+
+    .btns {
+      opacity: 0
+    }
+  }
+
+  hr {
+    margin: 0.5em
+    height: 0.5px
+    border: 0px
+    background-color: #dcdcdc
+  }
+}
+
+.wrap:hover .btns {
+  opacity: 1
+  transition: opacity 0.5s
+  will-change: opacity
+}
+
+.cont {
+  &:visited {
+    color: #666
+  }
+
+  a:hover {
+    text-decoration: underline
+  }
+
+  .loading {
+    position: absolute
+    top: calc(50% + 26px)
+    left: 50%
+    transform: translate(-50%, -50%)
+  }
+
+  p {
+    line-height: 22px
+  }
+
+  ul {
+    padding-left: 15px
+  }
+
+  li {
+    margin: 0.4rem
+    padding: 0 0.4rem
+    list-style: initial
+  }
+}
+
+.newtabBox {
+  // min-height: 100vh
+  .wrap {
+    margin: 50px auto 0
+    max-width: 400px
+    height: auto
+  }
+}
+
+.more {
+  display: flex
+  flex-flow: row wrap
+  row-gap: 6px
+
+  a {
+    display: flex
+    justify-content: center
+    align-items: center
+    box-sizing: border-box
+    padding: 0px 8px
+    border-radius: 4px
+    background: #d1dbfa
+    color: #123bb6
+    text-decoration: none
+    font-weight: 500
+    line-height: 24px
+    margin-inline-end: 6px
+
+    &:hover {
+      text-decoration: underline
+    }
+  }
+}
+
+.sourceAttributions {
+  li {
+    line-height: 1.2em
+  }
+}

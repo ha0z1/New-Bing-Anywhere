@@ -5,20 +5,25 @@
   "type": "module",
   "scripts": {
     "build": "tsc && vite build",
-    "dev": "tsc && vite build --emptyOutDir --watch",
+    "dev": "tsc && vite build --emptyOutDir --watch --mode development",
+    "dev:http": "tsc && vite dev",
     "lint": "cd ../../ && pnpm lint",
     "preview": "vite preview"
   },
   "dependencies": {
-    "antd": "^5.5.2",
+    "@ant-design/icons": "^5.1.4",
+    "antd": "^5.6.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.11.2",
-    "swr": "^2.1.5"
+    "react-markdown": "^8.0.7",
+    "react-router-dom": "^6.12.0",
+    "swr": "^2.1.5",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.8",
+    "@types/react": "^18.2.9",
     "@types/react-dom": "^18.2.4",
+    "@types/uuid": "^9.0.2",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "stylus": "^0.59.0",
     "typescript": "^5.1.3",
