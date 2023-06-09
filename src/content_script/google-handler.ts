@@ -1,7 +1,7 @@
-import { getConfig } from '@/universe/utils'
-import { mutationConfig, openUrlInSameTab } from './utils'
+import { getConfig } from '@@/utils'
+import { $w, openUrlInSameTab } from './utils'
 
-export default async ($) => {
+export default async ($: ZeptoStatic) => {
   const config = await getConfig()
 
   if (!config.showBingButtonOnGoogle) return
@@ -9,12 +9,9 @@ export default async ($) => {
     return
   }
 
-  new MutationObserver((_mutationList, observer) => {
-    const searchSelector = '[action="/search"]'
-    if (!$(searchSelector).length) return
-    observer.disconnect()
-
-    const $form = $(searchSelector)
+  $w('[action="/search"]').then((form) => {
+    if (!form) return
+    const $form = $(form)
     const $q = $form.find('[name="q"]')
     const $submit = $form.find('button[type="submit"]')
 
@@ -39,5 +36,5 @@ export default async ($) => {
       $this.attr('href', url)
       await openUrlInSameTab(url)
     })
-  }).observe(document, mutationConfig)
+  })
 }

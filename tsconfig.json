@@ -8,6 +8,7 @@
     "target": "ESNext",
     "declaration": true,
     "declarationDir": "dist/types",
+    "types": ["zepto", "chrome"],
     "paths": {
       "@/*": ["./src/*"],
       "@@/*": ["./src/universe/*"]

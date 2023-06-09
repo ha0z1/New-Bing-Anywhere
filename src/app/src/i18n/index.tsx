@@ -1,3 +1,4 @@
+import '@/App.styl'
 import en_US from 'antd/locale/en_US'
 import ru_RU from 'antd/locale/ru_RU'
 import zhCN from 'antd/locale/zh_CN'

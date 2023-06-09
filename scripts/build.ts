@@ -69,7 +69,7 @@ const buildChromiumBase = async () => {
 
     web_accessible_resources: [
       {
-        resources: ['inject.js', 'images/*', 'css/*', 'js/*'],
+        resources: ['inject.js', 'app/*', 'images/*'],
         matches: ['https://www.bing.com/*', 'https://www.google.com/*', 'https://www.google.com.hk/*']
       }
     ],
@@ -126,6 +126,10 @@ const buildChromiumBase = async () => {
       48: 'images/bing_48x48.png',
       128: 'images/bing_128x128.png'
     }
+    // action: {
+    //   default_popup: 'app/index.html#/chat/popup',
+    //   default_title: 'New Bing Anywhere'
+    // }
   }
   fs.outputJSONSync(path.join(chromiumDir, 'manifest.json'), sortManifestJSON(manifest))
 

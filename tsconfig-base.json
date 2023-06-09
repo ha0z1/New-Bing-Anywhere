@@ -5,9 +5,6 @@
   "compilerOptions": {
     "declaration": true,
     "esModuleInterop": true,
-    "jsx": "react",
-    "jsxFactory": "React.createElement",
-    "jsxFragmentFactory": "React.Fragment",
     "lib": ["ESNext", "DOM"],
     "module": "ESNext",
     "target": "esnext",

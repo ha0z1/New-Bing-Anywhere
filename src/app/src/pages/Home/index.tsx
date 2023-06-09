@@ -8,5 +8,5 @@ export default () => {
   }
 
   // return <div>Home</div>
-  return <Navigate to="/options" replace />
+  return <Navigate to="/chat/newtab" replace />
 }
