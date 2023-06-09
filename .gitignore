@@ -10,3 +10,5 @@ dist/*.zip
 dist/**/_metadata/
 dist/source/
 key/
+vite.config.åts.timestamp-*
+

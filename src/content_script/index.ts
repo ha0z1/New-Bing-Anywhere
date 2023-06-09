@@ -1,7 +1,8 @@
+import { callBackground, getConfig } from '@@/utils'
 import { extensionName } from '../../package.json'
 import bingHandler from './bing-handler'
+import chatHandler from './chat-handler'
 import googleHandler from './google-handler'
-import { callMethod } from './utils'
 ;(async ($) => {
   const $document = $(document.documentElement)
   if ($document.find(`meta[name="${extensionName}"]`).length) return
@@ -9,15 +10,21 @@ import { callMethod } from './utils'
 
   $document.prepend($meta)
 
-  callMethod('getEnv').then((env) => {
+  callBackground('getEnv').then((env) => {
     $meta.attr('content', env.version)
   })
 
+  getConfig().then((config) => {
+    if (config.showChat) {
+      chatHandler($, config)
+    }
+  })
+
   if (location.hostname === 'www.bing.com') {
-    await bingHandler($)
+    bingHandler($)
   }
 
   if (location.hostname.startsWith('www.google.')) {
-    await googleHandler($)
+    googleHandler($)
   }
-})((window as any).Zepto)
+})(window.Zepto as ZeptoStatic)

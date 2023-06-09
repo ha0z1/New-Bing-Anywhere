@@ -1,7 +1,7 @@
-import { escapeHtml, getConfig, isEdge, setConfig } from '@@/utils'
-import { callMethod, mutationConfig, openUrlInSameTab } from './utils'
+import { callBackground, escapeHtml, getConfig, isEdge, setConfig } from '@@/utils'
+import { $w, mutationConfig, openUrlInSameTab } from './utils'
 
-export default async ($) => {
+export default async ($: ZeptoStatic) => {
   if (!isEdge) {
     const document = window.document
     const s = document.createElement('script')
@@ -38,14 +38,12 @@ export default async ($) => {
   if (!location.href.startsWith('https://www.bing.com/search?')) return
   const config = await getConfig()
 
-  new MutationObserver((_mutationList, observer) => {
-    if (!document.getElementById('sb_form')) return
-    observer.disconnect()
+  $w('#sb_form').then(() => {
     type Note = {
       html_url: string
       title: string
     } | null
-    callMethod('getNotification').then((note: Note) => {
+    callBackground('getNotification').then((note: Note) => {
       if (!note) return
       const $body = $(document.body)
       const $div = $('<div/>').css({
@@ -78,7 +76,7 @@ export default async ($) => {
         '<a href="#" style="background:#58070d; color:#fff; cursor:pointer;padding: 0 68px 0 18px;position: absolute;right:0" title="no reminder">✕</a>'
       ).on('click', (e) => {
         e.preventDefault()
-        confirm('Are you sure never see this notice again?') && callMethod('hideNotification')
+        confirm('Are you sure never see this notice again?') && callBackground('hideNotification')
         close()
       })
       $div.append($a).append($close)
@@ -144,7 +142,7 @@ export default async ($) => {
       if (isNewBingOpen) {
         let left = 0
         if ($conv.offset()!.left) {
-          left = ($conv.offset()!.left as number) + ($conv.width()! as number) + 30
+          left = $conv.offset()!.left + $conv.width()! + 30
         } else {
           left = 350
         }
@@ -178,14 +176,5 @@ export default async ($) => {
         }
       }
     }).observe(document.getElementById('b_header')!, mutationConfig)
-  }).observe(document, mutationConfig)
-
-  // $(() => {
-  //   setTimeout(() => {
-  //     $('.b_searchboxForm').addClass('as_rsform')
-  //     $('#b_header').addClass('as_rsform')
-  //     $('body').addClass('as_on')
-  //     $('#sb_form_q').focus().click()
-  //   }, 1000)
-  // })
+  })
 }

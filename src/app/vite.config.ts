@@ -14,7 +14,6 @@ export default defineConfig({
   build: {
     outDir: '../../dist/chromium/app',
     emptyOutDir: true,
-
     rollupOptions: {
       output: {
         entryFileNames: 'assets/[name].js',
@@ -22,6 +21,9 @@ export default defineConfig({
         assetFileNames: 'assets/[name].[ext]'
       }
     }
+  },
+  server: {
+    host: '0.0.0.0'
   },
   plugins: [
     react(),

@@ -1,8 +1,9 @@
+import Chat from '@/pages/Chat'
 import Home from '@/pages/Home'
 import Options from '@/pages/Options'
-import { createHashRouter } from 'react-router-dom'
+import { createHashRouter, Navigate } from 'react-router-dom'
 
-const router = createHashRouter([
+const router: any = createHashRouter([
   {
     path: '/',
     element: <Home />
@@ -10,6 +11,14 @@ const router = createHashRouter([
   {
     path: '/options',
     element: <Options />
+  },
+  {
+    path: '/chat',
+    element: <Navigate to="/chat/newtab" replace={true} />
+  },
+  {
+    path: '/chat/:scene',
+    element: <Chat />
   }
 ])
 

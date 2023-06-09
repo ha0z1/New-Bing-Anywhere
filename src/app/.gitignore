@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+src/apis/_bing/data/
+
+vite.config.ts.timestamp-*

@@ -16,10 +16,11 @@ dist/*.js         binary
 
 /*/*/bin/+([!.]) -text
 
-pnpm-lock.yaml               merge=text
+pnpm-lock.yaml               merge=binary
 shrinkwrap.yaml              merge=binary
 npm-shrinkwrap.json          merge=binary
 yarn.lock                    merge=binary
+dist/*                       merge=binary
 
 
 *.json            linguist-language=JSON-with-Comments
