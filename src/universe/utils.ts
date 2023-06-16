@@ -1,15 +1,17 @@
-import { FULL_VERSION, MAIN_VERSION } from './constants'
 import { version as pkgVersion, repository } from '../../package.json'
+import { FULL_VERSION, MAIN_VERSION } from './constants'
+import { type Bing } from './types'
 
 export const checkIsGoogle = () => {
   return location.hostname.includes('google')
 }
 export const ls = {
-  set: async <T = any>(key: string, value: T) => {
-    return await new Promise((resolve) => {
+  set: async <T = any>(key: string, value: T): Promise<void> => {
+    const KEY = `NBA@${encodeURIComponent(key)}`
+    await new Promise((resolve) => {
       chrome.storage.local.set(
         {
-          [key]: value
+          [KEY]: value
         },
         () => {
           resolve(undefined)
@@ -18,15 +20,17 @@ export const ls = {
     })
   },
   get: async <T = any>(key: string): Promise<T | undefined> => {
+    const KEY = `NBA@${encodeURIComponent(key)}`
     return await new Promise((resolve) => {
-      chrome.storage.local.get([key], (result) => {
-        resolve(result[key])
+      chrome.storage.local.get([KEY], (result) => {
+        resolve(result[KEY])
       })
     })
   },
-  remove: async (key: string) => {
-    return await new Promise((resolve) => {
-      chrome.storage.local.remove([key])
+  remove: async (key: string): Promise<void> => {
+    const KEY = `NBA@${encodeURIComponent(key)}`
+    await new Promise((resolve) => {
+      chrome.storage.local.remove([KEY])
       resolve(undefined)
     })
   }
@@ -99,13 +103,21 @@ export const sleep = async (delay: number): Promise<void> => {
  * check if is Chinese
  */
 export const checkIsSimpleChinese = () => {
-  const lang = chrome.i18n.getUILanguage().toLowerCase()
-  return lang === 'zh-cn'
+  try {
+    const lang = chrome.i18n.getUILanguage().toLowerCase()
+    return lang === 'zh-cn'
+  } catch {
+    return false
+  }
 }
 
 export const checkIsChinese = () => {
-  const lang = chrome.i18n.getUILanguage().toLowerCase()
-  return lang === 'zh-cn' || lang === 'zh-tw' || lang === 'zh-hk' || lang === 'zh'
+  try {
+    const lang = chrome.i18n.getUILanguage().toLowerCase()
+    return lang === 'zh-cn' || lang === 'zh-tw' || lang === 'zh-hk' || lang === 'zh'
+  } catch {
+    return false
+  }
 }
 
 /**
@@ -121,6 +133,8 @@ export interface Config {
   showBingButtonOnGoogle: boolean
   showGuideToGithub: boolean
   showChat: boolean
+  triggerMode: 'Always' | 'Questionmark' | 'Manually'
+  conversationStyle: Bing.ConversationStyle
 }
 export const getConfig = async (): Promise<Config> => {
   const config = (await chrome.storage.sync.get(CONFIG_KEY))[CONFIG_KEY]
@@ -129,6 +143,8 @@ export const getConfig = async (): Promise<Config> => {
     showBingButtonOnGoogle: true,
     showGuideToGithub: true,
     showChat: true,
+    triggerMode: 'Always',
+    conversationStyle: 'Balanced',
     ...config
   }
 }
@@ -231,10 +247,12 @@ export const toDataUrl = async (url: string): Promise<string> => {
 }
 
 const userAgent = navigator.userAgent
+const userAgentData = (navigator as any).userAgentData
 
 export const isMac = userAgent.includes('Macintosh')
 export const isFirefox = userAgent.includes('Firefox')
 export const isEdge = userAgent.includes('Edg/')
+export const isBrave = userAgentData?.brands.findIndex((item) => item.brand === 'Brave') > -1
 export const isChinese = checkIsChinese()
 export const isSimpleChinese = checkIsSimpleChinese()
 export const isCanary: boolean = !!globalThis.__NBA_isCanary
@@ -252,25 +270,38 @@ export const genUA = () => {
   return ua
 }
 
-export const genIssueUrl = async () => {
+export const genIssueUrl = async (extra?: Record<string, string | null | undefined>) => {
   const repositoryUrl: string = repository.url
-  const url: string = `${repositoryUrl}/issues/new?title=&body=`
-  let finalUrl: string = url
-  let comment =
-    'Please write your comment ABOVE this line, provide as much detailed information and screenshots as possible.' +
-    'The UA may not necessarily reflect your actual browser and platform, so please make sure to indicate them clearly.'
-  if (isChinese) {
-    comment = '请在此行上方发表您的讨论。详尽的描述和截图有助于我们定位问题，UA 不一定真实反映您的浏览器和平台，请备注清楚'
+  try {
+    const config = await getConfig()
+    const url: string = `${repositoryUrl}/issues/new?title=&body=`
+    let finalUrl: string = url
+    let comment =
+      'Please write your comment ABOVE this line, provide as much detailed information and screenshots as possible.' +
+      'The UA may not necessarily reflect your actual browser and platform, so please make sure to indicate them clearly.'
+    if (isChinese) {
+      comment = '请在此行上方发表您的讨论。详尽的描述和截图有助于我们定位问题，UA 不一定真实反映您的浏览器和平台，请备注清楚'
+    }
+
+    const body =
+      ' \n\n\n\n' +
+      `<!--  ${comment} -->\n` +
+      Object.entries<string>({
+        Version: `${version}${isCanary ? ' (Canary)' : ''} `,
+        UA: navigator.userAgent,
+        Lang: chrome.i18n.getUILanguage(),
+        AcceptLangs: (await chrome.i18n.getAcceptLanguages()).join(', '),
+        config: JSON.stringify(config),
+        ...extra
+      })
+        .map(([key, val]) => {
+          return val ? `${key}: ${val}` : ''
+        })
+        .join('\n')
+
+    finalUrl += encodeURIComponent(body.slice(0, 2000))
+    return finalUrl
+  } catch {
+    return repositoryUrl
   }
-
-  const body =
-    ' \n\n\n\n' +
-    `<!--  ${comment} -->\n` +
-    `Version: ${version}${isCanary ? ' (Canary)' : ''} \n` +
-    `UA: ${navigator.userAgent}\n` +
-    `Lang: ${chrome.i18n.getUILanguage()}\n` +
-    `AcceptLangs: ${(await chrome.i18n.getAcceptLanguages()).join(', ')}`
-
-  finalUrl += encodeURIComponent(body.slice(0, 2000))
-  return finalUrl
 }

@@ -1,78 +1,91 @@
 import { type Bing } from '@@/types'
-import { callBackground, ls } from '@@/utils'
-import { v4 as uuidv4 } from 'uuid'
-// import type2 from './data/type2'
-import { createPropmt } from './utils'
+import { ls, getConfig, isBrave } from '@@/utils'
 
-export const getFromConversation = async (options: Bing.ConversationOptions): Promise<Bing.CoreData> => {
-  const API =
-    'https://sydney.bing.com/sydney/GetConversation?' +
-    `conversationId=${encodeURIComponent(options.conversationId)}&` +
-    `source=${encodeURIComponent(options.source)}&` +
-    `participantId=${encodeURIComponent(options.participantId)}&` +
-    `conversationSignature=${encodeURIComponent(options.conversationSignature)}&` +
-    `traceId=${uuidv4()}`
-  const data = await fetch(API).then((r) => r.json())
-  return data
-}
+import {
+  createPropmt,
+  getFromConversation,
+  bingChatGetSocketId,
+  bingChatPing,
+  bingChatCreateSession,
+  bingChatSend,
+  bingChatCloseWebSocket,
+  checkHasText
+} from './utils'
 
-export const sendBingChat = async (
-  prompt: string,
-  oMmessage: (data: Bing.Type1Data | Bing.Type2Data) => void,
-  reload: boolean
-): Promise<Bing.CoreData | undefined> => {
+export const createBingChat = async (options: Bing.CreateBingChatOptions): Promise<Bing.CreateBingChatResponce | undefined> => {
+  const { prompt, onMessage, needRefresh, session } = options
   if (!prompt) return
-  const promptKey = `Prompt@${prompt.trim()}`
-  const session = await callBackground<Bing.Session>('bingChatCreate')
 
-  if (reload) {
+  const promptKey = `Prompt-v1-${prompt.trim()}`
+
+  if (needRefresh) {
     await ls.remove(promptKey)
   }
   const promptCache = await ls.get<Bing.ConversationOptions>(promptKey)
   if (promptCache) {
     const data = await getFromConversation(promptCache)
-    if (data.result.value === 'Success') {
-      return data
+    if (checkHasText(data)) {
+      return { data, conversationOptions: promptCache }
     }
   }
 
-  const socketId = await callBackground('bingChatGetSocketId')
+  onMessage({ type: 0, text: 'Creating socket...' })
+  const socketId = await bingChatGetSocketId()
+  onMessage({ type: 0, text: 'Created socket success!' })
+  let finalSession = session
+  if (!finalSession) {
+    try {
+      onMessage({ type: 0, text: 'Creating session...' })
+      finalSession = await bingChatCreateSession()
+      onMessage({ type: 0, text: 'Created session success!' })
+    } catch (e: any) {
+      throw new Error(e)
+    }
+  }
 
-  callBackground('bingChatPing', [socketId])
+  bingChatPing(socketId)
   const ping = setInterval(() => {
-    callBackground('bingChatPing', [socketId])
+    bingChatPing(socketId)
   }, 8000)
 
-  const onListener = (msg, _sender, sendResponse) => {
-    setTimeout(() => {
-      const { method, data } = msg ?? {}
-      if (method === 'bingChatSendOnMessage') {
-        data && oMmessage(data)
-      }
-      sendResponse('ok')
-    })
-    return true
-  }
+  const config = await getConfig()
+  onMessage({ type: 0, text: 'Sending prompt to Bing...' })
+  const type2Data = await bingChatSend(socketId, createPropmt({ session: finalSession, prompt, tone: config.conversationStyle }), onMessage)
 
-  chrome.runtime.onMessage.addListener(onListener)
-  const data = await callBackground<Bing.Type2Data>('bingChatSend', [socketId, createPropmt({ session, prompt })])
-  chrome.runtime.onMessage.removeListener(onListener)
   clearInterval(ping)
-  callBackground('bingChatCloseWebSocket', [socketId])
+  bingChatCloseWebSocket(socketId)
 
-  const conversationId = data.item.conversationId
-  const source = data.item.messages.find((msg) => msg.contentOrigin)?.contentOrigin
-  const participantId = data.item.messages.find((msg) => msg.from)?.from?.id
-  const conversationSignature = session.conversationSignature
+  const resultVale = type2Data?.item?.result?.value
 
-  if (conversationId && source && participantId && conversationSignature) {
-    ls.set<Bing.ConversationOptions>(promptKey, {
-      conversationId,
-      source,
-      participantId,
-      conversationSignature
-    })
+  switch (resultVale) {
+    case 'Success':
+      break
+    case 'Throttled':
+      throw new Error('Request is throttled. Please try again later.')
+    default:
+      throw new Error(type2Data?.item?.result?.message)
   }
 
-  return data.item
+  const conversationId = type2Data.item.conversationId
+  const source = type2Data.item.messages?.find((msg) => msg.contentOrigin)?.contentOrigin
+  const participantId = type2Data.item.messages?.find((msg) => msg.from)?.from?.id
+  const conversationSignature = finalSession.conversationSignature
+
+  const conversationOptions: Partial<Bing.ConversationOptions> = {
+    source,
+    participantId,
+    session: {
+      ...finalSession,
+      conversationId,
+      conversationSignature
+    }
+  }
+  if (conversationId && source && participantId && conversationSignature) {
+    ls.set<Bing.ConversationOptions>(promptKey, conversationOptions as Bing.ConversationOptions)
+  }
+
+  return {
+    data: type2Data.item,
+    conversationOptions
+  }
 }

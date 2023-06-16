@@ -9,54 +9,59 @@ import { ViteMinifyPlugin } from 'vite-plugin-minify'
 // const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  base: '/app',
-  build: {
-    outDir: '../../dist/chromium/app',
-    emptyOutDir: true,
-    rollupOptions: {
-      output: {
-        entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]'
-      }
-    }
-  },
-  server: {
-    host: '0.0.0.0'
-  },
-  plugins: [
-    react(),
-
-    vitePluginImp({
-      libList: [
-        {
-          libName: 'lodash',
-          libDirectory: '',
-          camel2DashComponentName: false
-        },
-        {
-          libName: 'antd',
-          style(name: string) {
-            // use less
-            return `antd/es/${name}/style/index.js`
-          }
+export default defineConfig(({ mode }) => {
+  process.env.NODE_ENV = mode
+  return {
+    base: '/app',
+    build: {
+      minify: mode !== 'development',
+      sourcemap: mode === 'development' ? 'inline' : false,
+      outDir: '../../dist/chromium/app',
+      emptyOutDir: true,
+      rollupOptions: {
+        output: {
+          entryFileNames: 'assets/[name].js',
+          chunkFileNames: 'assets/[name].js',
+          assetFileNames: 'assets/[name].[ext]'
         }
-      ]
-    }),
+      }
+    },
+    server: {
+      host: '0.0.0.0'
+    },
+    plugins: [
+      react(),
 
-    ViteMinifyPlugin({
-      removeAttributeQuotes: true,
-      minifyCSS: true,
-      minifyJS: true,
-      minifyURLs: true
-    })
-  ],
+      vitePluginImp({
+        libList: [
+          {
+            libName: 'lodash',
+            libDirectory: '',
+            camel2DashComponentName: false
+          },
+          {
+            libName: 'antd',
+            style(name: string) {
+              // use less
+              return `antd/es/${name}/style/index.js`
+            }
+          }
+        ]
+      }),
 
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, '/src'),
-      '@@': path.resolve(__dirname, '../universe')
+      ViteMinifyPlugin({
+        removeAttributeQuotes: true,
+        minifyCSS: true,
+        minifyJS: true,
+        minifyURLs: true
+      })
+    ],
+
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, '/src'),
+        '@@': path.resolve(__dirname, '../universe')
+      }
     }
   }
 })

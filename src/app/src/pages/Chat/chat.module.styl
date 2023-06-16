@@ -1,7 +1,34 @@
-$--cib-color-brand-app-background = radial-gradient(61.04% 89.69% at 100% 100%, rgba(200, 250, 255, 0.08) 0%, rgba(28, 210, 229, 0.08) 40.63%, rgba(28, 210, 229, 0) 100%), radial-gradient(43.78% 64.34% at 60.31% 100%, rgba(23, 74, 228, 0.08) 0%, rgba(23, 74, 228, 0) 100%), linear-gradient(180deg, rgba(23, 74, 228, 0) 29.44%, rgba(23, 74, 228, 0.06) 100%), linear-gradient(90deg, #F3F3F7 0%, #EBF0F9 100%)
-$--cib-color-brand-primary-background = linear-gradient(90deg, #904887 10.79%, #8B257E 87.08%)
+$background-creative = linear-gradient(90deg, rgb(238, 237, 243) 0%, 0.77381%, rgb(239, 238, 244) 1.54762%, 6.72619%, rgb(239, 236, 243) 11.9048%, 12.381%, rgb(240, 237, 244) 12.8571%, 27.9167%, rgb(242, 236, 244) 42.9762%, 51.9048%, rgb(239, 236, 243) 60.8333%, 61.9643%, rgb(238, 235, 246) 63.0952%, 66.7262%, rgb(235, 234, 249) 70.3571%, 73.2738%, rgb(232, 232, 248) 76.1905%, 77.1429%, rgb(230, 231, 248) 78.0952%, 79.9405%, rgb(228, 229, 249) 81.7857%, 84.1667%, rgb(227, 228, 248) 86.5476%, 87.0238%, rgb(226, 227, 248) 87.5%, 89.3452%, rgb(224, 224, 252) 91.1905%, 95.5952%, rgb(220, 223, 252) 100%)
+$background-balanced = radial-gradient(61.04% 89.69% at 100% 100%, rgba(200, 250, 255, 0.08) 0%, rgba(28, 210, 229, 0.08) 40.63%, rgba(28, 210, 229, 0) 100%), radial-gradient(43.78% 64.34% at 60.31% 100%, rgba(23, 74, 228, 0.08) 0%, rgba(23, 74, 228, 0) 100%), linear-gradient(180deg, rgba(23, 74, 228, 0) 29.44%, rgba(23, 74, 228, 0.06) 100%), linear-gradient(90deg, #F3F3F7 0%, #EBF0F9 100%)
+$background-precise = linear-gradient(90deg, rgb(236, 242, 245) 0%, 1.3089%, rgb(234, 243, 245) 2.6178%, 17.4084%, rgb(232, 241, 242) 32.199%, 36.2565%, rgb(229, 241, 242) 40.3141%, 45.0262%, rgb(227, 240, 242) 49.7382%, 51.8325%, rgb(226, 239, 245) 53.9267%, 57.199%, rgb(224, 239, 245) 60.4712%, 62.9581%, rgb(220, 237, 245) 65.445%, 66.2304%, rgb(220, 237, 245) 67.0157%, 68.0628%, rgb(218, 236, 244) 69.1099%, 75.1309%, rgb(214, 233, 240) 81.1518%, 82.5916%, rgb(211, 231, 240) 84.0314%, 84.4241%, rgb(212, 231, 239) 84.8168%, 86.911%, rgb(210, 230, 239) 89.0052%, 94.5026%, rgb(207, 227, 236) 100%)
 
 .wrap {
+  &.creative {
+    background: $background-creative
+  }
+
+  &.balanced {
+    background: $background-balanced
+  }
+
+  &.precise {
+    background: $background-precise
+  }
+
+  main {
+    a {
+      color: #1a0dab
+
+      &:visited {
+        color: #681da8
+      }
+
+      &:hover {
+        text-decoration: underline
+      }
+    }
+  }
+
   position: relative
   overflow-y: auto
   box-sizing: border-box
@@ -10,9 +37,9 @@ $--cib-color-brand-primary-background = linear-gradient(90deg, #904887 10.79%, #
   min-height: 120px
   max-height: initial
   border-radius: 12px
-  background: $--cib-color-brand-app-background
+  background: $background-balanced
   word-wrap: break-word
-  word-break: break-all
+  word-break: break-word
   font-size: 14px
   line-height: 1.5em
   transition: max-height 5s
@@ -47,21 +74,13 @@ $--cib-color-brand-primary-background = linear-gradient(90deg, #904887 10.79%, #
   }
 }
 
-.wrap:hover .btns {
+.wrap header:hover .btns {
   opacity: 1
   transition: opacity 0.5s
   will-change: opacity
 }
 
 .cont {
-  &:visited {
-    color: #666
-  }
-
-  a:hover {
-    text-decoration: underline
-  }
-
   .loading {
     position: absolute
     top: calc(50% + 26px)
@@ -73,14 +92,18 @@ $--cib-color-brand-primary-background = linear-gradient(90deg, #904887 10.79%, #
     line-height: 22px
   }
 
-  ul {
+  ul, ol {
     padding-left: 15px
+
+    li {
+      margin: 0.4rem
+      padding: 0 0.4rem
+      list-style: initial
+    }
   }
 
-  li {
-    margin: 0.4rem
-    padding: 0 0.4rem
-    list-style: initial
+  ol li {
+    list-style: decimal
   }
 }
 
@@ -110,10 +133,12 @@ $--cib-color-brand-primary-background = linear-gradient(90deg, #904887 10.79%, #
     text-decoration: none
     font-weight: 500
     line-height: 24px
+    transition: background-color 0.2s
     margin-inline-end: 6px
 
     &:hover {
-      text-decoration: underline
+      background-color: #afbde8
+      text-decoration: none
     }
   }
 }
@@ -121,5 +146,16 @@ $--cib-color-brand-primary-background = linear-gradient(90deg, #904887 10.79%, #
 .sourceAttributions {
   li {
     line-height: 1.2em
+  }
+}
+
+.settings {
+  .triggerModeSmall {
+    color: #ccc !important
+    font-size: 12px !important
+  }
+
+  a:hover {
+    text-decoration: underline
   }
 }

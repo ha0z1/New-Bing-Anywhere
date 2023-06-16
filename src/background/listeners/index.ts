@@ -2,7 +2,6 @@ import { version } from '@@/utils'
 import { getURL } from '../utils'
 import { getNotification, hideNotification } from './_notification'
 
-import { bingChatCreate, bingChatGetSocketId, bingChatPing, bingChatSend, bingChatCloseWebSocket } from './_bing_chat'
 const getEnv = async () => {
   return {
     version
@@ -55,11 +54,5 @@ export default {
   openUrlInSameTab,
 
   getNotification,
-  hideNotification,
-
-  bingChatCreate,
-  bingChatSend,
-  bingChatPing,
-  bingChatGetSocketId,
-  bingChatCloseWebSocket
+  hideNotification
 }
