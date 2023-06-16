@@ -1,1 +1,1 @@
-export { sendBingChat } from './_bing'
+export { createBingChat } from './_bing'

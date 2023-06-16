@@ -1,7 +1,7 @@
 import { useTitle } from '@/utils/hooks'
-import { Config, getConfig, setConfig } from '@@/utils'
-import { Form, message, Switch } from 'antd'
-import React, { useState } from 'react'
+import { getConfig, setConfig, type Config } from '@@/utils'
+import { Form, Switch, message } from 'antd'
+import React from 'react'
 import useSWR from 'swr'
 import s from './options.module.styl'
 
@@ -10,7 +10,7 @@ const App: React.FC = () => {
 
   const [form] = Form.useForm()
 
-  const { data: config, error } = useSWR<Config>('config', async () => {
+  const { data: config } = useSWR<Config>('config', async () => {
     const config = await getConfig()
     form.setFieldsValue(config)
     return config
@@ -61,7 +61,7 @@ const App: React.FC = () => {
         <Form.Item label="Show Bing Button On Google" valuePropName="checked" name="showBingButtonOnGoogle">
           <Switch />
         </Form.Item>
-        <Form.Item label="Show Bing Chat Anywhere" valuePropName="checked" name="showChat">
+        <Form.Item label="Show Bing Chat Sidebar" valuePropName="checked" name="showChat">
           <Switch />
         </Form.Item>
       </Form>

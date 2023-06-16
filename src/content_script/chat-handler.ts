@@ -3,12 +3,20 @@ import { $w } from './utils'
 
 const isGoogle = checkIsGoogle()
 export default async ($: ZeptoStatic, config: Config) => {
-  let query = ''
+  let prompt = ''
   if (isGoogle) {
-    query = new URLSearchParams(location.search).get('q') ?? ''
+    prompt = new URLSearchParams(location.search).get('q') ?? ''
   }
 
-  const chatIframeUrl = chrome.runtime.getURL(`/app/index.html#/chat/iframe?q=${encodeURIComponent(query)}`)
+  const extra = new URLSearchParams(location.hash.slice(1)).get('new-bing-anywhere') ?? ''
+
+  const qs = {
+    prompt: prompt.trim(),
+    extra
+  }
+
+  const chatIframeUrl = chrome.runtime.getURL(`/app/index.html#/chat/iframe?${new URLSearchParams(qs).toString()}`)
+
   try {
     const $ifame = $(`<iframe src="${chatIframeUrl}" scrolling="no" />`)
     $ifame.css({
