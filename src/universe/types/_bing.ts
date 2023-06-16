@@ -1,37 +1,44 @@
 /* eslint-disable @typescript-eslint/indent */
-export const enum InvocationId {
-  'Creative' = '2', // maybe 0?
-  'Precise' = '1',
-  'Balanced' = '0'
-}
+
 export interface Session {
   conversationSignature: string
   clientId: string
   conversationId: string
 }
+
+export type ConversationStyle = 'Creative' | 'Precise' | 'Balanced'
 export interface createPropmtOptions {
+  tone: ConversationStyle
   session: Session
-  invocationId?: InvocationId
+  invocationId?: 0
   isStartOfSession?: boolean
   prompt: string
 }
 
 export interface ConversationOptions {
-  conversationId: string
+  session: Session
   source: string
   participantId: string
-  conversationSignature: string
 }
 
 export interface CoreData {
-  messages: Array<
+  messages?: Array<
     Partial<{
       text: string
       author: 'user' | 'bot'
       createdAt: string
       timestamp: string
       messageId: string
-      messageType?: 'RenderCardRequest' | 'Text' | 'RichCard' | 'EndOfConversationActivity' | 'ActivityTypes/Event'
+      messageType?: 'RenderCardRequest' | 'Text' | 'RichCard' | 'EndOfConversationActivity' | 'ActivityTypes/Event' | 'InternalSearchResult'
+      groundingInfo?: {
+        web_search_results?: Array<{
+          index: string
+          snippets: string[]
+          title: string
+          url: string
+        }>
+      }
+
       requestId: string
       offense: string
       feedback: {
@@ -65,8 +72,8 @@ export interface CoreData {
       privacy: null
     }>
   >
-  firstNewMessageIndex: number
-  defaultChatName: string
+  firstNewMessageIndex: number | null
+  defaultChatName: string | null
   conversationId: string
   requestId: string
   conversationExpiryTime: string
@@ -80,13 +87,17 @@ export interface CoreData {
     numUserMessagesInConversation: number
   }
   result: {
-    error?: string
-    value: 'Success'
-    message: string
+    error?: string // 'Request is throttled.'
+    value: 'Success' | 'Throttled'
+    message: string // 'Request is throttled.'
     serviceVersion: string
   }
 }
 
+export interface type0Data {
+  type: 0
+  text: string
+}
 export interface Type1Data {
   type: 1
   target: 'update'
@@ -97,4 +108,17 @@ export interface Type2Data {
   type: 2
   invocationId: string
   item: CoreData
+}
+
+export type onMessageData = type0Data | Type1Data | Type2Data
+export interface CreateBingChatOptions {
+  prompt: string
+  onMessage: (data: onMessageData) => void
+  needRefresh: boolean
+  session?: Session
+}
+
+export interface CreateBingChatResponce {
+  data?: CoreData
+  conversationOptions?: Partial<ConversationOptions>
 }

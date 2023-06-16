@@ -1,4 +1,6 @@
-import { Bing } from '@@/types'
+import { type Bing } from '@@/types'
+
+import { v4 as uuidv4 } from 'uuid'
 
 const pad0 = (n: number) => (n < 10 ? `0${n}` : `${n}`)
 
@@ -26,58 +28,67 @@ const timestamp = () => {
 }
 
 export const createPropmt = (options: Bing.createPropmtOptions) => {
-  const { prompt, isStartOfSession = true, session } = options
+  const { prompt, isStartOfSession = true, session, tone } = options
   const { conversationSignature, clientId, conversationId } = session
   return {
     arguments: [
       {
         source: 'cib',
-        sliceIds: [
-          'winmuid1tf',
-          'forallv2p2c',
-          'sbsvgoptcf',
-          'encjsrefcf',
-          'winlongmsgtf',
-          'controlwp',
-          '0427visuals0',
-          '0430dv3_2k_pc',
-          '428gl16ks0',
-          '420bics0',
-          '0329resp',
-          '425bicpctrl',
-          '424dagslnv1'
-        ],
         optionsSets: [
           'nlu_direct_response_filter',
           'deepleo',
           'disable_emoji_spoken_text',
           'responsible_ai_policy_235',
           'enablemm',
-          'h3imaginative',
-          'clgalileo',
-          'gencontentv3',
-          'dlresponse2k',
-          'dltokens19k',
-          'responseos',
-          'dagslnv1',
-          'dv3sugg'
+          'galileo',
+          'saharagenconv5',
+          'iyntlbing',
+          'iyxapbing',
+          'objopinion',
+          'intmvgnd',
+          'rweasgv2',
+          'videoansgnd',
+          'dv3sugg',
+          // 'autosave',
+          'iyoloxap',
+          'iyoloneutral'
         ],
         allowedMessageTypes: [
           'ActionRequest',
           'Chat',
+          'Context',
           'InternalSearchQuery',
           'InternalSearchResult',
           'Disengaged',
           'InternalLoaderMessage',
+          'Progress',
           'RenderCardRequest',
           'AdsQuery',
           'SemanticSerp',
           'GenerateContentQuery',
           'SearchQuery'
         ],
-
+        sliceIds: [
+          'winmuid3tf',
+          'wrapalledgtf',
+          'newmma-prod',
+          'rankcf',
+          'imgchatgptv1',
+          'cibbeta2',
+          'pref2',
+          'winstmsg2tf',
+          'sydtransctrl',
+          'cssconvdesk',
+          '606rai271s0',
+          '517opinion',
+          '602refusals0',
+          '606rls0',
+          '529rwea',
+          '524vidansg'
+        ],
         verbosity: 'verbose',
         isStartOfSession,
+
         message: {
           // locale: 'zh-CN',
           timestamp: timestamp(),
@@ -86,15 +97,136 @@ export const createPropmt = (options: Bing.createPropmtOptions) => {
           text: prompt,
           messageType: 'Chat'
         },
+        tone,
         conversationSignature,
         participant: {
           id: clientId
         },
+        spokenTextMode: 'None',
         conversationId
       }
     ],
-    invocationId: Bing.InvocationId.Balanced,
+    invocationId: '0',
     target: 'chat',
     type: 4
   }
+}
+
+const webSockets: Record<string, WebSocket | null> = {}
+
+let id = 0
+const uid = () => ++id
+
+export const bingChatCreateSession = async (): Promise<Bing.Session> => {
+  const res = await fetch('https://www.bing.com/turing/conversation/create', {
+    headers: {
+      accept: '*/*',
+      'accept-language': 'zh,en;q=0.9,en-US;q=0.8,zh-CN;q=0.7,zh-TW;q=0.6',
+      'sec-fetch-dest': 'empty',
+      'sec-fetch-mode': 'cors',
+      'sec-fetch-site': 'none'
+    },
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    body: null,
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'include'
+  }).then(async (r) => await r.json())
+
+  return {
+    conversationId: res.conversationId,
+    clientId: res.clientId,
+    conversationSignature: res.conversationSignature
+  }
+}
+
+export const bingChatGetSocketId = async (): Promise<number> => {
+  const socketUrl = 'wss://sydney.bing.com/sydney/ChatHub'
+  return await new Promise((resolve, reject) => {
+    const ws = new WebSocket(socketUrl)
+    const socketId = uid()
+    ws.onopen = (e) => {
+      // console.log(`Connected to ${socketUrl}`)
+      const hello = JSON.stringify({ protocol: 'json', version: 1 }) + '\x1e'
+      ws.send(hello)
+    }
+
+    ws.onclose = () => {
+      // console.log('WebSocket was closed')
+      webSockets[socketId] = null
+    }
+    ws.onerror = (e) => {
+      reject(e)
+    }
+
+    ws.onmessage = (e) => {
+      const msg = e.data
+      if (msg === '{}\x1e') {
+        webSockets[socketId] = ws
+        resolve(socketId)
+        return
+      }
+      ws.close()
+      webSockets[socketId] = null
+      reject(new Error('WebSocket did not connect successfully'))
+    }
+  })
+}
+
+export const bingChatPing = async (socketId: number) => {
+  return await new Promise((resolve, reject) => {
+    const ws = webSockets[socketId]
+    if (ws == null) throw new Error(`WebSocket ${socketId} not found`)
+
+    ws.send(JSON.stringify({ type: 6 }) + '\x1e')
+    resolve(null)
+  })
+}
+
+export const bingChatSend = async (
+  socketId: number,
+  msg: object,
+  oMmessage: (data: Bing.Type1Data | Bing.Type2Data) => void
+): Promise<Bing.Type2Data> => {
+  return await new Promise((resolve, reject) => {
+    const ws = webSockets[socketId]
+    if (ws == null) throw new Error(`WebSocket ${socketId} not found`)
+
+    ws.onmessage = (e) => {
+      const msg = e.data
+      for (const item of msg.split('\x1e').filter(Boolean)) {
+        const data = JSON.parse(item.replaceAll('\n', '\\n'))
+        oMmessage(data)
+
+        if (data.type === 2) {
+          setTimeout(() => {
+            resolve(data)
+          })
+        }
+      }
+    }
+    ws.send(JSON.stringify(msg) + '\x1e')
+  })
+}
+
+export const bingChatCloseWebSocket = async (socketId: number) => {
+  const ws = webSockets[socketId]
+  ws?.close()
+  webSockets[socketId] = null
+}
+
+export const getFromConversation = async (options: Bing.ConversationOptions): Promise<Bing.CoreData> => {
+  const API =
+    'https://sydney.bing.com/sydney/GetConversation?' +
+    `conversationId=${encodeURIComponent(options.session.conversationId)}&` +
+    `source=${encodeURIComponent(options.source)}&` +
+    `participantId=${encodeURIComponent(options.participantId)}&` +
+    `conversationSignature=${encodeURIComponent(options.session.conversationSignature)}&` +
+    `traceId=${uuidv4()}`
+  const data = await fetch(API).then((r) => r.json())
+  return data
+}
+
+export const checkHasText = (data: Bing.CoreData) => {
+  return data?.result?.value === 'Success' && !!data?.messages?.reverse().find((msg) => !msg.messageType && msg.author === 'bot')?.text
 }

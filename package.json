@@ -1,6 +1,6 @@
 {
   "name": "new-bing-anywhere",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
   "homepage": "https://github.com/haozi/New-Bing-Anywhere",
@@ -12,7 +12,7 @@
   "author": "haozi",
   "scripts": {
     "build": "rm -rf dist && mkdir -p dist && pnpm run lint && pnpm run build:bundle",
-    "build:bundle": "vite-node scripts/build.ts -- build",
+    "build:bundle": "NODE_ENV=production vite-node scripts/build.ts -- build",
     "copy": "rm -rf dist && cp -r public dist",
     "copy:soruce": "rsync -vhra . dist/source --include='**.gitignore' --exclude='/.git' --exclude='dist'  --filter=':- .gitignore' --delete-after",
     "copy:watch": "pnpm run copy -- --watch",
@@ -33,10 +33,10 @@
   "devDependencies": {
     "@types/chrome": "^0.0.237",
     "@types/fs-extra": "^11.0.1",
-    "@types/node": "^20.2.5",
-    "@typescript-eslint/eslint-plugin": "^5.59.9",
+    "@types/node": "^20.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.11",
     "copy-and-watch": "^0.1.6",
-    "esbuild": "^0.17.19",
+    "esbuild": "^0.18.3",
     "esbuild-plugin-svgr": "^2.0.0",
     "esbuild-style-plugin": "^1.6.2",
     "eslint": "^8.42.0",
@@ -56,29 +56,29 @@
     "stylus": "^0.59.0",
     "stylus-supremacy": "^2.17.5",
     "typescript": "^5.1.3",
-    "vite-node": "^0.32.0"
+    "vite-node": "^0.32.1"
   },
   "engines": {
-    "node": "^19.9.0",
-    "pnpm": "^8.6.1"
+    "node": "^20.3.0",
+    "pnpm": "^8.6.2"
   },
   "extension-i18n": {
     "en": {
-      "extensionName": "New Bing Anywhere",
-      "extensionDescription": "New Bing isn't just for Edge anymore. Anywhere you want"
+      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
+      "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country."
     },
     "zh_CN": {
-      "extensionName": "New Bing Anywhere",
-      "extensionDescription": "New Bing isn't just for Edge anymore. Anywhere you want. 随时随地，有求必应。"
+      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
+      "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country. 随时随地，有求必应。"
     },
     "zh_TW": {
-      "extensionName": "New Bing Anywhere",
-      "extensionDescription": "隨時隨地，有求必應"
+      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
+      "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country. 隨時隨地，有求必應"
     },
     "ru": {
-      "extensionName": "New Bing Anywhere",
-      "extensionDescription": "New Bing не только для Edge. В любом месте, где вы хотите"
+      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
+      "extensionDescription": "Чат New Bing может использоваться в любом браузере, с любым поисковым движком и в любой стране."
     }
   },
-  "extensionName": "New Bing Anywhere"
+  "extensionName": "New Bing Anywhere (Bing Chat GPT-4)"
 }
