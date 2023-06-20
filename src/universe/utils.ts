@@ -143,6 +143,7 @@ export const getConfig = async (): Promise<Config> => {
     showBingButtonOnGoogle: true,
     showGuideToGithub: true,
     showChat: true,
+    showRelease: true,
     triggerMode: 'Always',
     conversationStyle: 'Balanced',
     ...config
