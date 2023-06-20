@@ -16,7 +16,7 @@ const App: React.FC = () => {
     return config
   })
 
-  const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 14 } }
+  const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } }
 
   const [messageApi, contextHolder] = message.useMessage()
   const showSuccess = (content: string) => {
@@ -51,7 +51,7 @@ const App: React.FC = () => {
         initialValues={config}
         layout="horizontal"
         form={form}
-        style={{ width: 400 }}
+        style={{ width: 600 }}
         labelWrap={true}
         onValuesChange={saveConfig}
       >
