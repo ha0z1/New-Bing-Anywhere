@@ -133,6 +133,7 @@ export interface Config {
   showBingButtonOnGoogle: boolean
   showGuideToGithub: boolean
   showChat: boolean
+  showRelease: boolean
   triggerMode: 'Always' | 'Questionmark' | 'Manually'
   conversationStyle: Bing.ConversationStyle
 }
@@ -143,6 +144,7 @@ export const getConfig = async (): Promise<Config> => {
     showBingButtonOnGoogle: true,
     showGuideToGithub: true,
     showChat: true,
+    showRelease: true,
     triggerMode: 'Always',
     conversationStyle: 'Balanced',
     ...config
