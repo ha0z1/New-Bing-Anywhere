@@ -64,6 +64,9 @@ const App: React.FC = () => {
         <Form.Item label="Show Bing Chat Sidebar" valuePropName="checked" name="showChat">
           <Switch />
         </Form.Item>
+        <Form.Item label="Show Release On Upgrade" valuePropName="checked" name="showRelease">
+          <Switch />
+        </Form.Item>
       </Form>
     </div>
   )

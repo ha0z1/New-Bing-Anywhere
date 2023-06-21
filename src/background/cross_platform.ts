@@ -1,5 +1,5 @@
 import { BAND_MKTS, BING } from '@@/constants'
-import { isCanary, registryListener, version } from '@@/utils'
+import { isCanary, registryListener, version, getConfig } from '@@/utils'
 
 import { repository } from '../../package.json'
 import initContextMenu from './context_menus'
@@ -10,7 +10,8 @@ export default () => {
   initContextMenu()
   registryListener(listeners)
 
-  chrome.runtime.onInstalled.addListener((details) => {
+  chrome.runtime.onInstalled.addListener(async (details) => {
+    const config = await getConfig()
     const repositoryUrl: string = repository.url
     // const debugurl = 'https://www.bing.com/search?q=Edge%20%E4%B8%8B%E8%BD%BD&showconv=1&FORM=hpcodx'
     // if (debugurl) {
@@ -23,7 +24,7 @@ export default () => {
     }
     if (details.reason === 'install') {
       openPage(repositoryUrl)
-    } else if (details.reason === 'update') {
+    } else if (details.reason === 'update' && config.showRelease) {
       openPage(`${repositoryUrl}/releases/tag/v${version}`)
     }
   })
