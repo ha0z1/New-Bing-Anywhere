@@ -29,7 +29,7 @@ export default async ($: ZeptoStatic, config: Config) => {
       boxSizing: 'border-box',
       willChange: 'height',
       transition: 'height .1s cubic-bezier(0, 0, 0, 1.27) 0s',
-      borderRadius: '12px'
+      borderRadius: '8px'
     })
     // $ifame.prependTo('body')
 
