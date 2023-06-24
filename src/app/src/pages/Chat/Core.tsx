@@ -198,7 +198,7 @@ export default () => {
               <Button
                 icon={<LinkOutlined />}
                 type="ghost"
-                href={`https://www.bing.com/search?q=${encodeURIComponent(prompt)}`}
+                href={`https://www.bing.com/search?q=${encodeURIComponent(prompt)}&showconv=1`}
                 onClick={async (e) => {
                   e.preventDefault()
                   const url = e.currentTarget.href
