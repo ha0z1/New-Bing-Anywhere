@@ -37,7 +37,7 @@ const contextMenus: Record<string, IInitContextMenu> = {
     title: '❤️ Like it',
     contexts: ['action'],
     onclick: () => {
-      openPage('https://chrome.google.com/webstore/detail/new-bing-anywhere/hceobhjokpdbogjkplmfjeomkeckkngi/reviews')
+      openPage('https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews')
     }
   },
 

@@ -1,5 +1,5 @@
 import { type Bing } from '@@/types'
-import { ls, getConfig, isBrave } from '@@/utils'
+import { ls, getConfig } from '@@/utils'
 
 import {
   createPropmt,
