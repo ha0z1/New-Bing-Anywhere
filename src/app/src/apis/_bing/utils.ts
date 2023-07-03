@@ -143,32 +143,40 @@ export const bingChatCreateSession = async (): Promise<Bing.Session> => {
 export const bingChatGetSocketId = async (): Promise<number> => {
   const socketUrl = 'wss://sydney.bing.com/sydney/ChatHub'
   return await new Promise((resolve, reject) => {
-    const ws = new WebSocket(socketUrl)
-    const socketId = uid()
-    ws.onopen = (e) => {
-      // console.log(`Connected to ${socketUrl}`)
-      const hello = JSON.stringify({ protocol: 'json', version: 1 }) + '\x1e'
-      ws.send(hello)
-    }
-
-    ws.onclose = () => {
-      // console.log('WebSocket was closed')
-      webSockets[socketId] = null
-    }
-    ws.onerror = (e) => {
-      reject(e)
-    }
-
-    ws.onmessage = (e) => {
-      const msg = e.data
-      if (msg === '{}\x1e') {
-        webSockets[socketId] = ws
-        resolve(socketId)
-        return
+    try {
+      const ws = new WebSocket(socketUrl)
+      const socketId = uid()
+      ws.onopen = (e) => {
+        // console.log(`Connected to ${socketUrl}`)
+        const hello = JSON.stringify({ protocol: 'json', version: 1 }) + '\x1e'
+        ws.send(hello)
       }
-      ws.close()
-      webSockets[socketId] = null
-      reject(new Error('WebSocket did not connect successfully'))
+
+      ws.onclose = () => {
+        // console.log('WebSocket was closed')
+        webSockets[socketId] = null
+      }
+      ws.onerror = (e) => {
+        if (e.type === 'error') {
+          reject(new Error(`WebSocket ${socketUrl} did not connect successfully`))
+          return
+        }
+        reject(e)
+      }
+
+      ws.onmessage = (e) => {
+        const msg = e.data
+        if (msg === '{}\x1e') {
+          webSockets[socketId] = ws
+          resolve(socketId)
+          return
+        }
+        ws.close()
+        webSockets[socketId] = null
+        reject(new Error('WebSocket did not connect successfully'))
+      }
+    } catch (e) {
+      reject(e)
     }
   })
 }
@@ -223,8 +231,13 @@ export const getFromConversation = async (options: Bing.ConversationOptions): Pr
     `participantId=${encodeURIComponent(options.participantId)}&` +
     `conversationSignature=${encodeURIComponent(options.session.conversationSignature)}&` +
     `traceId=${uuidv4()}`
-  const data = await fetch(API).then((r) => r.json())
-  return data
+  try {
+    const data = await fetch(API).then((r) => r.json())
+    return data
+  } catch (err: unknown) {
+    const { message } = err as { message: string }
+    throw new Error(`Failed to get conversation from ${API}: ${message}}`)
+  }
 }
 
 export const checkHasText = (data: Bing.CoreData) => {

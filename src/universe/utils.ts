@@ -288,6 +288,7 @@ export const genIssueUrl = async (extra?: Record<string, string | null | undefin
     const body =
       ' \n\n\n\n' +
       `<!--  ${comment} -->\n` +
+      '<pre>\n' +
       Object.entries<string>({
         Version: `${version}${isCanary ? ' (Canary)' : ''} `,
         UA: navigator.userAgent,
@@ -299,8 +300,8 @@ export const genIssueUrl = async (extra?: Record<string, string | null | undefin
         .map(([key, val]) => {
           return val ? `${key}: ${val}` : ''
         })
-        .join('\n')
-
+        .join('\n') +
+      '</pre>'
     finalUrl += encodeURIComponent(body.slice(0, 2000))
     return finalUrl
   } catch {
