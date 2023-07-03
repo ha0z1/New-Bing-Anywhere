@@ -105,7 +105,7 @@ export default () => {
   })
   useEffect(() => {
     if (!error) return
-    console.error('error', error)
+    // console.log('%c %s', 'color: red', error)
     setLoading(false)
   }, [error])
 
@@ -136,12 +136,13 @@ export default () => {
     const url = await genIssueUrl({
       engine,
       query: prompt,
+      stack: (error || '').toString().slice(0, 1000),
       conversation: conversationOptions
-        ? '[link](https://sydney.bing.com/sydney/GetConversation?' +
+        ? 'https://sydney.bing.com/sydney/GetConversation?' +
           `conversationId=${encodeURIComponent(conversationOptions.session?.conversationId ?? '')}&` +
           `source=${encodeURIComponent(conversationOptions.source ?? '')}&` +
           `participantId=${encodeURIComponent(conversationOptions.participantId ?? '')}&` +
-          `conversationSignature=${encodeURIComponent(conversationOptions.session?.conversationSignature ?? '')})`
+          `conversationSignature=${encodeURIComponent(conversationOptions.session?.conversationSignature ?? '')}`
         : undefined
     })
     window.open(url)
@@ -243,7 +244,7 @@ export default () => {
                   //   return <>{error.message}</>
                   // }
                   return (
-                    <>
+                    <div className={s.error}>
                       <p>
                         <span style={{ color: 'red' }}>Error</span>: There seem to be some errors{' '}
                         {error ? (
@@ -280,13 +281,16 @@ export default () => {
                         <li>Click the force refresh button in the top right corner and try again.</li>
                         <li>
                           If it remains unresolved, please{' '}
-                          <a href="https://github.com/haozi/New-Bing-Anywhere/issues" onClick={reportIssues}>
-                            submit an issue
-                          </a>{' '}
-                          to us.
+                          <Button type="primary" href="https://github.com/haozi/New-Bing-Anywhere/issues" onClick={reportIssues}>
+                            Submit an issue
+                          </Button>{' '}
+                          to us, or{' '}
+                          <Button danger type="primary" href="/app/index.html#/options" target="_blank" style={{ marginTop: '0.3em' }}>
+                            Disable "Show Bing Chat Sidebar"
+                          </Button>
                         </li>
                       </ul>
-                    </>
+                    </div>
                   )
                 }
                 // console.log(content.text, config.triggerMode)
