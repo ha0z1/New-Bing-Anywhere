@@ -1,9 +1,9 @@
 import { version as pkgVersion, repository } from '../../package.json'
-import { FULL_VERSION, MAIN_VERSION } from './constants'
+import { FULL_VERSION, MAIN_VERSION, GOOGLE_DOMAINS } from './constants'
 import { type Bing } from './types'
 
-export const checkIsGoogle = () => {
-  return location.hostname.includes('google')
+export const checkIsGoogle = (hostname = location.hostname) => {
+  return GOOGLE_DOMAINS.includes(hostname.replace(/^www\./, ''))
 }
 export const ls = {
   set: async <T = any>(key: string, value: T): Promise<void> => {

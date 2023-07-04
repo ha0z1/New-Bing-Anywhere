@@ -1,4 +1,4 @@
-import { callBackground, getConfig } from '@@/utils'
+import { callBackground, checkIsGoogle, getConfig } from '@@/utils'
 import { extensionName } from '../../package.json'
 import bingHandler from './bing-handler'
 import chatHandler from './chat-handler'
@@ -24,7 +24,7 @@ import googleHandler from './google-handler'
     bingHandler($)
   }
 
-  if (location.hostname.startsWith('www.google.')) {
+  if (checkIsGoogle()) {
     googleHandler($)
   }
 })(window.Zepto as ZeptoStatic)
