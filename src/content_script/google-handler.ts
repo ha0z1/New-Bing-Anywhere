@@ -3,11 +3,8 @@ import { $w, openUrlInSameTab } from './utils'
 
 export default async ($: ZeptoStatic) => {
   const config = await getConfig()
-
   if (!config.showBingButtonOnGoogle) return
-  if (!(location.href.startsWith('https://www.google.com/search?') || location.href.startsWith('https://www.google.com.hk/search?'))) {
-    return
-  }
+  if (location.pathname !== '/search') return
 
   $w('[action="/search"]').then((form) => {
     if (!form) return
