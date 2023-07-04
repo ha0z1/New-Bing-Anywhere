@@ -240,9 +240,6 @@ export default () => {
                   )
                 }
                 if (error) {
-                  // if (error.message) {
-                  //   return <>{error.message}</>
-                  // }
                   return (
                     <div className={s.error}>
                       <p>
@@ -258,16 +255,24 @@ export default () => {
                       <p>You can try the following methods to fix them:</p>
                       <ul>
                         <li>
-                          If you are using browsers like <em>Brave</em>, please make sure you have allowed third-party cookies for the
-                          domain `*.google.com`.
-                        </li>
-
-                        <li>
-                          Make sure you have successfully logged in to your Microsoft account on{' '}
+                          Make sure you have successfully logged into your Microsoft account on{' '}
                           <a href="https://www.bing.com" target="_blank" rel="nofollow noopener noreferrer">
                             Bing.com
                           </a>
-                          .
+                          . And ensure that the MS account is not banned (able to chat successfully on{' '}
+                          <a
+                            href="https://www.bing.com/search?q=Bing+AI&showconv=1&FORM=hpcodx"
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                          >
+                            Bing-chat
+                          </a>
+                          ).
+                        </li>
+
+                        <li>
+                          If you are using browsers like <em>Brave</em>, please make sure you have allowed third-party cookies for the
+                          domain `*.google.com`.
                         </li>
 
                         <li>

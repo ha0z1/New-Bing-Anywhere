@@ -122,7 +122,7 @@ export default async ($: ZeptoStatic) => {
       //   val = ($('#searchbox').val() ?? '').trim()
       // }
       if (!val) {
-        val = $q.val().trim()
+        val = $.trim($q.val())
       }
       const url = `https://www.google.com/search?q=${encodeURIComponent(val)}`
       $this.attr('href', url)
