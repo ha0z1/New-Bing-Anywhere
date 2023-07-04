@@ -25,7 +25,7 @@ export const createBingChat = async (options: Bing.CreateBingChatOptions): Promi
   if (promptCache) {
     const data = await getFromConversation(promptCache)
     if (checkHasText(data)) {
-      return { data, conversationOptions: promptCache }
+      return { data: data!, conversationOptions: promptCache }
     }
   }
 

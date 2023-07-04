@@ -14,7 +14,7 @@ export default async ($: ZeptoStatic) => {
 
     const $a = $(`
       <a href="https://www.bing.com/search?q=Bing+AI&showconv=1" rel="noopener noreferrer nofollow" target="bing" title="search with New Bing">
-        <img src="${chrome.runtime.getURL('images/bing-chat.svg')}" style="display: block; width: 24px;" alt="bing" />
+        <img src="${chrome.runtime.getURL('images/bing-chat.png')}" style="display: block; width: 20px; height: 20px" alt="bing" />
       </a>`).css({
       width: '40px',
       display: 'flex',
@@ -22,7 +22,8 @@ export default async ($: ZeptoStatic) => {
       'z-index': 999,
       cursor: 'pointer',
       'justify-content': 'center',
-      margin: '0 10px 0 -10px'
+      'align-items': 'center',
+      margin: '-2px 10px 0 -10px'
     })
 
     $submit.after($a)
