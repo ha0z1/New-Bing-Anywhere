@@ -8,7 +8,7 @@ export const formatText = (text: string, data: Bing.CoreData) => {
     data.messages?.find((message) => message.messageType === 'InternalSearchResult')?.groundingInfo?.web_search_results ?? []
   const mapping = webSearchResults.reduce((pre, o) => ({ ...pre, [o.index]: o }), {})
 
-  text = text.replace(/\[\^(\d+)\^\]/g, ($0, $1) => {
+  text = escapeHtml(text).replace(/\[\^(\d+)\^\]/g, ($0: string, $1: string) => {
     const data: Data = mapping[$1]
     if (!data) return ''
 
