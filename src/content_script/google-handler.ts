@@ -5,7 +5,7 @@ export default async ($: ZeptoStatic) => {
   const config = await getConfig()
   if (!config.showBingButtonOnGoogle) return
   if (location.pathname !== '/search') return
-
+  const isRtl = document.documentElement.dir === 'rtl'
   $w('[action="/search"]').then((form) => {
     if (!form) return
     const $form = $(form)
@@ -23,7 +23,13 @@ export default async ($: ZeptoStatic) => {
       cursor: 'pointer',
       'justify-content': 'center',
       'align-items': 'center',
-      margin: '-2px 10px 0 -10px'
+      margin: '-2px 10px 0 -10px',
+      ...(isRtl
+        ? {
+            marginInlineStart: '-10px',
+            marginInlineEnd: '10px'
+          }
+        : null)
     })
 
     $submit.after($a)

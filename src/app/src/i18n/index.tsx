@@ -6,6 +6,7 @@ import zhTW from 'antd/locale/zh_TW'
 
 import router from '@/routers'
 import { ConfigProvider } from 'antd'
+import { useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
 
 export default () => {

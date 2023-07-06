@@ -20,8 +20,10 @@ export default () => {
   const isNewtab = scene === 'newtab'
 
   const sendSize = useCallback(() => {
-    const width = document.body.scrollWidth
-    const height = document.body.scrollHeight
+    const $body = document.body
+    if (!$body) return
+    const width = $body.scrollWidth
+    const height = $body.scrollHeight
     ;(top ?? window).postMessage(
       {
         type: 'nba-resize',
