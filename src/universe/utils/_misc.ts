@@ -1,6 +1,6 @@
-import { version as pkgVersion, repository } from '../../package.json'
-import { FULL_VERSION, MAIN_VERSION, GOOGLE_DOMAINS } from './constants'
-import { type Bing } from './types'
+import { FULL_VERSION, GOOGLE_DOMAINS, MAIN_VERSION } from '@@/constants'
+import { type Bing } from '@@/types'
+import { version as pkgVersion, repository } from '../../../package.json'
 
 export const checkIsGoogle = (hostname = location.hostname) => {
   return GOOGLE_DOMAINS.includes(hostname.replace(/^www\./, ''))
@@ -309,4 +309,47 @@ export const genIssueUrl = async (extra?: Record<string, string | null | undefin
   } catch {
     return repositoryUrl
   }
+}
+
+export const getURL = (url: string = '', base?: string): URL => {
+  try {
+    return new URL(url, base)
+  } catch (e) {
+    // console.error(e)
+    return {
+      searchParams: {
+        get: () => null
+      }
+    } as any
+  }
+}
+
+export const getURLSearchParams = (url: string): URLSearchParams => {
+  try {
+    return new URLSearchParams(url)
+  } catch {
+    return {
+      get: () => null
+    } as any
+  }
+}
+
+export const openPage = async (url: string): Promise<chrome.tabs.Tab> => {
+  const tabs = await chrome.tabs.query({ currentWindow: true })
+
+  const urlObj = getURL(url)
+  let tab = tabs.find((tab) => tab.url?.startsWith(urlObj.origin))
+
+  if (tab == null) {
+    tab = await chrome.tabs.create({ url })
+  } else {
+    await Promise.all(
+      [
+        chrome.tabs.move(tab.id!, { index: tabs.length - 1 }),
+        tab.url !== url && chrome.tabs.update(tab.id!, { url }),
+        chrome.tabs.update(tab.id!, { active: true, url: tab.url !== url ? url : undefined })
+      ].filter(Boolean)
+    )
+  }
+  return tab
 }

@@ -153,11 +153,11 @@ const buildChromiumBase = async () => {
       32: 'images/bing_32x32.png',
       48: 'images/bing_48x48.png',
       128: 'images/bing_128x128.png'
+    },
+    action: {
+      default_popup: 'app/index.html#/popup',
+      default_title: 'New Bing Anywhere'
     }
-    // action: {
-    //   default_popup: 'app/index.html#/chat/popup',
-    //   default_title: 'New Bing Anywhere'
-    // }
   }
   fs.outputJSONSync(path.join(chromiumDir, 'manifest.json'), sortManifestJSON(manifest), isDev ? { spaces: 2 } : undefined)
 

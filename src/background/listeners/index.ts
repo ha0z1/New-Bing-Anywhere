@@ -1,5 +1,4 @@
-import { version } from '@@/utils'
-import { getURL } from '../utils'
+import { getURL, version } from '@@/utils'
 import { getNotification, hideNotification } from './_notification'
 
 const getEnv = async () => {
