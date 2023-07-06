@@ -1,6 +1,7 @@
 import Chat from '@/pages/Chat'
 import Home from '@/pages/Home'
 import Options from '@/pages/Options'
+import Popup from '@/pages/Popup'
 import { createHashRouter, Navigate } from 'react-router-dom'
 
 const router: any = createHashRouter([
@@ -11,6 +12,10 @@ const router: any = createHashRouter([
   {
     path: '/options',
     element: <Options />
+  },
+  {
+    path: '/popup',
+    element: <Popup />
   },
   {
     path: '/chat',

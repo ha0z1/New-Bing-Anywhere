@@ -1,10 +1,9 @@
 import { BAND_MKTS, BING } from '@@/constants'
-import { isCanary, registryListener, version, getConfig } from '@@/utils'
-
+import { getConfig, getURLSearchParams, isCanary, openPage, registryListener, version } from '@@/utils'
 import { repository } from '../../package.json'
 import initContextMenu from './context_menus'
 import listeners from './listeners'
-import { getURLSearchParams, openPage, setCookie } from './utils'
+import { setCookie } from './utils'
 
 export default () => {
   initContextMenu()
