@@ -33,7 +33,17 @@ export default () => {
   const isPopup = scene === 'popup'
   const prompt = searchParams.get('prompt') ?? ''
   const engine = searchParams.get('engine') ?? 'google'
+  const dir = searchParams.get('dir')
+  const darkmode = searchParams.get('darkmode')
+  useEffect(() => {
+    const $html = document.documentElement
+    dir && ($html.dir = dir)
 
+    if (darkmode) {
+      $html.style.setProperty('color-scheme', darkmode)
+      $html.setAttribute('color-scheme', darkmode)
+    }
+  }, [])
   // extra
   let extra: Extra | undefined
   try {
