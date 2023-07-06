@@ -4,18 +4,37 @@ import { $w } from './utils'
 const isGoogle = checkIsGoogle()
 export default async ($: ZeptoStatic, config: Config) => {
   let prompt = ''
+  let dir = ''
+  let darkmode = ''
   if (isGoogle) {
     prompt = new URLSearchParams(location.search).get('q') ?? ''
+    dir = document.documentElement.dir
+    darkmode = (document.querySelector('meta[name="color-scheme"]') as HTMLMetaElement)?.content === 'dark' ? 'dark' : ''
   }
 
   const extra = new URLSearchParams(location.hash.slice(1)).get('new-bing-anywhere') ?? ''
 
   const qs = {
     prompt: prompt.trim(),
+    dir,
+    darkmode,
     extra
   }
 
-  const chatIframeUrl = chrome.runtime.getURL(`/app/index.html#/chat/iframe?${new URLSearchParams(qs).toString()}`)
+  const qsStringify = (qs: Record<string, string>) => {
+    for (const key in qs) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (qs.hasOwnProperty(key)) {
+        if (!qs[key]) {
+          // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+          delete qs[key]
+        }
+      }
+    }
+    return new URLSearchParams(qs).toString()
+  }
+
+  const chatIframeUrl = chrome.runtime.getURL(`/app/index.html#/chat/iframe?${qsStringify(qs)}`)
 
   try {
     const $ifame = $(`<iframe src="${chatIframeUrl}" scrolling="no" />`)
@@ -56,7 +75,7 @@ export default async ($: ZeptoStatic, config: Config) => {
     if (!$sidebar.length) {
       $sidebar = $('<div id="rhs" />').css({
         //  marginBottom: '20px', marginLeft: '30px', height: 'fit-content'
-        marginLeft: 'var(--rhs-margin)',
+        marginInlineStart: 'var(--rhs-margin)',
         flex: '0 auto',
         width: 'var(--rhs-width)',
         position: 'relative',
