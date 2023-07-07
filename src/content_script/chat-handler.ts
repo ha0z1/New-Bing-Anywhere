@@ -61,6 +61,7 @@ export default async ($: ZeptoStatic, config: Config) => {
     //   overFlow: 'hidden'
     // })
     window.addEventListener('message', (e) => {
+      console.log(e.data, e.data.type)
       const { type, data } = e.data
       if (type !== 'nba-resize') return
       const { height } = data

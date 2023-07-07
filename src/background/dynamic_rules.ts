@@ -39,7 +39,6 @@ export default () => {
   if (!dynamicRules.length) return
 
   chrome.declarativeNetRequest.getDynamicRules((dRules) => {
-    // console.log(111, dRules)
     // console.log(222, [...new Set([...rules.map((rule) => rule.id), ...dRules.map((rule) => rule.id)])])
 
     chrome.declarativeNetRequest.updateDynamicRules({

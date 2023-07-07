@@ -21,9 +21,14 @@ export default () => {
 
   const sendSize = useCallback(() => {
     const $body = document.body
+    console.log(222222222, $body, document.body)
+    console.log($body)
     if (!$body) return
+    console.log(3333333)
     const width = $body.scrollWidth
     const height = $body.scrollHeight
+    console.log(444444444, width, height)
+    debugger
     ;(top ?? window).postMessage(
       {
         type: 'nba-resize',
