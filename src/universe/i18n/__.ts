@@ -12,7 +12,7 @@ const Langs = {
 
 const __ = (id: number) => {
   const lang = Langs.en_US
-  console.log(lang)
+  // console.log(lang)
   switch (lang) {
     case en_US:
       return lang

@@ -29,7 +29,7 @@ update 2023.7.6: Hong Kong IP doesn’t work either
 - Change a Microsoft account.
 - Whitelist bing.com if you use an Adblocker or a VPN.
 - Opera Users, [Turn on "Allow access to search page results"](https://github.com/haozi/New-Bing-Anywhere/issues/58#issuecomment-1592207565)
-- Brave Users, you need to allow third-party cookies from '\*.google.xxx'. Brave has a bug,you have to disable and enable erery time on launch [https://github.com/haozi/New-Bing-Anywhere/issues/76#issuecomment-1628103920](https://github.com/haozi/New-Bing-Anywhere/issues/76#issuecomment-1628103920)
+- Brave Users, you need to allow third-party cookies from '\*.google.xxx'. Brave has a bug,you have to disable and enable erery time on launch [https://github.com/haozi/New-Bing-Anywhere/issues/76#issuecomment-1628103920](https://github.com/haozi/New-Bing-Anywhere/issues/76#issuecomment-1628103920) or downgrade to [old version](https://github.com/brave/brave-browser/releases/tag/v1.50.114).
 - Firefox Users, you must use version 110 or up! Please update your browser.
 - Or sometimes just refresh a couple of times! Microsoft rushed their release, and it's still buggy.
 
