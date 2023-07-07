@@ -136,6 +136,7 @@ export interface Config {
   showRelease: boolean
   triggerMode: 'Always' | 'Questionmark' | 'Manually'
   conversationStyle: Bing.ConversationStyle
+  'X-Forwarded-For'?: string
 }
 export const getConfig = async (): Promise<Config> => {
   const config = (await chrome.storage.sync.get(CONFIG_KEY))[CONFIG_KEY]
@@ -147,6 +148,7 @@ export const getConfig = async (): Promise<Config> => {
     showRelease: true,
     triggerMode: 'Always',
     conversationStyle: 'Balanced',
+    'X-Forwarded-For': undefined,
     ...config
   }
 }
