@@ -41,7 +41,7 @@ const buildFile = async (input: string, output: string, extraBuildOptions?: Buil
       ...extraBuildOptions
     }
     if (!isDev) {
-      await esbuild.build(buildOptions)
+      await esbuild.build({ ...buildOptions, drop: ['console', 'debugger'] })
       return
     }
 

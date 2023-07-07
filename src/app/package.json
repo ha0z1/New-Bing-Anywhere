@@ -31,7 +31,7 @@
     "@vitejs/plugin-react-swc": "^3.3.2",
     "stylus": "^0.59.0",
     "typescript": "^5.1.6",
-    "vite": "^4.3.9",
+    "vite": "^4.4.1",
     "vite-plugin-imp": "^2.4.0",
     "vite-plugin-minify": "^1.5.2"
   }

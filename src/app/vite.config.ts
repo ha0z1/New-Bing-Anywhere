@@ -26,6 +26,12 @@ export default defineConfig(({ mode }) => {
         }
       }
     },
+    esbuild:
+      mode !== 'development'
+        ? {
+            drop: ['console', 'debugger']
+          }
+        : null,
     server: {
       host: '0.0.0.0'
     },
