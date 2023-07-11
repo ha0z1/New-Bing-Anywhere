@@ -6,6 +6,7 @@ export default async ($: ZeptoStatic, config: Config) => {
   let prompt = ''
   let dir = ''
   let darkmode = ''
+  const domain = location.hostname
   if (isGoogle) {
     prompt = new URLSearchParams(location.search).get('q') ?? ''
     dir = document.documentElement.dir
@@ -18,6 +19,7 @@ export default async ($: ZeptoStatic, config: Config) => {
     prompt: prompt.trim(),
     dir,
     darkmode,
+    domain,
     extra
   }
 

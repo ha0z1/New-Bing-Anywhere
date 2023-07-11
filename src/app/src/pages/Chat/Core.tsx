@@ -35,6 +35,7 @@ export default () => {
   const engine = searchParams.get('engine') ?? 'google'
   const dir = searchParams.get('dir')
   const darkmode = searchParams.get('darkmode')
+  const domain = searchParams.get('domain')
   useEffect(() => {
     const $html = document.documentElement
     dir && ($html.dir = dir)
@@ -253,10 +254,10 @@ export default () => {
                   return (
                     <div className={s.error}>
                       <p>
-                        <span style={{ color: 'red' }}>Error</span>: There seem to be some errors{' '}
+                        <span style={{ color: '#ff4d4f' }}>Error</span>: There seem to be some errors{' '}
                         {error ? (
                           <>
-                            :<span style={{ color: 'red', fontSize: 12 }}>{(error.message as string) ?? error.toString()} </span>
+                            :<span style={{ color: '#ff4d4f', fontSize: 12 }}>{(error.message as string) ?? error.toString()} </span>
                           </>
                         ) : (
                           ''
@@ -282,7 +283,7 @@ export default () => {
 
                         <li>
                           If you are using browsers like <em>Brave</em>, please make sure you have allowed third-party cookies for the
-                          domain `*.google.com`.
+                          domain `<span style={{ color: '#ff4d4f' }}>{domain}</span>`.
                         </li>
 
                         <li>
