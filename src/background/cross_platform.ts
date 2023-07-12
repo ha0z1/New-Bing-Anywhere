@@ -96,6 +96,32 @@ export default () => {
           )
         }
       )
+
+      chrome.cookies.get(
+        {
+          name: 'ANON',
+          url: BING
+        },
+        (cookie) => {
+          const value = cookie?.value
+          if (!value) return
+
+          const valueObj = getURLSearchParams(value)
+
+          valueObj.delete('A')
+
+          setCookie(
+            {
+              url: BING,
+              name: 'ANON',
+              domain: '.bing.com',
+              httpOnly: true,
+              value: valueObj.toString()
+            },
+            cookie
+          )
+        }
+      )
     },
     { urls: [BING + '*'], types: ['main_frame'] }
   )

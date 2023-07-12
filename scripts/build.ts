@@ -121,6 +121,7 @@ const buildChromiumBase = async () => {
       'https://*.yandex.com/*',
       'https://search.brave.com/*',
       'https://search.naver.com/*',
+      // '*://*/*',
       'https://*.openai.com/*',
       ...GOOGLE_DOMAINS.map((google) => `https://www.${google}/search?*`)
     ],
@@ -159,7 +160,7 @@ const buildChromiumBase = async () => {
       default_title: 'New Bing Anywhere'
     }
   }
-  fs.outputJSONSync(path.join(chromiumDir, 'manifest.json'), sortManifestJSON(manifest), { spaces: 2 })
+  fs.outputJSONSync(path.join(chromiumDir, 'manifest.json'), sortManifestJSON(manifest), isDev ? { spaces: 2 } : undefined)
 
   // https://developer.chrome.com/docs/webstore/i18n/
   ;['en', 'zh_CN', 'zh_TW', 'ru'].forEach((locale) => {
@@ -194,7 +195,7 @@ const buildChromiumCanary = async () => {
       homepage_url: 'https://github.com/haozi/New-Bing-Anywhere/tree/canary',
       key: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp2asctK5nmilg+tZyT74rpsgyfAYWl5pRKsoZDMxj97dwu5YMH1AXoE1ItbFCH8ysjWfsPbYfC0fhFcRljCroPxAJoSl73RRX2rFV8g8aSG101QTYTc2tUvw7xPLk0NS9X4bi/zZmlCHmcoxiOaslN8chs3JgOEQSJROu5PrGpahC9SzZh77iQEtOsYR1grEyuRioFi+x+end1X1tMwaJ4/yYTK4jj9PlFnOKDBFYVhGKCHaWkP2Wv4PPabl/nzUo+l/W0B7fkbaSxI8gir42YzA+OJcPQ/H2UMqtROZxqR847uXsAnB5PfPdo4tT5qUfPd16btsbIr9t6YAMMD0mQIDAQAB'
     }),
-    { spaces: 2 }
+    isDev ? { spaces: 2 } : undefined
   )
 }
 
@@ -208,7 +209,7 @@ const buildEdge = async () => {
       name: `${pkg.extensionName} (Edge)`,
       key: undefined
     }),
-    { spaces: 2 }
+    isDev ? { spaces: 2 } : undefined
   )
 
   fs.outputJSONSync(
@@ -251,7 +252,7 @@ const buildFireFox = async () => {
         }
       }
     }),
-    { spaces: 2 }
+    isDev ? { spaces: 2 } : undefined
   )
 
   fs.removeSync(path.join(firefoxDir, 'app'))
