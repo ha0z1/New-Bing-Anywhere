@@ -1,8 +1,9 @@
-import { type Config, checkIsGoogle } from '@@/utils'
+import { checkIsGoogle, type Config } from '@@/utils'
+import $ from 'jquery'
 import { $w } from './utils'
 
 const isGoogle = checkIsGoogle()
-export default async ($: ZeptoStatic, config: Config) => {
+export default async (config: Config) => {
   let prompt = ''
   let dir = ''
   let darkmode = ''

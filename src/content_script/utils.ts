@@ -13,7 +13,7 @@ export const mutationConfig = { attributes: true, childList: true, subtree: true
 
 const $ = (s, parent = document) => parent.querySelector(s)
 
-export const $w = async (domSelector: string, timeout: number = 30 /* second */, parent = document): Promise<Element | null> => {
+export const $w = async (domSelector: string, timeout: number = 30 /* second */, parent = document): Promise<Element> => {
   return await new Promise((resolve) => {
     const $dom = $(domSelector, parent)
     if ($dom) {

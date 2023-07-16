@@ -1,7 +1,8 @@
 import { callBackground, escapeHtml, getConfig, isEdge, setConfig } from '@@/utils'
+import $ from 'jquery'
 import { $w, mutationConfig, openUrlInSameTab } from './utils'
 
-export default async ($: ZeptoStatic) => {
+export default async () => {
   if (!isEdge) {
     const document = window.document
     const s = document.createElement('script')
@@ -64,7 +65,7 @@ export default async ($: ZeptoStatic) => {
       })
       const close = () => {
         $div.remove()
-        $body.css('padding-top', null)
+        $body.css('padding-top', '')
       }
       const $a = $(
         `<a style="color:#fff; background:url(${chrome.runtime.getURL(
@@ -92,7 +93,7 @@ export default async ($: ZeptoStatic) => {
     if (!config.showGoogleButtonOnBing) return
 
     const $q = $('#sb_form_q')
-    const searchQuery: string = $q.val()
+    const searchQuery: string = $q.val() as string
 
     const $a = $(`
       <a href="https://www.google.com/search?q=${encodeURIComponent(
@@ -123,7 +124,7 @@ export default async ($: ZeptoStatic) => {
       //   val = ($('#searchbox').val() ?? '').trim()
       // }
       if (!val) {
-        val = $.trim($q.val())
+        val = String($q.val()).trim()
       }
       const url = `https://www.google.com/search?q=${encodeURIComponent(val)}`
       $this.attr('href', url)
