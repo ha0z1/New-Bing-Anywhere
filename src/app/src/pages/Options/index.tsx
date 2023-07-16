@@ -1,6 +1,6 @@
 import useConfirm from '@/hooks/useConfirm'
 import { useTitle } from '@/utils/hooks'
-import { getConfig, isChinese, setConfig, type Config } from '@@/utils'
+import { getConfig, isChinese, isFirefox, setConfig, type Config } from '@@/utils'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { Form, Tooltip, message } from 'antd'
 import React, { useEffect, useState } from 'react'
@@ -90,6 +90,7 @@ const App: React.FC = () => {
   const [confirm, confirmModal] = useConfirm()
 
   useEffect(() => {
+    if (isFirefox) return
     const NAME = 'X-Forwarded-For'
     const ID = 3001
     const XFF = config?.[NAME]
@@ -193,50 +194,52 @@ const App: React.FC = () => {
             />
           </Form.Item>
 
-          <Form.Item
-            label={
-              <>
-                {config['X-Forwarded-For'] && (
-                  <Tooltip title={content4}>
-                    <ExclamationCircleOutlined style={{ color: 'red', marginInlineEnd: 5 }} />
-                  </Tooltip>
-                )}{' '}
-                <span> Dangerous Request Forgery</span>
-              </>
-            }
-            valuePropName="checked"
-            name="X-Forwarded-For"
-          >
-            <Switch
-              onBeforeChange={async (checked) => {
-                // console.log('onBeforeChange', checked)
-                if (checked === false) return true
+          {!isFirefox && (
+            <Form.Item
+              label={
+                <>
+                  {config['X-Forwarded-For'] && (
+                    <Tooltip title={content4}>
+                      <ExclamationCircleOutlined style={{ color: 'red', marginInlineEnd: 5 }} />
+                    </Tooltip>
+                  )}{' '}
+                  <span> Dangerous Request Forgery</span>
+                </>
+              }
+              valuePropName="checked"
+              name="X-Forwarded-For"
+            >
+              <Switch
+                onBeforeChange={async (checked) => {
+                  // console.log('onBeforeChange', checked)
+                  if (checked === false) return true
 
-                const cf1 = await confirm({
-                  title: 'Dangerous Request Forgery',
-                  content: content3,
-                  okText: 'Yes, I am sure',
-                  cancelText: 'No'
-                })
-                if (!cf1) return false
+                  const cf1 = await confirm({
+                    title: 'Dangerous Request Forgery',
+                    content: content3,
+                    okText: 'Yes, I am sure',
+                    cancelText: 'No'
+                  })
+                  if (!cf1) return false
 
-                const cf2 = await confirm({
-                  title: 'Dangerous Request Forgery',
-                  content: (
-                    <>
-                      <strong>You may not really understand the risks, please read the tips again:</strong>
-                      <br />
-                      {content3}
-                    </>
-                  ),
-                  okText: 'OK',
-                  cancelText: 'No'
-                })
+                  const cf2 = await confirm({
+                    title: 'Dangerous Request Forgery',
+                    content: (
+                      <>
+                        <strong>You may not really understand the risks, please read the tips again:</strong>
+                        <br />
+                        {content3}
+                      </>
+                    ),
+                    okText: 'OK',
+                    cancelText: 'No'
+                  })
 
-                return cf2
-              }}
-            />
-          </Form.Item>
+                  return cf2
+                }}
+              />
+            </Form.Item>
+          )}
         </Form>
       </main>
     </div>

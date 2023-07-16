@@ -209,7 +209,7 @@ export const callBackground = async <T = any>(method: string, args: any[] = []):
   })
 }
 
-export const localCache = (() => {
+export const localCache = /* @__PURE__ */ (() => {
   const v = 'v1'
   return {
     get: async <T = any>(key: string): Promise<null | T> => {
@@ -253,14 +253,14 @@ export const toDataUrl = async (url: string): Promise<string> => {
 const userAgent = navigator.userAgent
 const userAgentData = (navigator as any).userAgentData
 
-export const isMac = userAgent.includes('Macintosh')
-export const isFirefox = userAgent.includes('Firefox')
-export const isEdge = userAgent.includes('Edg/')
-export const isBrave = userAgentData?.brands.findIndex((item) => item.brand === 'Brave') > -1
-export const isChinese = checkIsChinese()
-export const isSimpleChinese = checkIsSimpleChinese()
-export const isCanary: boolean = !!globalThis.__NBA_isCanary
-export const version: string = isCanary ? `0.${pkgVersion}` : pkgVersion
+export const isMac = /* @__PURE__ */ userAgent.includes('Macintosh')
+export const isFirefox = /* @__PURE__ */ userAgent.includes('Firefox')
+export const isEdge = /* @__PURE__ */ userAgent.includes('Edg/')
+export const isBrave = /* @__PURE__ */ userAgentData?.brands.findIndex((item) => item.brand === 'Brave') > -1
+export const isChinese = /* @__PURE__ */ checkIsChinese()
+export const isSimpleChinese = /* @__PURE__ */ checkIsSimpleChinese()
+export const isCanary: boolean = /* @__PURE__ */ !!globalThis.__NBA_isCanary
+export const version: string = /* @__PURE__ */ isCanary ? `0.${pkgVersion}` : pkgVersion
 
 export const genUA = () => {
   let ua = userAgent
