@@ -20,7 +20,7 @@ export default async () => {
       width: '40px',
       display: 'flex',
       position: 'relative',
-      'z-index': 999,
+      'z-index': 900,
       cursor: 'pointer',
       'justify-content': 'center',
       'align-items': 'center',
