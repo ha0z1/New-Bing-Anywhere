@@ -8,15 +8,19 @@ export const formatText = (text: string, data: Bing.CoreData) => {
     data.messages?.find((message) => message.messageType === 'InternalSearchResult')?.groundingInfo?.web_search_results ?? []
   const mapping = webSearchResults.reduce((pre, o) => ({ ...pre, [o.index]: o }), {})
 
-  text = escapeHtml(text).replace(/\[\^(\d+)\^\]/g, ($0: string, $1: string) => {
-    const data: Data = mapping[$1]
-    if (!data) return ''
+  text = text
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
 
-    const { index, url, title } = data
-    return `<sup><a href="${escapeHtml(url)}" target="_blank" title="${escapeHtml(title)}" rel="noopener noreferrer nofollow">[${escapeHtml(
-      index
-    )}]</a></sup>`
-  })
+    .replace(/\[\^(\d+)\^\]/g, ($0: string, $1: string) => {
+      const data: Data = mapping[$1]
+      if (!data) return ''
+
+      const { index, url, title } = data
+      return `<sup><a href="${escapeHtml(url)}" target="_blank" title="${escapeHtml(
+        title
+      )}" rel="noopener noreferrer nofollow">[${escapeHtml(index)}]</a></sup>`
+    })
 
   return text
 }
