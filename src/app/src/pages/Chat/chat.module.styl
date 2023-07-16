@@ -176,3 +176,39 @@ $background-precise = linear-gradient(90deg, rgb(236, 242, 245) 0%, 1.3089%, rgb
     color: #fff !important
   }
 }
+
+[color-scheme='dark'] {
+  color: #fff
+
+  .wrap {
+    background: #000
+
+    hr {
+      background-color: #222
+    }
+  }
+
+  [class*='ant-btn'] {
+    color: #8ab4f8
+  }
+
+  main {
+    a {
+      color: #8ab4f8
+
+      &:visited {
+        color: #c58af9
+      }
+
+      &:hover {
+        text-decoration: underline
+      }
+    }
+  }
+
+  .more {
+    a {
+      background: #202124
+    }
+  }
+}
