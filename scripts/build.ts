@@ -18,9 +18,7 @@ const edgeDir = path.join(dist, 'edge')
 const firefoxDir = path.join(dist, 'firefox')
 
 const isDev = process.argv[2] === 'dev'
-const external = [
-  ...new Set(['dependencies', 'devDependencies', 'optionalDependencies', 'peerDependencies'].map((o) => Object.keys(pkg[o] ?? {})).flat())
-]
+const external = [...new Set(['devDependencies', 'optionalDependencies', 'peerDependencies'].map((o) => Object.keys(pkg[o] ?? {})).flat())]
 
 const sortManifestJSON = (json: object) => {
   return sortPackageJson(json, {
@@ -38,6 +36,7 @@ const buildFile = async (input: string, output: string, extraBuildOptions?: Buil
       minify: !isDev,
       sourcemap: isDev ? 'inline' : (false as any),
       plugins: [svgrPlugin(), stylePlugin()],
+      treeShaking: true,
       ...extraBuildOptions
     }
     if (!isDev) {
@@ -145,7 +144,7 @@ const buildChromiumBase = async () => {
           'https://search.naver.com/*',
           ...GOOGLE_DOMAINS.map((google) => `https://www.${google}/search?*`)
         ],
-        js: ['zepto.min.js', 'content_script.js'],
+        js: ['content_script.js'],
         run_at: 'document_start'
       }
     ],
@@ -237,12 +236,11 @@ const buildFireFox = async () => {
       background: {
         scripts: ['background.js']
       },
-      host_permissions: ['<all_urls>'],
+      // host_permissions: ['<all_urls>'],
       permissions: chromeManifest.permissions.filter((item) => !['declarativeNetRequest'].includes(item)).concat('webRequestBlocking'),
       declarative_net_request: undefined,
       // web_accessible_resources: undefined,
-      // host_permissions: undefined,
-      content_scripts: undefined,
+      // content_scripts: undefined,
       options_ui: undefined,
       key: undefined,
       browser_specific_settings: {
@@ -255,10 +253,6 @@ const buildFireFox = async () => {
     isDev ? { spaces: 2 } : undefined
   )
 
-  fs.removeSync(path.join(firefoxDir, 'app'))
-  fs.removeSync(path.join(firefoxDir, 'zepto.min.js'))
-  fs.removeSync(path.join(firefoxDir, 'content_script.js'))
-  fs.removeSync(path.join(firefoxDir, 'inject.js'))
   fs.removeSync(path.join(firefoxDir, 'rules.json'))
 }
 
@@ -296,8 +290,8 @@ const zipPkg = async () => {
       }
     ],
 
-    ['src/background/firefox.ts', path.join(firefoxDir, 'background.js')]
-    // ['src/content_script/index.ts', path.join(firefoxDir, 'content_script.js')]
+    ['src/background/firefox.ts', path.join(firefoxDir, 'background.js')],
+    ['src/content_script/index.ts', path.join(firefoxDir, 'content_script.js')]
     // ['src/popup/index.ts', 'dist/popup.js']
   ]
 

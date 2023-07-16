@@ -1,7 +1,8 @@
 import { getConfig } from '@@/utils'
+import $ from 'jquery'
 import { $w, openUrlInSameTab } from './utils'
 
-export default async ($: ZeptoStatic) => {
+export default async () => {
   const config = await getConfig()
   if (!config.showBingButtonOnGoogle) return
   if (location.pathname !== '/search') return

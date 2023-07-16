@@ -28,11 +28,12 @@
     "test": "pnpm run lint"
   },
   "dependencies": {
-    "@types/zepto": "^1.0.33"
+    "jquery": "3.7.0"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.240",
     "@types/fs-extra": "^11.0.1",
+    "@types/jquery": "3.5.16",
     "@types/node": "^20.4.1",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "copy-and-watch": "^0.1.6",
