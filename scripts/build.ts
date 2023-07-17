@@ -79,6 +79,8 @@ const buildChromiumBase = async () => {
           'https://*.yandex.com/*',
           'https://search.brave.com/*',
           'https://search.naver.com/*',
+          'https://*.search.yahoo.com/*',
+          'https://search.yahoo.co.jp/*',
           ...GOOGLE_DOMAINS.map((google) => `https://www.${google}/*`)
         ]
       }
@@ -120,7 +122,8 @@ const buildChromiumBase = async () => {
       'https://*.yandex.com/*',
       'https://search.brave.com/*',
       'https://search.naver.com/*',
-      // '*://*/*',
+      'https://*.search.yahoo.com/*',
+      'https://search.yahoo.co.jp/*',
       'https://*.openai.com/*',
       ...GOOGLE_DOMAINS.map((google) => `https://www.${google}/search?*`)
     ],
@@ -142,6 +145,8 @@ const buildChromiumBase = async () => {
           'https://*.yandex.com/*',
           'https://search.brave.com/*',
           'https://search.naver.com/*',
+          'https://*.search.yahoo.com/*',
+          'https://search.yahoo.co.jp/*',
           ...GOOGLE_DOMAINS.map((google) => `https://www.${google}/search?*`)
         ],
         js: ['content_script.js'],

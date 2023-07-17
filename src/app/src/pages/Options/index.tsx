@@ -155,9 +155,6 @@ const App: React.FC = () => {
           <Form.Item label="Show Bing Button On Google" valuePropName="checked" name="showBingButtonOnGoogle">
             <Switch />
           </Form.Item>
-          <Form.Item label="Show Bing Chat Sidebar" valuePropName="checked" name="showChat">
-            <Switch />
-          </Form.Item>
 
           <Form.Item
             label={
@@ -192,6 +189,10 @@ const App: React.FC = () => {
                 return true
               }}
             />
+          </Form.Item>
+
+          <Form.Item label="Show Bing Chat Sidebar" valuePropName="checked" name="showChat">
+            <Switch />
           </Form.Item>
 
           {!isFirefox && (

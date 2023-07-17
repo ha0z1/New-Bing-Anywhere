@@ -2,9 +2,37 @@ import { FULL_VERSION, GOOGLE_DOMAINS, MAIN_VERSION } from '@@/constants'
 import { type Bing } from '@@/types'
 import { version as pkgVersion, repository } from '../../../package.json'
 
-export const checkIsGoogle = (hostname = location.hostname) => {
+export const checkIsGoogle = (hostname = location.hostname): boolean => {
   return GOOGLE_DOMAINS.includes(hostname.replace(/^www\./, ''))
 }
+export const checkIsBaidu = (hostname = location.hostname): boolean => {
+  return hostname === 'www.baidu.com'
+}
+export const checkIsYandex = (hostname = location.hostname): boolean => {
+  return hostname.includes('yandex')
+}
+export const checkIsSo = (hostname = location.hostname): boolean => {
+  return hostname === 'www.so.com'
+}
+export const checkIsBing = (hostname = location.hostname): boolean => {
+  return hostname === 'www.bing.com'
+}
+export const checkIsDuckduckgo = (hostname = location.hostname): boolean => {
+  return hostname === 'duckduckgo.com'
+}
+export const checkIsEcosia = (hostname = location.hostname): boolean => {
+  return hostname === 'www.ecosia.org'
+}
+export const checkIsBrave = (hostname = location.hostname): boolean => {
+  return hostname === 'search.brave.com'
+}
+export const checkIsNaver = (hostname = location.hostname): boolean => {
+  return hostname === 'search.naver.com'
+}
+export const checkIsYahoo = (hostname = location.hostname): boolean => {
+  return hostname.endsWith('search.yahoo.com') || hostname === 'search.yahoo.co.jp'
+}
+
 export const ls = {
   set: async <T = any>(key: string, value: T): Promise<void> => {
     const KEY = `NBA@${encodeURIComponent(key)}`
@@ -144,7 +172,7 @@ export const getConfig = async (): Promise<Config> => {
     showGoogleButtonOnBing: true,
     showBingButtonOnGoogle: true,
     showGuideToGithub: true,
-    showChat: true,
+    showChat: false,
     showRelease: true,
     triggerMode: 'Always',
     conversationStyle: 'Balanced',

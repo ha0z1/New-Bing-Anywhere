@@ -191,6 +191,7 @@ export const GOOGLE_DOMAINS = [
   'google.mv',
   'google.mw',
   'google.ne',
+  'google.ng',
   'google.nl',
   'google.no',
   'google.nr',
