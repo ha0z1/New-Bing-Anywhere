@@ -1,6 +1,7 @@
-import { contextMenus, version } from '@@/utils'
-import { SettingOutlined, InfoCircleOutlined } from '@ant-design/icons'
-import { Button } from 'antd'
+import { AIPLUS } from '@@/constants'
+import { contextMenus, isChinese, version } from '@@/utils'
+import { InfoCircleOutlined, SettingOutlined } from '@ant-design/icons'
+import { Button, Tooltip } from 'antd'
 import s from './popup.module.styl'
 
 export default () => {
@@ -43,6 +44,15 @@ export default () => {
         </ul>
         <hr className={s.hr} />
         <footer className={s.footer}>
+          <a
+            href="#"
+            onClick={() => {
+              window.open(`${AIPLUS}?invite_code=b90e84b5`)
+            }}
+            className={s.ad}
+          >
+            {isChinese ? <Tooltip title="不限 IP 免封号">高性价比的 GPT-4</Tooltip> : null /*'Fast and affordable GPT-4'*/}
+          </a>
           <Button icon={<InfoCircleOutlined />} type="ghost" href={`${repo}/issues/8`} target="_blank" />
           <Button icon={<SettingOutlined />} type="ghost" href="/app/index.html#/options" target="_blank" />
         </footer>

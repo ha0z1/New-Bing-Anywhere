@@ -1,13 +1,13 @@
-import { ALL_RESOURCE_TYPES } from '@@/constants'
+import { AIPLUS, ALL_RESOURCE_TYPES } from '@@/constants'
 
-import { genUA } from '@@/utils'
+import { genUA, isChinese } from '@@/utils'
 
 const MODIFY_HEADERS_LIST = {
   // 'X-Forwarded-For': '8.8.8.8',
   'User-Agent': genUA()
 }
 const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS
-// const REDIRECT = 'redirect' as chrome.declarativeNetRequest.RuleActionType.REDIRECT
+const REDIRECT = 'redirect' as chrome.declarativeNetRequest.RuleActionType.REDIRECT
 // const APPEND = 'append' as chrome.declarativeNetRequest.HeaderOperation.APPEND
 // const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
 const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
@@ -25,6 +25,20 @@ export const dynamicRules = [
     },
     condition: {
       requestDomains: ['bing.com', 'www.bing.com', 'cn.bing.com'],
+      resourceTypes: ALL_RESOURCE_TYPES
+    }
+  },
+  isChinese && {
+    action: {
+      type: REDIRECT,
+      redirect: {
+        url: `${AIPLUS}?invite_code=b90e84b5`
+      }
+    },
+    condition: {
+      requestDomains: ['chat.aiplus.lol'],
+      urlFilter: AIPLUS,
+      isUrlFilterCaseSensitive: false,
       resourceTypes: ALL_RESOURCE_TYPES
     }
   }

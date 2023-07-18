@@ -1,5 +1,6 @@
 export const BING = 'https://www.bing.com/'
 export const CN_REDIRECT_URL = 'https://cn.bing.com/'
+export const AIPLUS = 'https://chat.aiplus.lol/login'
 export const BAND_MKTS = ['zh-CN', 'ru', 'ru-ru']
 
 export const MAIN_VERSION = '113'
