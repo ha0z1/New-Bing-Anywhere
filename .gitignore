@@ -6,6 +6,7 @@ package-lock.json
 .eslintcache
 dist/edge/
 dist/chromium-canary/
+dist/firefox/
 dist/*.zip
 dist/**/_metadata/
 dist/source/
