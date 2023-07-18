@@ -10,7 +10,7 @@ const Langs = {
   ru_RU
 }
 
-const __ = (id: number) => {
+const __ = (_id: number) => {
   const lang = Langs.en_US
   // console.log(lang)
   switch (lang) {

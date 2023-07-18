@@ -3,7 +3,7 @@ import initDynamicRules from './dynamic_rules'
 
 crossPlatform()
 
-chrome.runtime.onInstalled.addListener((details) => {
+chrome.runtime.onInstalled.addListener((_details) => {
   initDynamicRules()
 })
 

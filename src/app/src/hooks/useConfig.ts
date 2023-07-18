@@ -1,6 +1,7 @@
 import { getConfig as getConfigUtil, setConfig as setConfigUtil, type Config } from '@@/utils'
 import { useEffect, useState } from 'react'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const defaultConfig: Config = {} as any
 
 export default () => {

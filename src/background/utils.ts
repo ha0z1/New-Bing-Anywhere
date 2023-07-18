@@ -43,6 +43,7 @@ export const dumpTabs = async ({ windowId }): Promise<void> => {
   })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const setCookie = async (options: chrome.cookies.SetDetails, cookie: chrome.cookies.Cookie = {} as any) => {
   return await chrome.cookies.set({
     domain: cookie.domain,

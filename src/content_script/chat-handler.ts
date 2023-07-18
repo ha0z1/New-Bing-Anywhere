@@ -27,7 +27,7 @@ const qsStringify = (qs: Record<string, string>) => {
   return new URLSearchParams(qs).toString()
 }
 
-export default async (config: Config) => {
+export default async (_config: Config) => {
   const isGoogle = checkIsGoogle()
   const isBaidu = checkIsBaidu()
   // const isBing = checkIsBing()
@@ -115,7 +115,7 @@ export default async (config: Config) => {
       const { height } = data
       $ifame.css({
         // width,
-        height
+        height: Math.floor(height) + 1
       })
     })
 

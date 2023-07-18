@@ -13,7 +13,7 @@ export default async () => {
   const isRtl = document.documentElement.dir === 'rtl'
 
   $(() => {
-    ;(async () => {
+    (async () => {
       const { showGuideToGithub } = await getConfig()
       if (!showGuideToGithub) return
       const $esatSwitch = $('#est_switch')
@@ -166,7 +166,7 @@ export default async () => {
     }
 
     changeGoogleLinkPosition()
-    new MutationObserver((mutationList, observer) => {
+    new MutationObserver((mutationList, _observer) => {
       for (const mutation of mutationList) {
         const target = mutation.target
         if (!target) continue

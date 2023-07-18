@@ -38,6 +38,7 @@ export const createBingChat = async (options: Bing.CreateBingChatOptions): Promi
       onMessage({ type: 0, text: 'Creating session...' })
       finalSession = await bingChatCreateSession()
       onMessage({ type: 0, text: 'Created session success!' })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       throw new Error(e)
     }

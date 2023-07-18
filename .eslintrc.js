@@ -1,28 +1,22 @@
+/* eslint-env node */
 module.exports = {
-  extends: 'standard-with-typescript',
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parserOptions: {
     project: './tsconfig.json'
   },
-  plugins: ['react', 'prettier'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', 'prettier', 'react'],
+  root: true,
   rules: {
-    'prettier/prettier': 'error',
-    '@typescript-eslint/no-misused-promises': 0,
-    'no-debugger': 1,
-    '@typescript-eslint/no-non-null-assertion': 0,
-    '@typescript-eslint/strict-boolean-expressions': 0,
-    '@typescript-eslint/no-floating-promises': 0,
-    '@typescript-eslint/no-unused-vars': 1,
-    '@typescript-eslint/explicit-function-return-type': 0,
-    '@typescript-eslint/space-before-function-paren': 0,
-    '@typescript-eslint/promise-function-async': 0,
-    'no-unreachable': 1,
-    'multiline-ternary': 0,
-    'react/self-closing-comp': [
-      'error',
+    '@typescript-eslint/no-unused-vars': [
+      1,
       {
-        component: true,
-        html: true
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_'
       }
-    ]
+    ],
+    'no-empty': 0,
+    '@typescript-eslint/no-explicit-any': 1
   }
 }
