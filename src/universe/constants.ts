@@ -228,4 +228,25 @@ export const GOOGLE_DOMAINS = [
   'google.ws'
 ]
 
+export const YANDEX_DOMAINS = [
+  'yandex.com',
+  'yandex.ru',
+  'yandex.by',
+  'yandex.kz',
+  'yandex.uz',
+  'yandex.com.tr',
+  'yandex.fr',
+  'yandex.az',
+  'yandex.com.ge',
+  'yandex.com.am',
+  'yandex.co.il',
+  'yandex.lv',
+  'yandex.lt',
+  'yandex.ee',
+  'yandex.md',
+  'yandex.tm',
+  'yandex.tj',
+  'yandex.eu'
+]
+
 export const OTHERS = ['duckduckgo.com', 'www.bing.com', 'www.ecosia.org', 'search.brave.com', 'www.baidu.com']

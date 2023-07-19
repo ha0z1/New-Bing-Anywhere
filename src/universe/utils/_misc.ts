@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FULL_VERSION, GOOGLE_DOMAINS, MAIN_VERSION } from '@@/constants'
+import { FULL_VERSION, GOOGLE_DOMAINS, MAIN_VERSION, YANDEX_DOMAINS } from '@@/constants'
 import { type Bing } from '@@/types'
 import { version as pkgVersion, repository } from '../../../package.json'
 
@@ -10,7 +10,7 @@ export const checkIsBaidu = (hostname = location.hostname): boolean => {
   return hostname === 'www.baidu.com'
 }
 export const checkIsYandex = (hostname = location.hostname): boolean => {
-  return hostname.includes('yandex')
+  return YANDEX_DOMAINS.includes(hostname.replace(/^www\./, ''))
 }
 export const checkIsSo = (hostname = location.hostname): boolean => {
   return hostname === 'www.so.com'

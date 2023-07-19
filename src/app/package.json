@@ -13,7 +13,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
     "@types/react-syntax-highlighter": "^15.5.7",
-    "antd": "^5.7.0",
+    "antd": "^5.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.10",
