@@ -18,7 +18,15 @@ export default () => {
   const { scene = 'newtab' } = useParams<{ scene: Scene }>()
 
   const isNewtab = scene === 'newtab'
-
+  useEffect(() => {
+    ;(top ?? window).postMessage(
+      {
+        type: 'nba-ready',
+        data: true
+      },
+      '*'
+    )
+  }, [])
   const sendSize = useCallback(() => {
     const $body = document.body
     if (!$body) return

@@ -46,7 +46,8 @@ export default () => {
         <footer className={s.footer}>
           <a
             href="#"
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault()
               window.open(`${AIPLUS}?invite_code=b90e84b5`)
             }}
             className={s.ad}

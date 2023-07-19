@@ -7,7 +7,7 @@ import fs from 'fs-extra'
 import path from 'path'
 import sortPackageJson from 'sort-package-json'
 import pkg from '../package.json'
-import { GOOGLE_DOMAINS } from '../src/universe/constants'
+import { GOOGLE_DOMAINS, YANDEX_DOMAINS } from '../src/universe/constants'
 import staticRules from './static_rules'
 
 const root = path.join(__dirname, '..')
@@ -74,14 +74,16 @@ const buildChromiumBase = async () => {
           'https://www.bing.com/*',
           'https://www.baidu.com/*',
           'https://www.so.com/*',
+          'https://*.sogou.com/*',
           'https://duckduckgo.com/*',
           'https://www.ecosia.org/*',
-          'https://*.yandex.com/*',
+          'https://*.mail.ru/*',
           'https://search.brave.com/*',
           'https://search.naver.com/*',
           'https://*.search.yahoo.com/*',
           'https://search.yahoo.co.jp/*',
-          ...GOOGLE_DOMAINS.map((google) => `https://www.${google}/*`)
+          ...GOOGLE_DOMAINS.map((google) => `https://www.${google}/*`),
+          ...YANDEX_DOMAINS.map((yandex) => `https://*.${yandex}/*`)
         ]
       }
     ],
@@ -117,16 +119,24 @@ const buildChromiumBase = async () => {
       'https://*.bing.com/*',
       'https://www.baidu.com/*',
       'https://www.so.com/*',
+      'https://*.sogou.com/*',
+      'https://so.toutiao.com/*',
       'https://duckduckgo.com/*',
       'https://www.ecosia.org/*',
-      'https://*.yandex.com/*',
+      'https://*.yandex.com.tr/*',
+      'https://*.mail.ru/*',
+      'https://www.ask.com/*',
+      'https://www.startpage.com/*',
+      'https://search.aol.com/*',
+      'https://search.seznam.cz/*',
       'https://search.brave.com/*',
       'https://search.naver.com/*',
       'https://*.search.yahoo.com/*',
       'https://search.yahoo.co.jp/*',
       'https://*.openai.com/*',
       'https://*.aiplus.lol/*',
-      ...GOOGLE_DOMAINS.map((google) => `https://www.${google}/search?*`)
+      ...GOOGLE_DOMAINS.map((google) => `https://www.${google}/search?*`),
+      ...YANDEX_DOMAINS.map((yandex) => `https://*.${yandex}/*`)
     ],
     key: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxbxQeSdmZpNR6r8FWS5Xviv8NIKPEB1+UpOLsRJHnroPCOSvgZG9u5hbI2ZN0I7DRBXLO3NCxrqcYIp2d62YCzOO4nfKSwnGlAPMFSYw7jyHq0ITjfGIWkql2GsiwRr6MAEM2ktGthDV3iBuL2lRIYfcIOdIUOccxT+2FpDSsncQUHKxjFEisMExX/AAMSNy79PqDUu/5lbEo8zWNlWza5mD69QRU3fK5WGjqrS5naGJ46kPSbE5WU3NPOtHjldPgRVMTbrg6X2GGDGKPp3ISoqj/joNKBNqsMMKn5SURjvqzvzAyVup1/j9XFQ5bGnZYnJTIZ5mvR0wWXnlgf7+RQIDAQAB',
     // content_security_policy: {
@@ -141,14 +151,16 @@ const buildChromiumBase = async () => {
           'https://www.bing.com/*',
           'https://www.baidu.com/*',
           'https://www.so.com/*',
+          'https://*.sogou.com/*',
           'https://duckduckgo.com/*',
           'https://www.ecosia.org/*',
-          'https://*.yandex.com/*',
+          'https://*.mail.ru/*',
           'https://search.brave.com/*',
           'https://search.naver.com/*',
           'https://*.search.yahoo.com/*',
           'https://search.yahoo.co.jp/*',
-          ...GOOGLE_DOMAINS.map((google) => `https://www.${google}/search?*`)
+          ...GOOGLE_DOMAINS.map((google) => `https://www.${google}/search?*`),
+          ...YANDEX_DOMAINS.map((yandex) => `https://*.${yandex}/search/*`)
         ],
         js: ['content_script.js'],
         run_at: 'document_start'

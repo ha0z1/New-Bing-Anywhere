@@ -1,6 +1,7 @@
 import {
-  checkIsGoogle,
   checkIsBaidu,
+  checkIsGoogle,
+  checkIsYandex,
   // checkIsBing,
   // checkIsBrave,
   // checkIsDuckduckgo,
@@ -8,7 +9,6 @@ import {
   // checkIsNaver,
   // checkIsSo,
   // checkIsYahoo,
-  // checkIsYandex,
   type Config
 } from '@@/utils'
 import $ from 'jquery'
@@ -30,8 +30,8 @@ const qsStringify = (qs: Record<string, string>) => {
 export default async (_config: Config) => {
   const isGoogle = checkIsGoogle()
   const isBaidu = checkIsBaidu()
+  const isYandex = checkIsYandex()
   // const isBing = checkIsBing()
-  // const isYandex = checkIsYandex()
   // const isSo = checkIsSo()
   // const isDuckduckgo = checkIsDuckduckgo()
   // const isBrave = checkIsBrave()
@@ -39,7 +39,7 @@ export default async (_config: Config) => {
   // const isNaver = checkIsNaver()
   // const isYahoo = checkIsYahoo()
 
-  if (!((isGoogle || isBaidu) /* || isBing || isYandex || isSo || isDuckduckgo || isNaver || isBrave || isYahoo */)) return
+  if (!((isGoogle || isBaidu || isYandex) /* || isBing ||  || isSo || isDuckduckgo || isNaver || isBrave || isYahoo */)) return
 
   let prompt = ''
   let dir = ''
@@ -60,9 +60,11 @@ export default async (_config: Config) => {
   if (isBaidu) {
     prompt = new URLSearchParams(location.search).get('wd') ?? ''
   }
-  // if (isYandex) {
-  //   prompt = new URLSearchParams(location.search).get('text') ?? ''
-  // }
+  if (isYandex) {
+    prompt = new URLSearchParams(location.search).get('text') ?? ''
+    darkmode =
+      document.cookie.match(/skin\.([sld])/)?.[1] === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : ''
+  }
   // if (isSo) {
   //   prompt = new URLSearchParams(location.search).get('q') ?? ''
   // }
@@ -106,17 +108,23 @@ export default async (_config: Config) => {
       boxSizing: 'border-box',
       willChange: 'height',
       transition: 'height .1s cubic-bezier(0, 0, 0, 1.27) 0s',
-      borderRadius: '8px'
+      borderRadius: '8px',
+      marginBottom: '10px',
+      visibility: darkmode ? 'hidden' : 'visible'
     })
 
     window.addEventListener('message', (e) => {
       const { type, data } = e.data
-      if (type !== 'nba-resize') return
-      const { height } = data
-      $ifame.css({
-        // width,
-        height: Math.floor(height) + 1
-      })
+      if (type === 'nba-ready') {
+        $ifame.css('visibility', 'visible')
+      }
+      if (type === 'nba-resize') {
+        const { height } = data
+        $ifame.css({
+          // width,
+          height: Math.floor(height) + 1
+        })
+      }
     })
 
     if (isGoogle) {
@@ -151,13 +159,13 @@ export default async (_config: Config) => {
 
     if (isBaidu) {
       const $sidebar = $(await $w('#content_right'))
-      $sidebar.prepend($ifame.css({ marginBottom: 10 }))
+      $sidebar.prepend($ifame)
     }
 
-    // if (isYandex) {
-    //   const $sidebar = $(await $w('.content__right'))
-    //   $sidebar.prepend($ifame)
-    // }
+    if (isYandex) {
+      const $sidebar = $(await $w('.content__right'))
+      $sidebar.prepend($ifame)
+    }
 
     // if (isSo) {
     //   const $sidebar = $(await $w('#side'))
