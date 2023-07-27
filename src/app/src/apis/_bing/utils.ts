@@ -1,5 +1,5 @@
 import { type Bing } from '@@/types'
-
+import { callBackground } from '@@/utils'
 import { v4 as uuidv4 } from 'uuid'
 
 const pad0 = (n: number) => (n < 10 ? `0${n}` : `${n}`)
@@ -229,21 +229,7 @@ export const bingChatCloseWebSocket = async (socketId: number) => {
 }
 
 export const getFromConversation = async (options: Bing.ConversationOptions): Promise<Bing.CoreData | null> => {
-  const API =
-    'https://sydney.bing.com/sydney/GetConversation?' +
-    `conversationId=${encodeURIComponent(options.session.conversationId)}&` +
-    `source=${encodeURIComponent(options.source)}&` +
-    `participantId=${encodeURIComponent(options.participantId)}&` +
-    `conversationSignature=${encodeURIComponent(options.session.conversationSignature)}&` +
-    `traceId=${uuidv4()}`
-  try {
-    const data = await fetch(API).then((r) => r.json())
-    return data
-  } catch (err: unknown) {
-    return null
-    // const { message } = err as { message: string }
-    // throw new Error(`Failed to get conversation from ${API}: ${message}}`)
-  }
+  return await callBackground('bing.getFromConversation', [options])
 }
 
 export const checkHasText = (data?: Partial<Bing.CoreData> | null | undefined) => {

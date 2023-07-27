@@ -1,6 +1,6 @@
 {
   "name": "new-bing-anywhere",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
   "homepage": "https://github.com/haozi/New-Bing-Anywhere",
@@ -28,22 +28,23 @@
     "test": "pnpm run lint"
   },
   "dependencies": {
-    "jquery": "3.7.0"
+    "jquery": "3.7.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.241",
+    "@types/chrome": "^0.0.242",
     "@types/fs-extra": "^11.0.1",
     "@types/jquery": "^3.5.16",
-    "@types/node": "^20.4.2",
-    "@typescript-eslint/eslint-plugin": "6.1.0",
-    "@typescript-eslint/parser": "6.1.0",
+    "@types/node": "^20.4.5",
+    "@typescript-eslint/eslint-plugin": "^6.2.0",
+    "@typescript-eslint/parser": "^6.2.0",
     "copy-and-watch": "^0.1.6",
-    "esbuild": "^0.18.14",
+    "esbuild": "^0.18.17",
     "esbuild-plugin-svgr": "^2.0.0",
     "esbuild-style-plugin": "^1.6.2",
-    "eslint": "8.45.0",
+    "eslint": "^8.45.0",
     "eslint-plugin-prettier": "^5.0.0",
-    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react": "^7.33.0",
     "fs-extra": "^11.1.1",
     "husky": "^8.0.3",
     "md5-file": "^5.0.0",

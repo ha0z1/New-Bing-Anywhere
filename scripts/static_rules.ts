@@ -14,7 +14,7 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
         {
           operation: SET,
           header: 'sec-ch-ua',
-          value: `"Microsoft Edge";v="${MAIN_VERSION}", "Chromium";v="${MAIN_VERSION}", "Not-A.Brand";v="24"`
+          value: `"Not.A/Brand";v="8", "Chromium";v="114", "Microsoft Edge";v="114"`
         },
         // {
         //   operation: SET,
@@ -34,7 +34,7 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
         {
           operation: SET,
           header: 'sec-ch-ua-full-version-list',
-          value: `"Microsoft Edge";v="${FULL_VERSION}", "Chromium";v="113.0.5672.127", "Not-A.Brand";v="24.0.0.0"`
+          value: `"Not.A/Brand";v="8.0.0.0", "Chromium";v="114.0.5735.201", "Microsoft Edge";v="114.0.1823.82"`
         },
         {
           operation: SET,

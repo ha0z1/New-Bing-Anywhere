@@ -251,13 +251,49 @@ export default () => {
                   )
                 }
                 if (error) {
+                  const errorMsg = (error.message as string) ?? error.toString()
+
+                  if (errorMsg.includes('CAPTCHA')) {
+                    return (
+                      <div className={s.error}>
+                        <p>
+                          <span style={{ color: '#ff4d4f' }}>Error</span>: There seem to be some errors{' '}
+                          {error ? (
+                            <>
+                              :<span style={{ color: '#ff4d4f', fontSize: 12 }}>{errorMsg} </span>
+                            </>
+                          ) : (
+                            ''
+                          )}
+                        </p>
+
+                        <p>
+                          Try go to Bing{' '}
+                          <a
+                            href="https://www.bing.com/search?q=Bing+AI&showconv=1&FORM=hpcodx"
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                          >
+                            Bing-chat
+                          </a>{' '}
+                          and send any message to resolve CAPTCHA.
+                          <img
+                            src="https://github-production-user-asset-6210df.s3.amazonaws.com/4150641/255374853-7a350a7e-29ad-4e89-bace-7edd0f8f3e18.png"
+                            width={320}
+                            height={211}
+                          />
+                        </p>
+                      </div>
+                    )
+                  }
+
                   return (
                     <div className={s.error}>
                       <p>
                         <span style={{ color: '#ff4d4f' }}>Error</span>: There seem to be some errors{' '}
                         {error ? (
                           <>
-                            :<span style={{ color: '#ff4d4f', fontSize: 12 }}>{(error.message as string) ?? error.toString()} </span>
+                            :<span style={{ color: '#ff4d4f', fontSize: 12 }}>{errorMsg} </span>
                           </>
                         ) : (
                           ''
