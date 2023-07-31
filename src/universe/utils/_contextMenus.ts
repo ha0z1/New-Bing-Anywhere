@@ -1,4 +1,4 @@
-import { genIssueUrl, isChinese, openPage } from './_misc'
+import { genIssueUrl, openPage } from './_misc'
 
 // const repositoryUrl: string = repository.url
 
@@ -42,7 +42,7 @@ export const contextMenus: Record<string, IInitContextMenu> = {
   },
 
   reportIssues: {
-    title: isChinese ? '🐛 反馈建议' : '🐛 Report issues',
+    title: '🐛 Report issues',
     contexts: ['action'],
     onclick: async (_info) => {
       const url = await genIssueUrl()
