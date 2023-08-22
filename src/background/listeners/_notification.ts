@@ -5,7 +5,7 @@ const getRemoteNotification = async () => {
   // console.log('getRemoteNotification')
   let data
   try {
-    data = await fetch('https://api.github.com/repos/haozi/New-Bing-Anywhere/issues/24').then(async (res) => await res.json())
+    data = await fetch('https://api.github.com/repos/ha0z1/New-Bing-Anywhere/issues/24').then(async (res) => await res.json())
   } catch {}
   return data
 }

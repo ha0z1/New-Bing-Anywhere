@@ -32,10 +32,10 @@
 
 ## 大多数人通过以下措施解决问题
 
-- [常见问题自查手册 (FAQ) #8](https://github.com/haozi/New-Bing-Anywhere/issues/8)。
+- [常见问题自查手册 (FAQ) #8](https://github.com/ha0z1/New-Bing-Anywhere/issues/8)。
 - 如果您使用 Adblocker 或 VPN，请将 bing.com 列入白名单。
-- Opera 用户，[开启“允许访问搜索页面结果”](https://github.com/haozi/New-Bing-Anywhere/issues/58#issuecomment-1592207565)
-- Brave 用户，您需要允许来自“\*.google.xxx”的第三方 cookie. Brave has a bug,you have to disable and enable erery time on launch [https://github.com/haozi/New-Bing-Anywhere/issues/76#issuecomment-1628103920](https://github.com/haozi/New-Bing-Anywhere/issues/76#issuecomment-1628103920)
+- Opera 用户，[开启“允许访问搜索页面结果”](https://github.com/ha0z1/New-Bing-Anywhere/issues/58#issuecomment-1592207565)
+- Brave 用户，您需要允许来自“\*.google.xxx”的第三方 cookie. Brave has a bug,you have to disable and enable erery time on launch [https://github.com/ha0z1/New-Bing-Anywhere/issues/76#issuecomment-1628103920](https://github.com/ha0z1/New-Bing-Anywhere/issues/76#issuecomment-1628103920)
 - Firefox 用户，您必须使用 110 或更高版本
 - 更换微软帐号，注册帐号时尽量不要选择地区为中国
 

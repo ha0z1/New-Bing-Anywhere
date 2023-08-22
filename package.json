@@ -3,10 +3,10 @@
   "version": "2.3.0",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
-  "homepage": "https://github.com/haozi/New-Bing-Anywhere",
+  "homepage": "https://github.com/ha0z1/New-Bing-Anywhere",
   "repository": {
     "type": "git",
-    "url": "https://github.com/haozi/New-Bing-Anywhere"
+    "url": "https://github.com/ha0z1/New-Bing-Anywhere"
   },
   "license": "GPLv3",
   "author": "haozi",

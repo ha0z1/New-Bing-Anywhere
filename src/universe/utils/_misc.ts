@@ -311,11 +311,11 @@ export const genIssueUrl = async (extra?: Record<string, string | null | undefin
     let finalUrl: string = url
     let comment =
       'Please write your comment ABOVE this line, provide as much detailed information and screenshots as possible.' +
-      'Please confirm that you have read the #8 https://github.com/haozi/New-Bing-Anywhere/issues/8.' +
+      'Please confirm that you have read the #8 https://github.com/ha0z1/New-Bing-Anywhere/issues/8.' +
       'The UA may not necessarily reflect your actual browser and platform, so please make sure to indicate them clearly.'
     if (isChinese) {
       comment =
-        '请在此行上方发表您的讨论。请确认已经阅读了FAQ(https://github.com/haozi/New-Bing-Anywhere/issues/8)，详尽的描述和截图有助于我们定位问题，描述不清的问题会被关闭，UA 不一定真实反映您的浏览器和平台，请备注清楚'
+        '请在此行上方发表您的讨论。请确认已经阅读了FAQ(https://github.com/ha0z1/New-Bing-Anywhere/issues/8)，详尽的描述和截图有助于我们定位问题，描述不清的问题会被关闭，UA 不一定真实反映您的浏览器和平台，请备注清楚'
     }
 
     const body =
