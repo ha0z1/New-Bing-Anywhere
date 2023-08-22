@@ -7,4 +7,4 @@ chrome.runtime.onInstalled.addListener((_details) => {
   initDynamicRules()
 })
 
-chrome.runtime.setUninstallURL('https://github.com/haozi/New-Bing-Anywhere/blob/main/uninstall.md')
+chrome.runtime.setUninstallURL('https://github.com/ha0z1/New-Bing-Anywhere/blob/main/uninstall.md')

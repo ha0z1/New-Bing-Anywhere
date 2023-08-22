@@ -5,7 +5,7 @@ import { Button, Tooltip } from 'antd'
 import s from './popup.module.styl'
 
 export default () => {
-  const repo = 'https://github.com/haozi/New-Bing-Anywhere'
+  const repo = 'https://github.com/ha0z1/New-Bing-Anywhere'
   return (
     <div className={s.warp}>
       <div style={{ width: '100%' }}>

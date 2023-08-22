@@ -209,7 +209,7 @@ const buildChromiumCanary = async () => {
       ...chromeManifest,
       name: `${pkg.extensionName} (Canary)`,
       version: `0.${pkg.version}`,
-      homepage_url: 'https://github.com/haozi/New-Bing-Anywhere/tree/canary',
+      homepage_url: 'https://github.com/ha0z1/New-Bing-Anywhere/tree/canary',
       key: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp2asctK5nmilg+tZyT74rpsgyfAYWl5pRKsoZDMxj97dwu5YMH1AXoE1ItbFCH8ysjWfsPbYfC0fhFcRljCroPxAJoSl73RRX2rFV8g8aSG101QTYTc2tUvw7xPLk0NS9X4bi/zZmlCHmcoxiOaslN8chs3JgOEQSJROu5PrGpahC9SzZh77iQEtOsYR1grEyuRioFi+x+end1X1tMwaJ4/yYTK4jj9PlFnOKDBFYVhGKCHaWkP2Wv4PPabl/nzUo+l/W0B7fkbaSxI8gir42YzA+OJcPQ/H2UMqtROZxqR847uXsAnB5PfPdo4tT5qUfPd16btsbIr9t6YAMMD0mQIDAQAB'
     }),
     isDev ? { spaces: 2 } : undefined

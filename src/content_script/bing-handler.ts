@@ -20,7 +20,7 @@ export default async () => {
       if ($.trim($esatSwitch.text()) !== '国内版国际版') return
       setTimeout(() => {
         const $a = $(
-          '<a href="https://github.com/haozi/New-Bing-Anywhere/issues/8" title="查看如何正确配置网络代理" target="_blank" rel="noopener noreferrer nofollow">依然出现国内版/国际版？</a>'
+          '<a href="https://github.com/ha0z1/New-Bing-Anywhere/issues/8" title="查看如何正确配置网络代理" target="_blank" rel="noopener noreferrer nofollow">依然出现国内版/国际版？</a>'
         )
           .css({
             color: '#E89ABE',

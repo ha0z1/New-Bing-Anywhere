@@ -4,11 +4,11 @@ Permissions are used sparingly by this extension. However, as new features are a
 
 ## Most people fix their problems with the following quick fixes:
 
-- [Frequently Asked Questions 常见问题自查手册 (FAQ) #8](https://github.com/haozi/New-Bing-Anywhere/issues/8).
+- [Frequently Asked Questions 常见问题自查手册 (FAQ) #8](https://github.com/ha0z1/New-Bing-Anywhere/issues/8).
 - Change a Microsoft account.
 - Whitelist bing.com if you use an Adblocker or a VPN.
-- Opera Users, [Turn on "Allow access to search page results"](https://github.com/haozi/New-Bing-Anywhere/issues/58#issuecomment-1592207565)
-- Brave Users, you need to allow third-party cookies from '\*.google.xxx'. Brave has a bug,you have to disable and enable erery time on launch [https://github.com/haozi/New-Bing-Anywhere/issues/76#issuecomment-1628103920](https://github.com/haozi/New-Bing-Anywhere/issues/76#issuecomment-1628103920)
+- Opera Users, [Turn on "Allow access to search page results"](https://github.com/ha0z1/New-Bing-Anywhere/issues/58#issuecomment-1592207565)
+- Brave Users, you need to allow third-party cookies from '\*.google.xxx'. Brave has a bug,you have to disable and enable erery time on launch [https://github.com/ha0z1/New-Bing-Anywhere/issues/76#issuecomment-1628103920](https://github.com/ha0z1/New-Bing-Anywhere/issues/76#issuecomment-1628103920)
 - Firefox Users, you must use version 110 or up! Please update your browser.
 - Or sometimes just refresh a couple of times! Microsoft rushed their release, and it's still buggy.
 
@@ -24,8 +24,8 @@ Permissions are used sparingly by this extension. However, as new features are a
 
 ## Reinstall Links:
 
-- Chrome：<https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en> [<img src="https://github.com/haozi/New-Bing-Anywhere/assets/4150641/b10245eb-4cc8-4232-881f-6cde23ee6479" alt="Firefox" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)
-- Firefox: <https://addons.mozilla.org/en-US/firefox/addon/new-bing-anywhere/> [<img src="https://github.com/haozi/New-Bing-Anywhere/assets/4150641/2618712a-ec1f-46b4-80d6-52ddb9dfc4a0" alt="Firefox" />](https://addons.mozilla.org/zh-CN/firefox/addon/new-bing-anywhere/)
+- Chrome：<https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en> [<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/b10245eb-4cc8-4232-881f-6cde23ee6479" alt="Firefox" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)
+- Firefox: <https://addons.mozilla.org/en-US/firefox/addon/new-bing-anywhere/> [<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/2618712a-ec1f-46b4-80d6-52ddb9dfc4a0" alt="Firefox" />](https://addons.mozilla.org/zh-CN/firefox/addon/new-bing-anywhere/)
 
 # 再给一次机会！
 
@@ -33,15 +33,15 @@ Permissions are used sparingly by this extension. However, as new features are a
 
 ## 大多数人通过以下快速修复来解决问题：
 
-- [常见问题自查手册 (FAQ) #8](https://github.com/haozi/New-Bing-Anywhere/issues/8)。
+- [常见问题自查手册 (FAQ) #8](https://github.com/ha0z1/New-Bing-Anywhere/issues/8)。
 
 - 更改微软帐户。
 
 - 如果您使用 Adblocker 或 VPN，请将 bing.com 列入白名单。
 
-- Opera 用户，[开启“允许访问搜索页面结果”](https://github.com/haozi/New-Bing-Anywhere/issues/58#issuecomment-1592207565)
+- Opera 用户，[开启“允许访问搜索页面结果”](https://github.com/ha0z1/New-Bing-Anywhere/issues/58#issuecomment-1592207565)
 
-- Brave 用户，您需要允许来自“\*.google.xxx”的第三方 cookie, Brave has a bug,you have to disable and enable erery time on launch [https://github.com/haozi/New-Bing-Anywhere/issues/76#issuecomment-1628103920](https://github.com/haozi/New-Bing-Anywhere/issues/76#issuecomment-1628103920)
+- Brave 用户，您需要允许来自“\*.google.xxx”的第三方 cookie, Brave has a bug,you have to disable and enable erery time on launch [https://github.com/ha0z1/New-Bing-Anywhere/issues/76#issuecomment-1628103920](https://github.com/ha0z1/New-Bing-Anywhere/issues/76#issuecomment-1628103920)
 
 - Firefox 用户，您必须使用 110 或更高版本！ 请更新您的浏览器。
 
@@ -59,5 +59,5 @@ Permissions are used sparingly by this extension. However, as new features are a
 
 ## 重新安装链接：
 
-- Chrome：<https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en> [<img src="https://github.com/haozi/New-Bing-Anywhere/assets/4150641/b10245eb-4cc8-4232-881f-6cde23ee6479" alt="Firefox" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)
-- Firefox: <https://addons.mozilla.org/en-US/firefox/addon/new-bing-anywhere/> [<img src="https://github.com/haozi/New-Bing-Anywhere/assets/4150641/2618712a-ec1f-46b4-80d6-52ddb9dfc4a0" alt="Firefox" />](https://addons.mozilla.org/zh-CN/firefox/addon/new-bing-anywhere/)
+- Chrome：<https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en> [<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/b10245eb-4cc8-4232-881f-6cde23ee6479" alt="Firefox" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)
+- Firefox: <https://addons.mozilla.org/en-US/firefox/addon/new-bing-anywhere/> [<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/2618712a-ec1f-46b4-80d6-52ddb9dfc4a0" alt="Firefox" />](https://addons.mozilla.org/zh-CN/firefox/addon/new-bing-anywhere/)

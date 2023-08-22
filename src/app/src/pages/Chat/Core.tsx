@@ -325,7 +325,7 @@ export default () => {
                         <li>
                           There might be a Network Error, if you are from a country or region that does not support the New Bing Chat. You
                           may need to configure a network proxy correctly. Refer to{' '}
-                          <a href="https://github.com/haozi/New-Bing-Anywhere/issues/8" target="_blank" rel="nofollow noopener noreferrer">
+                          <a href="https://github.com/ha0z1/New-Bing-Anywhere/issues/8" target="_blank" rel="nofollow noopener noreferrer">
                             {' <'}Configure the Network Proxy{'>'}
                           </a>{' '}
                           for more information.
@@ -333,7 +333,7 @@ export default () => {
                         <li>Click the force refresh button in the top right corner and try again.</li>
                         <li>
                           If it remains unresolved, please{' '}
-                          <Button type="primary" href="https://github.com/haozi/New-Bing-Anywhere/issues" onClick={reportIssues}>
+                          <Button type="primary" href="https://github.com/ha0z1/New-Bing-Anywhere/issues" onClick={reportIssues}>
                             Submit an issue
                           </Button>{' '}
                           to us, or{' '}
