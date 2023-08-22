@@ -1,6 +1,6 @@
 import { AIPLUS } from '@@/constants'
-import { contextMenus, isChinese, version } from '@@/utils'
-import { InfoCircleOutlined, SettingOutlined } from '@ant-design/icons'
+import { contextMenus, isBrave, isChinese, version } from '@@/utils'
+import { InfoCircleOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons'
 import { Button, Tooltip } from 'antd'
 import s from './popup.module.styl'
 
@@ -54,6 +54,29 @@ export default () => {
           >
             {isChinese ? <Tooltip title="不限 IP 免封号">广告:高性价比的 GPT-4</Tooltip> : null /*'Fast and affordable GPT-4'*/}
           </a>
+          {isBrave && (
+            <Tooltip
+              title={
+                <>
+                  Tmp Fix Brave Relaunch{' '}
+                  <a href="https://github.com/ha0z1/New-Bing-Anywhere/issues/76#issuecomment-1628103920" target="_blank">
+                    <InfoCircleOutlined />
+                  </a>
+                </>
+              }
+            >
+              <Button
+                icon={<ReloadOutlined />}
+                onClick={(e) => {
+                  e.preventDefault()
+                  chrome.runtime.reload()
+                  chrome.runtime
+                }}
+                type="ghost"
+                href=""
+              />
+            </Tooltip>
+          )}
           <Button icon={<InfoCircleOutlined />} type="ghost" href={`${repo}/issues/8`} target="_blank" />
           <Button icon={<SettingOutlined />} type="ghost" href="/app/index.html#/options" target="_blank" />
         </footer>

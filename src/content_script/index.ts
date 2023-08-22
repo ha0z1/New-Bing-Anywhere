@@ -1,4 +1,4 @@
-import { callBackground, checkIsGoogle, getConfig } from '@@/utils'
+import { callBackground, checkIsGoogle, getConfig, isBrave } from '@@/utils'
 import $ from 'jquery'
 import { extensionName } from '../../package.json'
 import bingHandler from './bing-handler'
