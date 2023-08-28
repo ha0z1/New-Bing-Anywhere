@@ -10,8 +10,10 @@ English | [简体中文](README.zh-CN.md) | [Русский](README.ru.md)
 
 ## Install
 
-- Chrome: <https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en>
-- Firefox: <https://addons.mozilla.org/zh-CN/firefox/addon/new-bing-anywhere/>
+- Chrome and other Chromium-based browsers:
+  - [Get the extension from the Chrome Web Store.](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi)
+- Firefox:
+  - [Get the add-on from Mozilla Add-On Site.](https://addons.mozilla.org/en-US/firefox/addon/new-bing-anywhere/) If it's not working, see [this issue](https://github.com/ha0z1/New-Bing-Anywhere/issues/33).
 
 ## Use New Bing Any Browser Any Area
 
