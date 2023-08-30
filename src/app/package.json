@@ -21,16 +21,16 @@
     "react-router-dom": "^6.15.0",
     "react-syntax-highlighter": "^15.5.0",
     "rehype-raw": "^6.1.1",
-    "swr": "^2.2.1",
+    "swr": "^2.2.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.20",
+    "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "@types/uuid": "^9.0.2",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "stylus": "^0.59.0",
-    "typescript": "^5.1.6",
+    "typescript": "^5.2.2",
     "vite": "^4.4.9",
     "vite-plugin-imp": "^2.4.0",
     "vite-plugin-minify": "^1.5.2"
