@@ -174,7 +174,7 @@ export const getConfig = async (): Promise<Config> => {
     showBingButtonOnGoogle: true,
     showGuideToGithub: true,
     showChat: false,
-    showRelease: true,
+    showRelease: false,
     triggerMode: 'Always',
     conversationStyle: 'Balanced',
     'X-Forwarded-For': undefined,

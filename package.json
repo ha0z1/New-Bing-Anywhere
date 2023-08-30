@@ -1,6 +1,6 @@
 {
   "name": "new-bing-anywhere",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
   "homepage": "https://github.com/ha0z1/New-Bing-Anywhere",
@@ -28,21 +28,21 @@
     "test": "pnpm run lint"
   },
   "dependencies": {
-    "jquery": "3.7.0",
+    "jquery": "3.7.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.243",
+    "@types/chrome": "^0.0.244",
     "@types/fs-extra": "^11.0.1",
-    "@types/jquery": "^3.5.16",
-    "@types/node": "^20.5.2",
-    "@typescript-eslint/eslint-plugin": "^6.4.1",
-    "@typescript-eslint/parser": "^6.4.1",
+    "@types/jquery": "^3.5.17",
+    "@types/node": "^20.5.7",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
     "copy-and-watch": "^0.1.6",
     "esbuild": "^0.19.2",
     "esbuild-plugin-svgr": "^2.1.0",
     "esbuild-style-plugin": "^1.6.2",
-    "eslint": "^8.47.0",
+    "eslint": "^8.48.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
     "fs-extra": "^11.1.1",
@@ -53,8 +53,8 @@
     "sort-package-json": "^2.5.1",
     "stylus": "^0.59.0",
     "stylus-supremacy": "^2.17.5",
-    "typescript": "^5.1.6",
-    "vite-node": "^0.34.2"
+    "typescript": "^5.2.2",
+    "vite-node": "^0.34.3"
   },
   "engines": {
     "node": "^20.3.0",
