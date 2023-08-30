@@ -34,7 +34,7 @@ export default () => {
   const prompt = searchParams.get('prompt') ?? ''
   const engine = searchParams.get('engine') ?? 'google'
   const dir = searchParams.get('dir')
-  const darkmode = searchParams.get('darkmode')
+  const darkmode = (searchParams.get('darkmode') ?? 'light') as 'light' | 'dark'
   const domain = searchParams.get('domain')
   useEffect(() => {
     const $html = document.documentElement
@@ -45,6 +45,7 @@ export default () => {
       $html.setAttribute('color-scheme', darkmode)
     }
   }, [])
+
   // extra
   let extra: Extra | undefined
   try {
@@ -350,13 +351,13 @@ export default () => {
                   return <DoChat />
                 } else if (config.triggerMode === 'Questionmark') {
                   if (content.text) {
-                    return <Markdown children={content.text} />
+                    return <Markdown darkmode={darkmode} children={content.text} />
                   } else {
                     return <DoChat />
                   }
                 } else if (config.triggerMode === 'Always') {
                   if (content.text) {
-                    return <Markdown children={content.text} />
+                    return <Markdown darkmode={darkmode} children={content.text} />
                   }
                 }
 

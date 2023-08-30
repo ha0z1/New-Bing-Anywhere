@@ -28,21 +28,24 @@ export const dynamicRules = [
       resourceTypes: ALL_RESOURCE_TYPES
     }
   },
-  isChinese && {
-    action: {
-      type: REDIRECT,
-      redirect: {
-        url: `${AIPLUS}?invite_code=b90e84b5`
+  isChinese && [
+    {
+      action: {
+        type: REDIRECT,
+        redirect: {
+          url: `${AIPLUS}?invite_code=b90e84b5`
+        }
+      },
+      condition: {
+        requestDomains: ['chat.aiplus.lol'],
+        urlFilter: AIPLUS,
+        isUrlFilterCaseSensitive: false,
+        resourceTypes: ALL_RESOURCE_TYPES
       }
-    },
-    condition: {
-      requestDomains: ['chat.aiplus.lol'],
-      urlFilter: AIPLUS,
-      isUrlFilterCaseSensitive: false,
-      resourceTypes: ALL_RESOURCE_TYPES
     }
-  }
+  ]
 ]
+  .flat()
   .filter(Boolean)
   .map((rule, index) => ({
     id: index + 1 + 2000,

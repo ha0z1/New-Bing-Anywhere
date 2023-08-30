@@ -24,7 +24,7 @@ export default async () => {
         )
           .css({
             color: '#E89ABE',
-            textShadow: '0.5px 0.1px 1px #58070D',
+            background: '#f00',
             fontSize: '12px',
             fontWeight: 'lighter'
           })
@@ -40,7 +40,7 @@ export default async () => {
   if (!location.href.startsWith('https://www.bing.com/search?')) return
   const config = await getConfig()
 
-  $w('#sb_form').then(() => {
+  $w('#sb_form').then(async () => {
     type Note = {
       html_url: string
       title: string
@@ -58,10 +58,11 @@ export default async () => {
         fontSize: '12px',
         lineHeight: '40px',
         textAlign: 'center',
-        zIndex: 99999,
+        zIndex: 999999,
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
-        display: 'block !important'
+        display: 'block !important',
+        transition: 'all .3s'
       })
       const close = () => {
         $div.remove()
@@ -100,29 +101,25 @@ export default async () => {
         escapeHtml(searchQuery)
       )}" target="google" tabindex="10" rel="noopener noreferrer nofollow" title="search with Google">
         <img src="${chrome.runtime.getURL('images/google.png')}" alt="google" style="width: 100%;display: block;">
-      </a>`).css({
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      width: '70px',
-      height: '23px',
-      display: 'inline-block',
-      'z-index': 999,
-      transition: 'all .3s',
-      transform: `translate3d(${835 - (isRtl ? 925 : 0)}px, 13px, 0px)`,
-      'will-change': 'transform',
-      cursor: 'pointer'
-    })
-
-    $('#sb_form').css('position', 'relative').prepend($a)
+      </a>`)
+      .css({
+        position: 'absolute',
+        left: 0,
+        top: 0,
+        width: '70px',
+        height: '23px',
+        display: 'block',
+        'z-index': 999,
+        transform: `translate3d(0,0,0)`,
+        'will-change': 'transform',
+        cursor: 'pointer'
+      })
+      .appendTo('body')
 
     $a.on('click', async (e) => {
       const $this = $(e.currentTarget)
       e.preventDefault()
       let val = ''
-      // if ($('#b-scopeListItem-conv').hasClass('b_active')) {
-      //   val = ($('#searchbox').val() ?? '').trim()
-      // }
       if (!val) {
         val = String($q.val()).trim()
       }
@@ -131,41 +128,57 @@ export default async () => {
       await openUrlInSameTab(url)
     })
 
-    if (location.search.includes('showconv=1')) {
-      $a.css('display', 'none')
-      setTimeout(() => {
-        $a.css('display', 'inline-block')
-      }, 1200)
-    }
-
-    const changeGoogleLinkPosition = () => {
+    const changeGoogleLinkPosition = async () => {
+      const $searchboxForm = $(await $w('.b_searchboxForm'))
       const $conv = $('#b-scopeListItem-conv')
       const isNewBingOpen = $conv.hasClass('b_active')
+      const $bingIcon = $('.b_phead_chat_link')
+
+      const isFixed = $('#id_phead').hasClass('phead_border')
+      const hasBingIcon = $bingIcon.length && (isFixed ? window.innerWidth >= 840 : window.innerWidth >= 1164)
+
+      let left = 0
+      let top = 0
+
       if (isNewBingOpen) {
-        let left = 0
-        if ($conv.offset()!.left) {
-          left = $conv.offset()!.left + $conv.width()! + 30
+        left = $conv.offset()!.left + $conv.width()! + 30 + (isRtl ? -200 : 0)
+        top = 33
+        $a.css({
+          position: 'absolute',
+          transform: `translate3d(${left}px, ${top}px, 0)`
+        })
+        return
+      }
+
+      if (isFixed) {
+        if (hasBingIcon) {
+          left = $bingIcon.offset()!.left + $bingIcon.width()! + 10 + (isRtl ? -145 : 0)
         } else {
-          left = 350
+          left = $searchboxForm.offset()!.left + $searchboxForm.width()! + 10 + (isRtl ? -670 : 0)
         }
-
+        top = 15
         $a.css({
-          transform: `translate3d(${left - (isRtl ? 925 : 0)}px, 15px, 0)`
+          position: 'fixed',
+          transform: `translate3d(${left}px, ${top}px, 0)`
         })
+        return
+      }
+
+      if (hasBingIcon) {
+        left = $bingIcon.offset()!.left + $bingIcon.width()! + 10 + (isRtl ? -140 : 0)
       } else {
-        $a.css({
-          transform: `translate3d(${835 - (isRtl ? 925 : 0)}px, 15px, 0)`
-        })
+        left = $searchboxForm.offset()!.left + $searchboxForm.width()! + 10 + (isRtl ? -740 : 0)
       }
+      top = 32
 
-      if (!isNewBingOpen && $('.b_searchboxForm').hasClass('as_rsform')) {
-        $a.css({
-          transform: `translate3d(${1155 - (isRtl ? -99999 : 0)}px, 15px, 0)`
-        })
-      }
+      $a.css({
+        position: 'absolute',
+        transform: `translate3d(${left}px, ${top}px, 0)`
+      })
     }
 
     changeGoogleLinkPosition()
+
     new MutationObserver((mutationList, _observer) => {
       for (const mutation of mutationList) {
         const target = mutation.target
@@ -174,6 +187,9 @@ export default async () => {
           changeGoogleLinkPosition()
         }
         if ((target as HTMLElement).classList.contains('b_searchboxForm')) {
+          changeGoogleLinkPosition()
+        }
+        if ((target as HTMLElement).id === 'id_phead') {
           changeGoogleLinkPosition()
         }
       }
