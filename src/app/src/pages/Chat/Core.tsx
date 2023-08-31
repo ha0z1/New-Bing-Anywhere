@@ -184,8 +184,13 @@ export default () => {
               <Button
                 icon={<ReloadOutlined />}
                 type="ghost"
-                onClick={(e) => {
+                onClick={async (e) => {
                   e.preventDefault()
+
+                  await chrome.permissions.request({
+                    origins: ['wss://*.bing.com/']
+                  })
+
                   setRefreshDataKey(Date.now())
                   setLoading(true)
                   setSession(undefined)
@@ -302,6 +307,19 @@ export default () => {
                       </p>
                       <p>You can try the following methods to fix them:</p>
                       <ul>
+                        <li>
+                          Allow `wss://*.bing.com/` permissions:{' '}
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              chrome.permissions.request({
+                                origins: ['wss://*.bing.com/']
+                              })
+                            }}
+                          >
+                            Allow
+                          </Button>
+                        </li>
                         <li>
                           Make sure you have successfully logged into your Microsoft account on{' '}
                           <a href="https://www.bing.com" target="_blank" rel="nofollow noopener noreferrer">

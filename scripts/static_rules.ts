@@ -45,6 +45,16 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
           operation: SET,
           header: 'User-Agent',
           value: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${MAIN_VERSION}.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
+        },
+        {
+          operation: SET,
+          header: 'origin',
+          value: 'https://www.bing.com'
+        },
+        {
+          operation: SET,
+          header: 'referer',
+          value: 'https://www.bing.com'
         }
 
         // {
