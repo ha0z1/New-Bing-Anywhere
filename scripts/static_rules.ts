@@ -65,6 +65,27 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
   },
   {
     action: {
+      type: MODIFY_HEADERS,
+      requestHeaders: [
+        {
+          operation: SET,
+          header: 'origin',
+          value: 'https://www.bing.com'
+        },
+        {
+          operation: SET,
+          header: 'referer',
+          value: 'https://www.bing.com/search?q=Bing+AI&showconv=1&FORM=hpcodx'
+        }
+      ]
+    },
+    condition: {
+      requestDomains: ['www.bing.com', 'sydney.bing.com'],
+      resourceTypes: ['websocket', 'xmlhttprequest']
+    }
+  },
+  {
+    action: {
       type: REDIRECT,
       redirect: {
         regexSubstitution: '\\1setlang=zh-Hans&mkt=zh-HK\\2'
