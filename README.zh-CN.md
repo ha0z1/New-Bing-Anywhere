@@ -51,6 +51,18 @@
 - 搜索引擎侧边栏：会整合必应自然搜索和 AI 推荐，是的，相当于搜索一次，同时使用 Google 和必应两大优秀的搜索引擎。本插件为了提供更高效有用的搜索结果，而非娱乐性质
 - 英/简/繁多语言支持
 
+## 支持作者
+
+软件维护不易，您可以通过以下方式支持作者：
+<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/343190af-95ce-4615-affe-46100e6eb6c8" width=120 align="right">
+<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/b241ba84-a528-470f-8512-67eb26e9f18f" width=120 align="right">
+- 请作者喝一杯咖啡(可以加作者好友，获得需求优先响应权及鸣谢名单)
+- 给予软件中肯的[评价](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)和 star
+- 评阅 Github Notifications, 帮助其他人解答 [issue](https://github.com/ha0z1/New-Bing-Anywhere/issues)
+- 反馈问题时提供尽可能详细的信息和复现步骤，避免一句话反馈和重复反馈，帮助作者定位问题
+- 向好友转发和推荐
+- 浏览赞助商广告(友情提示，请理性消费)
+
 ## 找到我们
 
 [![Telegram](https://user-images.githubusercontent.com/4150641/229351983-a6a455e8-7b5e-4f58-bf80-1f4949ae8276.jpg 'Telegram')](https://t.me/new_bing_anywhere)
