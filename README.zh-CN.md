@@ -54,8 +54,9 @@
 ## 支持作者
 
 软件维护不易，您可以通过以下方式支持作者：
-<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/343190af-95ce-4615-affe-46100e6eb6c8" width=120 align="right">
-<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/b241ba84-a528-470f-8512-67eb26e9f18f" width=120 align="right">
+
+<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/343190af-95ce-4615-affe-46100e6eb6c8" width=120 align="right"> <img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/b241ba84-a528-470f-8512-67eb26e9f18f" width=120 align="right">
+
 - 请作者喝一杯咖啡(可以加作者好友，获得需求优先响应权及鸣谢名单)
 - 给予软件中肯的[评价](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)和 star
 - 评阅 Github Notifications, 帮助其他人解答 [issue](https://github.com/ha0z1/New-Bing-Anywhere/issues)

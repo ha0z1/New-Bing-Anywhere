@@ -17,6 +17,14 @@ export type Scene = 'newtab' | 'popup' | 'iframe' | undefined
 type SourceAttributions = NonNullable<NonNullable<Bing.CoreData['messages']>[0]['sourceAttributions']>
 type SuggestedResponses = NonNullable<NonNullable<Bing.CoreData['messages']>[0]['suggestedResponses']>
 
+const isJSONString = (str: string) => {
+  try {
+    JSON.parse(str)
+    return true
+  } catch {
+    return false
+  }
+}
 export default () => {
   const [config] = useConfig()
   const [needFetch, setNeedFecth] = useState<string | null>(null)
@@ -79,7 +87,7 @@ export default () => {
       const text = message?.text ?? ''
       const sourceAttributions = message?.sourceAttributions ?? []
       const suggestedResponses = message?.suggestedResponses ?? []
-      if (text) {
+      if (text && !isJSONString(text)) {
         setLoading(false)
         setContent({
           text: formatText(text, coreData),
