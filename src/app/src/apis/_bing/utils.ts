@@ -230,9 +230,9 @@ export const bingChatCloseWebSocket = async (socketId: number) => {
   webSockets[socketId] = null
 }
 
-export const getFromConversation = async (options: Bing.ConversationOptions): Promise<Bing.CoreData | null> => {
-  return await callBackground('bing.getFromConversation', [options])
-}
+// export const getFromConversation = async (options: Bing.ConversationOptions): Promise<Bing.CoreData | null> => {
+//   return await callBackground('bing.getFromConversation', [options])
+// }
 
 export const checkHasText = (data?: Partial<Bing.CoreData> | null | undefined) => {
   return data?.result?.value === 'Success' && !!data?.messages?.reverse().find((msg) => !msg.messageType && msg.author === 'bot')?.text

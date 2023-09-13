@@ -1,5 +1,5 @@
 import { getURL, version } from '@@/utils'
-import { bingChatCloseWebSocket, bingChatPing, getFromConversation as bingGetFromConversation } from './_bing'
+import { bingChatCloseWebSocket, bingChatPing /*, getFromConversation as bingGetFromConversation */ } from './_bing'
 import { getNotification, hideNotification } from './_notification'
 
 const getEnv = async () => {
@@ -57,7 +57,7 @@ export default {
   getNotification,
   hideNotification,
 
-  'bing.getFromConversation': bingGetFromConversation,
+  // 'bing.getFromConversation': bingGetFromConversation,
   'bing.bingChatPing': bingChatPing,
   'bing.bingChatCloseWebSocket': bingChatCloseWebSocket
 }
