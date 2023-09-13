@@ -1,53 +1,56 @@
 import { type Bing } from '@@/types'
 import { v4 as uuidv4 } from 'uuid'
 
-export const getFromConversation = async (options: Bing.ConversationOptions): Promise<Bing.CoreData | null> => {
-  const API =
-    'https://sydney.bing.com/sydney/GetConversation?' +
-    `conversationId=${encodeURIComponent(encodeURIComponent(options.session.conversationId))}&` +
-    `source=${encodeURIComponent(options.source)}&` +
-    `participantId=${encodeURIComponent(options.participantId)}&` +
-    `bundleVersion=1.864.15&` +
-    // `conversationSignature=${encodeURIComponent(options.session.conversationSignature)}&` +
-    `traceId=${uuidv4()}`
+// const conversationsCache = {}
+// export const getFromConversation = async (options: Bing.ConversationOptions): Promise<Bing.CoreData | null> => {
+// const key = JSON.stringify(options)
 
-  try {
-    const data = await fetch(API, {
-      headers: {
-        accept: '*/*',
-        'accept-language': 'en-US,en;q=0.9',
-        authorization: `Bearer ${options.session.encryptedConversationSignature}`,
-        'content-type': 'application/json',
-        'sec-ch-ua': '"Not.A/Brand";v="8", "Chromium";v="114", "Microsoft Edge";v="114"',
-        'sec-ch-ua-full-version': '"114.0.1823.82"',
-        'sec-ch-ua-full-version-list': '"Not.A/Brand";v="8.0.0.0", "Chromium";v="114.0.5735.201", "Microsoft Edge";v="114.0.1823.82"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"macOS"',
-        'sec-fetch-dest': 'empty',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-site': 'same-site',
-        'sec-gpc': '1',
-        'sec-ms-gec-version': '1-114.0.1823.82'
-      },
-      referrer: 'https://www.bing.com/search?q=Bing+AI&showconv=1&FORM=hpcodx',
-      referrerPolicy: 'origin-when-cross-origin',
-      body: null,
-      method: 'GET',
-      mode: 'cors',
-      credentials: 'include'
-    }).then((r) => r.json())
-    // const data = await fetch(API, {
-    //   headers: {
-    //     Authorization: `Bearer ${options.session.encryptedConversationSignature}`
-    //   }
-    // }).then((r) => r.json())
-    return data
-  } catch (err: unknown) {
-    return null
-    // const { message } = err as { message: string }
-    // throw new Error(`Failed to get conversation from ${API}: ${message}}`)
-  }
-}
+// const API =
+//   'https://sydney.bing.com/sydney/GetConversation?' +
+//   `conversationId=${encodeURIComponent(encodeURIComponent(options.session.conversationId))}&` +
+//   `source=${encodeURIComponent(options.source)}&` +
+//   `participantId=${encodeURIComponent(options.participantId)}&` +
+//   `bundleVersion=1.864.15&` +
+//   // `conversationSignature=${encodeURIComponent(options.session.conversationSignature)}&` +
+//   `traceId=${uuidv4()}`
+
+// try {
+//   const data = await fetch(API, {
+//     headers: {
+//       accept: '*/*',
+//       'accept-language': 'en-US,en;q=0.9',
+//       authorization: `Bearer ${options.session.encryptedConversationSignature}`,
+//       'content-type': 'application/json',
+//       'sec-ch-ua': '"Not.A/Brand";v="8", "Chromium";v="114", "Microsoft Edge";v="114"',
+//       'sec-ch-ua-full-version': '"114.0.1823.82"',
+//       'sec-ch-ua-full-version-list': '"Not.A/Brand";v="8.0.0.0", "Chromium";v="114.0.5735.201", "Microsoft Edge";v="114.0.1823.82"',
+//       'sec-ch-ua-mobile': '?0',
+//       'sec-ch-ua-platform': '"macOS"',
+//       'sec-fetch-dest': 'empty',
+//       'sec-fetch-mode': 'cors',
+//       'sec-fetch-site': 'same-site',
+//       'sec-gpc': '1',
+//       'sec-ms-gec-version': '1-114.0.1823.82'
+//     },
+//     referrer: 'https://www.bing.com/search?q=Bing+AI&showconv=1&FORM=hpcodx',
+//     referrerPolicy: 'origin-when-cross-origin',
+//     body: null,
+//     method: 'GET',
+//     mode: 'cors',
+//     credentials: 'include'
+//   }).then((r) => r.json())
+//   // const data = await fetch(API, {
+//   //   headers: {
+//   //     Authorization: `Bearer ${options.session.encryptedConversationSignature}`
+//   //   }
+//   // }).then((r) => r.json())
+//   return data
+// } catch (err: unknown) {
+//   return null
+//   // const { message } = err as { message: string }
+//   // throw new Error(`Failed to get conversation from ${API}: ${message}}`)
+// }
+// }
 
 const webSockets: Record<string, WebSocket | null> = {}
 
