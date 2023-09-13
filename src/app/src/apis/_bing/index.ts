@@ -3,7 +3,6 @@ import { ls, getConfig } from '@@/utils'
 
 import {
   createPropmt,
-  getFromConversation,
   bingChatGetSocketId,
   bingChatPing,
   bingChatCreateSession,
@@ -15,15 +14,15 @@ import {
 export const createBingChat = async (options: Bing.CreateBingChatOptions): Promise<Bing.CreateBingChatResponce | undefined> => {
   const { prompt, onMessage, needRefresh, session } = options
   if (!prompt) return
-
-  const promptKey = `Prompt-v1-${prompt.trim()}`
+  const prefix = 'Prompt-v2.4'
+  const promptKey = `${prefix}-${prompt.trim()}`
 
   if (needRefresh) {
     await ls.remove(promptKey)
   }
   const promptCache = await ls.get<Bing.ConversationOptions>(promptKey)
   if (promptCache) {
-    const data = await getFromConversation(promptCache)
+    const data = promptCache.data
     if (checkHasText(data)) {
       return { data: data!, conversationOptions: promptCache }
     }
@@ -79,13 +78,21 @@ export const createBingChat = async (options: Bing.CreateBingChatOptions): Promi
       ...finalSession,
       conversationId,
       encryptedConversationSignature
-    }
+    },
+    data: type2Data.item
   }
 
   if (conversationId && source && participantId && encryptedConversationSignature) {
     ls.set<Bing.ConversationOptions>(promptKey, conversationOptions as Bing.ConversationOptions)
   }
 
+  setTimeout(async () => {
+    const _1M = 1024 * 1024
+    const bytesInUse = await chrome.storage.local.getBytesInUse()
+    if (bytesInUse > _1M) {
+      chrome.storage.local.clear()
+    }
+  })
   return {
     data: type2Data.item,
     conversationOptions
