@@ -29,9 +29,6 @@ export const createBingChat = async (options: Bing.CreateBingChatOptions): Promi
     }
   }
 
-  onMessage({ type: 0, text: 'Creating socket...' })
-  const socketId = await bingChatGetSocketId()
-  onMessage({ type: 0, text: 'Created socket success!' })
   let finalSession = session
   if (!finalSession) {
     try {
@@ -43,6 +40,11 @@ export const createBingChat = async (options: Bing.CreateBingChatOptions): Promi
       throw new Error(e)
     }
   }
+
+  const encryptedConversationSignature = finalSession.encryptedConversationSignature
+  onMessage({ type: 0, text: 'Creating socket...' })
+  const socketId = await bingChatGetSocketId(encryptedConversationSignature)
+  onMessage({ type: 0, text: 'Created socket success!' })
 
   bingChatPing(socketId)
   const ping = setInterval(() => {
@@ -70,18 +72,17 @@ export const createBingChat = async (options: Bing.CreateBingChatOptions): Promi
   const conversationId = type2Data.item.conversationId
   const source = type2Data.item.messages?.find((msg) => msg.contentOrigin)?.contentOrigin
   const participantId = type2Data.item.messages?.find((msg) => msg.from)?.from?.id
-  const conversationSignature = finalSession.conversationSignature
-
   const conversationOptions: Partial<Bing.ConversationOptions> = {
     source,
     participantId,
     session: {
       ...finalSession,
       conversationId,
-      conversationSignature
+      encryptedConversationSignature
     }
   }
-  if (conversationId && source && participantId && conversationSignature) {
+
+  if (conversationId && source && participantId && encryptedConversationSignature) {
     ls.set<Bing.ConversationOptions>(promptKey, conversationOptions as Bing.ConversationOptions)
   }
 
