@@ -29,7 +29,7 @@ const timestamp = () => {
 
 export const createPropmt = (options: Bing.createPropmtOptions) => {
   const { prompt, isStartOfSession = true, session, tone } = options
-  const { conversationSignature, clientId, conversationId } = session
+  const { encryptedConversationSignature, clientId, conversationId } = session
   return {
     arguments: [
       {
@@ -98,7 +98,7 @@ export const createPropmt = (options: Bing.createPropmtOptions) => {
           messageType: 'Chat'
         },
         tone,
-        conversationSignature,
+        conversationSignature: encryptedConversationSignature,
         participant: {
           id: clientId
         },
@@ -118,9 +118,9 @@ let id = 0
 const uid = () => ++id
 
 export const bingChatCreateSession = async (): Promise<Bing.Session> => {
-  const API = 'https://www.bing.com/turing/conversation/create'
+  const API = 'https://www.bing.com/turing/conversation/create?bundleVersion=1.864.15'
   try {
-    const res = await fetch(API, {
+    const xhr = await fetch(API, {
       headers: {
         accept: '*/*',
         'accept-language': 'zh,en;q=0.9,en-US;q=0.8,zh-CN;q=0.7,zh-TW;q=0.6',
@@ -133,20 +133,22 @@ export const bingChatCreateSession = async (): Promise<Bing.Session> => {
       method: 'GET',
       mode: 'cors',
       credentials: 'include'
-    }).then(async (r) => await r.json())
+    })
+    const encryptedConversationSignature = xhr.headers.get('x-sydney-encryptedconversationsignature') ?? ''
+    const res = await xhr.json()
 
     return {
       conversationId: res.conversationId,
       clientId: res.clientId,
-      conversationSignature: res.conversationSignature
+      encryptedConversationSignature
     }
   } catch {
     throw new Error(`Failed to create session.Please ensure that the \`${API}\` request is accessible.`)
   }
 }
 
-export const bingChatGetSocketId = async (): Promise<number> => {
-  const socketUrl = 'wss://sydney.bing.com/sydney/ChatHub'
+export const bingChatGetSocketId = async (encryptedConversationSignature: string): Promise<number> => {
+  const socketUrl = `wss://sydney.bing.com/sydney/ChatHub?sec_access_token=${encodeURIComponent(encryptedConversationSignature)}`
   return await new Promise((resolve, reject) => {
     try {
       const ws = new WebSocket(socketUrl)

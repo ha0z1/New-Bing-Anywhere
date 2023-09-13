@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/indent */
 
 export interface Session {
-  conversationSignature: string
+  encryptedConversationSignature: string
   clientId: string
   conversationId: string
 }

@@ -162,7 +162,7 @@ export default () => {
           `conversationId=${encodeURIComponent(conversationOptions.session?.conversationId ?? '')}&` +
           `source=${encodeURIComponent(conversationOptions.source ?? '')}&` +
           `participantId=${encodeURIComponent(conversationOptions.participantId ?? '')}&` +
-          `conversationSignature=${encodeURIComponent(conversationOptions.session?.conversationSignature ?? '')}`
+          `encryptedConversationSignature=${encodeURIComponent(conversationOptions.session?.encryptedConversationSignature ?? '')}`
         : undefined
     })
     window.open(url)
