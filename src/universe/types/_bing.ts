@@ -19,6 +19,7 @@ export interface ConversationOptions {
   session: Session
   source: string
   participantId: string
+  data?: CoreData
 }
 
 export interface CoreData {
