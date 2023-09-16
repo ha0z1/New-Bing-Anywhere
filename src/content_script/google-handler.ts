@@ -1,6 +1,6 @@
-import { getConfig } from '@@/utils'
+import { getConfig } from 'global/config'
 import $ from 'jquery'
-import { $w, openUrlInSameTab } from './utils'
+import { $w, openUrlInSameTab } from './_utils'
 
 export default async () => {
   const config = await getConfig()

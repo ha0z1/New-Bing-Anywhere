@@ -1,0 +1,39 @@
+.suggestions {
+  display: flex
+  flex-flow: row wrap
+  row-gap: 6px
+
+  a {
+    display: flex
+    justify-content: center
+    align-items: center
+    box-sizing: border-box
+    padding: 0px 8px
+    border-radius: 4px
+    background: #d1dbfa
+    color: #123bb6
+    text-decoration: none
+    font-weight: 500
+    line-height: 24px
+    transition: background-color 0.2s
+    margin-inline-end: 6px
+
+    &:hover {
+      background-color: #afbde8
+      text-decoration: none
+    }
+  }
+}
+
+[color-scheme='dark'] {
+  .suggestions {
+    a {
+      background: #303134
+      color: #c9d1d9
+
+      &:hover {
+        background: #444c56
+      }
+    }
+  }
+}

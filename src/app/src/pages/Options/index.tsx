@@ -1,6 +1,7 @@
-import useConfirm from '@/hooks/useConfirm'
-import { useTitle } from '@/utils/hooks'
-import { getConfig, isChinese, isFirefox, setConfig, type Config } from '@@/utils'
+import useConfirm from 'global/hooks/useConfirm'
+import useTitle from 'global/hooks/useTitle'
+import useConfig, { type Config } from 'global/hooks/useConfig'
+import { isChinese, isFirefox } from '@ha0z1/extension-utils'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { Form, Tooltip, message } from 'antd'
 import React, { useEffect, useState } from 'react'
@@ -37,15 +38,15 @@ const content4 = 'It may cause Bing to malfunction. If you encounter any issues,
 
 const App: React.FC = () => {
   useTitle('Options')
-  const [config, setStateConfig] = useState<Config>()
   const [form] = Form.useForm()
-
-  useSWR<Config>('config', async () => {
-    const config = await getConfig()
-    setStateConfig({ ...config })
-    form.setFieldsValue({ ...config })
-    return config
-  })
+  const [config, setConfig] = useConfig()
+  form.setFieldsValue(config)
+  // useSWR<Config>('config', async () => {
+  //   const config = await getConfig()
+  //   setStateConfig({ ...config })
+  //   ({ ...config })
+  //   return config
+  // })
 
   const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 14 } }
 
@@ -70,64 +71,66 @@ const App: React.FC = () => {
     })
   }
   const saveConfig = async (values: Config) => {
-    try {
-      const XFF: boolean = values['X-Forwarded-For'] as unknown as boolean
-      if (XFF === true) {
-        values['X-Forwarded-For'] = '123.23.12.43'
-      } else if (XFF === false) {
-        values['X-Forwarded-For'] = undefined
-      }
-      await setConfig(values)
-      setStateConfig((preConfig) => ({ ...preConfig, ...values }))
+    setConfig(values)
+    // try {
+    //   const XFF: boolean = values['X-Forwarded-For'] as unknown as boolean
+    //   if (XFF === true) {
+    //     values['X-Forwarded-For'] = '123.23.12.43'
+    //   } else if (XFF === false) {
+    //     values['X-Forwarded-For'] = undefined
+    //   }
+    //   // await setConfig(values)
+    //   setStateConfig((preConfig) => ({ ...preConfig, ...values }))
 
-      showSuccess('Saved!')
-      // console.log(JSON.stringify(await getConfig(), null, 2))
-    } catch (error: any) {
-      console.error(error)
-      showError(error.message ?? error)
-    }
+    //   showSuccess('Saved!')
+    //   // console.log(JSON.stringify(await getConfig(), null, 2))
+    // } catch (error: any) {
+    //   console.error(error)
+    //   showError(error.message ?? error)
+    // }
   }
   const [confirm, confirmModal] = useConfirm()
 
-  useEffect(() => {
-    if (isFirefox) return
-    const NAME = 'X-Forwarded-For'
-    const ID = 3001
-    const XFF = config?.[NAME]
-    // console.log('XFF', XFF)
-    chrome.declarativeNetRequest.updateDynamicRules({
-      removeRuleIds: [ID],
-      addRules: [
-        {
-          id: ID,
-          action: {
-            type: 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
-            requestHeaders: [
-              XFF
-                ? {
-                    operation: 'set' as chrome.declarativeNetRequest.HeaderOperation.SET,
-                    header: NAME,
-                    value: XFF
-                  }
-                : {
-                    operation: 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE,
-                    header: NAME
-                  }
-            ]
-          },
-          condition: {
-            requestDomains: ['www.bing.com'],
-            resourceTypes: Object.values(chrome.declarativeNetRequest.ResourceType)
-          }
-        }
-      ]
-    })
-  }, [config?.['X-Forwarded-For']])
+  // useEffect(() => {
+  //   if (isFirefox) return
+  //   const NAME = 'X-Forwarded-For'
+  //   const ID = 3001
+  //   const XFF = config?.[NAME]
+  //   // console.log('XFF', XFF)
+  //   chrome.declarativeNetRequest.updateDynamicRules({
+  //     removeRuleIds: [ID],
+  //     addRules: [
+  //       {
+  //         id: ID,
+  //         action: {
+  //           type: 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS,
+  //           requestHeaders: [
+  //             XFF
+  //               ? {
+  //                   operation: 'set' as chrome.declarativeNetRequest.HeaderOperation.SET,
+  //                   header: NAME,
+  //                   value: XFF
+  //                 }
+  //               : {
+  //                   operation: 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE,
+  //                   header: NAME
+  //                 }
+  //           ]
+  //         },
+  //         condition: {
+  //           requestDomains: ['www.bing.com'],
+  //           resourceTypes: Object.values(chrome.declarativeNetRequest.ResourceType)
+  //         }
+  //       }
+  //     ]
+  //   })
+  // }, [config?.['X-Forwarded-For']])
 
   if (!config) return null
 
   return (
     <div className={s.options}>
+      {JSON.stringify(config)}
       {messageContextHolder}
       {confirmModal}
 
@@ -140,7 +143,6 @@ const App: React.FC = () => {
       <main className={s.body}>
         <Form
           {...formItemLayout}
-          initialValues={config}
           layout="horizontal"
           form={form}
           // style={{ width: 600 }}
@@ -191,7 +193,7 @@ const App: React.FC = () => {
             />
           </Form.Item>
 
-          <Form.Item label="Show Bing Chat Sidebar" valuePropName="checked" name="showChat">
+          <Form.Item label="Show Bing Chat Sidebar" valuePropName="checked" name="showSidebar">
             <Switch />
           </Form.Item>
 

@@ -1,6 +1,6 @@
 {
   "name": "new-bing-anywhere",
-  "version": "2.4.6",
+  "version": "3.0.0",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
   "homepage": "https://github.com/ha0z1/New-Bing-Anywhere",
@@ -10,73 +10,67 @@
   },
   "license": "GPLv3",
   "author": "haozi",
+  "workspaces": [
+    "packages/*",
+    "src/app",
+    "global"
+  ],
   "scripts": {
-    "build": "rm -rf dist && mkdir -p dist && pnpm run lint && pnpm run build:bundle",
-    "build:bundle": "NODE_ENV=production vite-node scripts/build.ts -- build",
+    "build": "bun run lint && bun run scripts/build.ts build",
     "copy": "rm -rf dist && cp -r public dist",
     "copy:soruce": "rsync -vhra . dist/source --include='**.gitignore' --exclude='/.git' --exclude='dist'  --filter=':- .gitignore' --delete-after",
-    "copy:watch": "pnpm run copy -- --watch",
-    "dev": "pnpm run lint && pnpm run '/^dev:.*/'",
-    "dev:app": "pnpm --filter app run dev",
-    "dev:bundle": "vite-node scripts/build.ts -- dev",
-    "lint": "pnpm run prettier && pnpm run '/^lint:.*/'",
+    "copy:watch": "bun run copy -- --watch",
+    "dev": "bun run lint && bun run scripts/build.ts dev",
+    "lint": "bun run prettier && bun run lint:eslint && bun run lint:stylus",
     "lint:eslint": "eslint --ext .js,.ts ./src --fix --cache",
-    "lint:stylus": "stylus-supremacy format ./src/**/*.styl  --options ./stylus-supremacy.json --replace",
-    "prepare": "husky install && pnpm run build",
-    "prettier": "prettier --cache --write .",
+    "lint:stylus": "stylus-supremacy format '{src,global}/**/*.styl' --options ./stylus-supremacy.json --replace",
+    "prepare": "husky install && bun run build",
+    "prettier": "prettier --cache --write '.'",
     "prettier:watch": "onchange \"**/*\" -- prettier --cache --write --ignore-unknown --ignore-path .prettierignore {{changed}} > /dev/null 2>&1",
-    "test": "pnpm run lint"
+    "test": "bun run lint"
   },
   "dependencies": {
-    "jquery": "3.7.1",
-    "uuid": "^9.0.0"
+    "@ha0z1/extension-utils": "workspace:*",
+    "@ha0z1/llama-apis": "workspace:*",
+    "global": "workspace:*",
+    "jquery": "^3.7.1",
+    "lodash-es": "^4.17.21",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.244",
-    "@types/fs-extra": "^11.0.1",
-    "@types/jquery": "^3.5.17",
-    "@types/node": "^20.5.7",
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
-    "@typescript-eslint/parser": "^6.5.0",
+    "@types/chrome": "^0.0.246",
+    "@types/fs-extra": "^11.0.2",
+    "@types/jquery": "^3.5.19",
+    "@types/lodash-es": "^4.17.9",
+    "@types/node": "^20.7.0",
+    "@types/react": "^18.2.22",
+    "@types/react-dom": "^18.2.7",
+    "@types/webextension-polyfill": "^0.10.4",
+    "@typescript-eslint/eslint-plugin": "^6.7.3",
+    "@typescript-eslint/parser": "^6.7.3",
     "copy-and-watch": "^0.1.6",
-    "esbuild": "^0.19.2",
-    "esbuild-plugin-svgr": "^2.1.0",
-    "esbuild-style-plugin": "^1.6.2",
-    "eslint": "^8.48.0",
+    "eslint": "^8.50.0",
     "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
     "fs-extra": "^11.1.1",
+    "glob": "^10.3.9",
     "husky": "^8.0.3",
     "md5-file": "^5.0.0",
     "onchange": "^7.1.0",
-    "prettier": "^3.0.2",
+    "prettier": "^3.0.3",
+    "rollup-plugin-copy": "^3.5.0",
     "sort-package-json": "^2.5.1",
-    "stylus": "^0.59.0",
+    "stylus": "^0.60.0",
     "stylus-supremacy": "^2.17.5",
     "typescript": "^5.2.2",
-    "vite-node": "^0.34.3"
+    "vite": "^4.4.9",
+    "vite-plugin-css-injected-by-js": "^3.3.0",
+    "vite-plugin-imp": "^2.4.0"
   },
   "engines": {
-    "node": "^20.3.0",
-    "pnpm": "^8.6.3"
-  },
-  "extension-i18n": {
-    "en": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
-      "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country."
-    },
-    "zh_CN": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
-      "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country. 随时随地，有求必应。"
-    },
-    "zh_TW": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
-      "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country. 隨時隨地，有求必應"
-    },
-    "ru": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
-      "extensionDescription": "Чат New Bing может использоваться в любом браузере, с любым поисковым движком и в любой стране."
-    }
+    "bun": "^1.0.3"
   },
   "extensionName": "New Bing Anywhere (Bing Chat GPT-4)"
 }

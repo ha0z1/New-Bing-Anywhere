@@ -1,5 +1,5 @@
-import { genUA } from '@@/utils'
-import { MAIN_VERSION } from '@@/constants'
+import genUA from 'global/genUA'
+import { MAIN_VERSION } from 'global/constants'
 
 try {
   const ua = genUA()

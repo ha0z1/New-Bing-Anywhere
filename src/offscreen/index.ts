@@ -1,0 +1,82 @@
+import { addBackgroundListener } from '@ha0z1/extension-utils'
+import { Types as LlamasTypes, methods as LlamasMethods } from '@ha0z1/llama-apis'
+
+const s = new URLSearchParams(location.search)
+const url: Record<string, string> = JSON.parse(s.get('url')!)
+const iframes: Record<string, HTMLIFrameElement> = {}
+for (const [key, src] of Object.entries(url)) {
+  const iframe = document.createElement('iframe')
+  iframe.src = src + '###new-bing-anywhere-offscreen'
+  iframe.id = key
+  iframes[key] = iframe
+  document.body.appendChild(iframe)
+}
+
+const iframe = iframes.Bing
+
+// chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+//     if (message.target !== 'offscreen') return;
+//     if (message.action === 'url') {
+//       sendResponse(window.location.href);
+//     } else {
+//       sendMsg2Iframe(message, sendResponse);
+//     }
+//     return true;
+//   });
+
+interface IMessage {
+  uuid: string
+  msg: any
+}
+const genUUID = () => Math.random() + ''
+
+const sendMsg2Iframe = <T = any, U = any>(iframe: HTMLIFrameElement, options: T): Promise<U> => {
+  return new Promise((resolve, reject) => {
+    const uuid = genUUID()
+    const onMessageUUID = genUUID()
+    const onMessage = options?.[1]?.onMessage
+    const hasOnMessage = typeof onMessage === 'function'
+
+    if (hasOnMessage) {
+      options[1].onMessage = undefined
+    }
+
+    const messageHandler = (e: MessageEvent<IMessage>) => {
+      const { msg, uuid: callbackUUID } = e.data
+      if (callbackUUID === uuid) {
+        if (msg.code === 200) {
+          resolve(msg.data)
+        } else {
+          reject(msg)
+        }
+        window.removeEventListener('message', messageHandler)
+      }
+
+      console.log(1111, onMessageUUID, uuid)
+      if (hasOnMessage && callbackUUID === onMessageUUID) {
+        onMessage(msg)
+      }
+    }
+
+    window.addEventListener('message', messageHandler)
+    setTimeout(() => {
+      if (!iframe.contentWindow) return
+
+      iframe.contentWindow.postMessage({ msg: options, uuid, onMessageUUID: hasOnMessage ? onMessageUUID : undefined }, '*')
+    })
+  })
+}
+
+const methods = {
+  'LLaMA.Bing.createConversation': (args) => {
+    const LLaMA = LlamasTypes.Bing
+    return sendMsg2Iframe(iframes[LlamasTypes.Bing], ['LLaMA.Bing.createConversation', args])
+  },
+  'LLaMA.Bing.sendPrompt': (args) => {
+    const LLaMA = LlamasTypes.Bing
+    debugger
+    return sendMsg2Iframe(iframes[LlamasTypes.Bing], ['LLaMA.Bing.sendPrompt', args])
+  }
+}
+
+addBackgroundListener(methods)

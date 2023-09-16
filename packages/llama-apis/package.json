@@ -1,0 +1,17 @@
+{
+  "name": "@ha0z1/llama-apis",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "src",
+  "files": [
+    "dist",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "build": "vite build & tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9"
+  }
+}

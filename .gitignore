@@ -1,3 +1,4 @@
+dist/
 node_modules/
 .DS_Store
 *.log
@@ -11,6 +12,8 @@ dist/*.zip
 dist/**/_metadata/
 dist/source/
 key/
-vite.config.åts.timestamp-*
+vite.config.ts.timestamp-*
 *.map
 TODO
+
+src/content_script/ChatApp/.shadow.css

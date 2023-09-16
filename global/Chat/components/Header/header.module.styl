@@ -1,0 +1,70 @@
+.header {
+  position: relative
+  display: flex
+  align-items: center
+  height: 40px
+  user-select: none
+
+  img {
+    width: 24px
+    height: 24px
+  }
+
+  h1 {
+    flex: 1
+    font-weight: 700
+    font-size: 18px
+    margin-inline-start: 0.5em
+  }
+
+  .btns {
+    color: #333
+    opacity: 0
+    transition: opacity 0.2s
+    will-change: opacity
+
+    a {
+      color: rgb(0 0 0 / 88%) !important
+    }
+
+    a:hover {
+      color: #535bf2 !important
+    }
+  }
+
+  .llamaTabs {
+    position: absolute
+    bottom: -8px
+    left: 30px
+    z-index: 100
+    display: flex
+    align-items: flex-end
+    font-size: 9px
+    opacity: 0
+    transition: opacity 0.2s
+
+    .tab {
+      padding: 0 5px
+      border: 0.5px solid #dcdcdc
+      border-bottom: none
+      border-radius: 5px 5px 0 0
+      background: #f2f3f7
+      cursor: pointer
+      margin-inline-end: 4px
+    }
+
+    .tab.active {
+      padding-top: 2px
+      background: #d1dbfa
+      color: #123bb6
+    }
+  }
+
+  &:hover .btns {
+    opacity: 1
+  }
+
+  &:hover .llamaTabs {
+    opacity: 1
+  }
+}

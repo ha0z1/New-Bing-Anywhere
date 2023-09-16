@@ -1,0 +1,22 @@
+{
+  "name": "@ha0z1/extension-utils",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "src",
+  "files": [
+    "dist",
+    "index.d.ts"
+  ],
+  "scripts": {
+    "build": "vite build & tsc"
+  },
+  "dependencies": {
+    "@types/chrome": "^0.0.246",
+    "@types/webextension-polyfill": "^0.10.4",
+    "webextension-polyfill": "^0.10.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9"
+  }
+}

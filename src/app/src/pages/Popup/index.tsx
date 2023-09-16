@@ -1,7 +1,9 @@
-import { AIPLUS } from '@@/constants'
-import { contextMenus, isBrave, isChinese, version } from '@@/utils'
 import { InfoCircleOutlined, ReloadOutlined, SettingOutlined } from '@ant-design/icons'
-import { Button, Tooltip } from 'antd'
+import { isBrave, isChinese } from '@ha0z1/extension-utils'
+import { Tooltip } from 'antd'
+import PureButton from 'global/components/PureButton'
+import { AIPLUS, version } from 'global/constants'
+import contextMenus from 'global/contextMenus'
 import s from './popup.module.styl'
 
 export default () => {
@@ -65,20 +67,22 @@ export default () => {
                 </>
               }
             >
-              <Button
-                icon={<ReloadOutlined />}
+              <PureButton
                 onClick={(e) => {
                   e.preventDefault()
                   chrome.runtime.reload()
-                  chrome.runtime
                 }}
-                type="ghost"
-                href=""
-              />
+              >
+                <ReloadOutlined />
+              </PureButton>
             </Tooltip>
           )}
-          <Button icon={<InfoCircleOutlined />} type="ghost" href={`${repo}/issues/8`} target="_blank" />
-          <Button icon={<SettingOutlined />} type="ghost" href="/app/index.html#/options" target="_blank" />
+          <PureButton href={`${repo}/issues/8`} target="_blank">
+            <InfoCircleOutlined />
+          </PureButton>
+          <PureButton href="/app/index.html#/options" target="_blank">
+            <SettingOutlined />
+          </PureButton>
         </footer>
       </div>
     </div>

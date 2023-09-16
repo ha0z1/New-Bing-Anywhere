@@ -1,0 +1,12 @@
+{
+  "name": "global",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^5.2.6",
+    "@reduxjs/toolkit": "^1.9.6",
+    "antd": "^5.9.3",
+    "react-redux": "^8.1.2",
+    "swr": "^2.2.4"
+  }
+}

@@ -1,10 +1,22 @@
-import { callBackground, checkIsGoogle, getConfig, getURL, isChinese } from '@@/utils'
+import { callBackground, getURL, isChinese } from '@ha0z1/extension-utils'
+import { checkIsGoogle, checkIsBing } from 'global/check'
+import { getConfig } from 'global/config'
 import $ from 'jquery'
 import { extensionName } from '../../package.json'
 import bingHandler from './bing-handler'
 import chatHandler from './chat-handler'
 import googleHandler from './google-handler'
+import offscrenHandler from '../offscreen/content'
+
+const isInIframe = window !== top
 ;(async ($) => {
+  if (isInIframe && location.hash.includes('###new-bing-anywhere-offscreen')) {
+    offscrenHandler()
+    return
+  }
+
+  if (isInIframe) return
+
   const $document = $(document.documentElement)
   if ($document.find(`meta[name="${extensionName}"]`).length) return
   const $meta = $(`<meta name="${extensionName}" />`)
@@ -16,12 +28,12 @@ import googleHandler from './google-handler'
   })
 
   getConfig().then((config) => {
-    if (config.showChat) {
+    if (config.showSidebar) {
       chatHandler(config)
     }
   })
 
-  if (location.hostname === 'www.bing.com') {
+  if (checkIsBing()) {
     bingHandler()
   }
 

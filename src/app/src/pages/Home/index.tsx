@@ -1,3 +1,4 @@
+import React from 'react'
 import { Navigate } from 'react-router-dom'
 
 export default () => {
@@ -9,5 +10,5 @@ export default () => {
     return <Navigate to="/options" replace />
   }
 
-  return <Navigate to="/chat/newtab" replace />
+  return <Navigate to="/options" replace />
 }

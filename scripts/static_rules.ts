@@ -1,12 +1,15 @@
-import { ALL_RESOURCE_TYPES, BING, FULL_VERSION, MAIN_VERSION } from '../src/universe/constants'
+import fs from 'fs-extra'
+import { ALL_RESOURCE_TYPES, BING, FULL_VERSION, MAIN_VERSION } from '../global/constants'
+import { chromiumDir } from './_config'
+import type { DeclarativeNetRequest } from 'webextension-polyfill'
 
-const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS
-const REDIRECT = 'redirect' as chrome.declarativeNetRequest.RuleActionType.REDIRECT
-const APPEND = 'append' as chrome.declarativeNetRequest.HeaderOperation.APPEND
+const MODIFY_HEADERS = 'modifyHeaders'
+const REDIRECT = 'redirect'
+const APPEND = 'append'
 // const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
-const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
+const SET = 'set'
 
-export const staticRules: chrome.declarativeNetRequest.Rule[] = [
+export const staticRules = [
   {
     action: {
       type: MODIFY_HEADERS,
@@ -173,6 +176,8 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
 ].map((rule, index) => ({
   id: index + 1,
   ...rule
-}))
+})) as DeclarativeNetRequest.Rule[]
 
-export default staticRules
+export default () => {
+  fs.outputJSONSync(`${chromiumDir}/rules.json`, staticRules)
+}

@@ -16,11 +16,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "types": ["vite/client", "chrome"],
     "paths": {
       "@/*": ["./src/*"],
       "@@/*": ["../universe/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "../../vite-env.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

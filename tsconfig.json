@@ -2,17 +2,18 @@
   "root": "src",
   "extends": "./tsconfig-base.json",
   "compilerOptions": {
+    "jsx": "react",
     "strict": true,
     "outDir": "./dist",
-    "module": "CommonJS",
+    "module": "ESNext",
     "target": "ESNext",
     "declaration": true,
     "declarationDir": "dist/types",
-    "types": ["zepto", "chrome"],
+    "types": ["chrome", "node"],
     "paths": {
       "@/*": ["./src/*"],
       "@@/*": ["./src/universe/*"]
     }
   },
-  "include": ["src", "scripts"]
+  "include": ["src", "scripts", "vite-env.d.ts"]
 }

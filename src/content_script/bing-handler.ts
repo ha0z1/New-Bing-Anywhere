@@ -1,6 +1,7 @@
-import { callBackground, escapeHtml, getConfig, isEdge, setConfig } from '@@/utils'
+import { $w, callBackground, escapeHtml, isEdge } from '@ha0z1/extension-utils'
+import { getConfig, setConfig } from 'global/config'
 import $ from 'jquery'
-import { $w, mutationConfig, openUrlInSameTab } from './utils'
+import { mutationConfig, openUrlInSameTab } from './_utils'
 
 export default async () => {
   if (!isEdge) {
@@ -12,30 +13,30 @@ export default async () => {
   }
   const isRtl = document.documentElement.dir === 'rtl'
 
-  $(() => {
-    (async () => {
-      const { showGuideToGithub } = await getConfig()
-      if (!showGuideToGithub) return
-      const $esatSwitch = $('#est_switch')
-      if ($.trim($esatSwitch.text()) !== '国内版国际版') return
-      setTimeout(() => {
-        const $a = $(
-          '<a href="https://github.com/ha0z1/New-Bing-Anywhere/issues/8" title="查看如何正确配置网络代理" target="_blank" rel="noopener noreferrer nofollow">依然出现国内版/国际版？</a>'
-        )
-          .css({
-            color: '#E89ABE',
-            background: '#f00',
-            fontSize: '12px',
-            fontWeight: 'lighter'
-          })
-          .click(() => {
-            setConfig({ showGuideToGithub: false })
-          })
+  // $(() => {
+  //   (async () => {
+  //     const { showGuideToGithub } = await getConfig()
+  //     if (!showGuideToGithub) return
+  //     const $esatSwitch = $('#est_switch')
+  //     if ($.trim($esatSwitch.text()) !== '国内版国际版') return
+  //     setTimeout(() => {
+  //       const $a = $(
+  //         '<a href="https://github.com/ha0z1/New-Bing-Anywhere/issues/8" title="查看如何正确配置网络代理" target="_blank" rel="noopener noreferrer nofollow">依然出现国内版/国际版？</a>'
+  //       )
+  //         .css({
+  //           color: '#E89ABE',
+  //           background: '#f00',
+  //           fontSize: '12px',
+  //           fontWeight: 'lighter'
+  //         })
+  //         .click(() => {
+  //           setConfig({ showGuideToGithub: false })
+  //         })
 
-        $('#est_switch').append($a).css('width', 'auto')
-      }, 2000)
-    })()
-  })
+  //       $('#est_switch').append($a).css('width', 'auto')
+  //     }, 2000)
+  //   })()
+  // })
 
   if (!location.href.startsWith('https://www.bing.com/search?')) return
   const config = await getConfig()
@@ -129,7 +130,7 @@ export default async () => {
     })
 
     const changeGoogleLinkPosition = async () => {
-      const $searchboxForm = $(await $w('.b_searchboxForm'))
+      const $searchboxForm = $((await $w('.b_searchboxForm'))!)
       const $conv = $('#b-scopeListItem-conv')
       const isNewBingOpen = $conv.hasClass('b_active')
       const $bingIcon = $('.b_phead_chat_link')
