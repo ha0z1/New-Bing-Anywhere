@@ -1,4 +1,4 @@
-import { getURL, version } from '@@/utils'
+import { getURL, isBrave, version } from '@@/utils'
 import { bingChatCloseWebSocket, bingChatPing /*, getFromConversation as bingGetFromConversation */ } from './_bing'
 import { getNotification, hideNotification } from './_notification'
 
@@ -56,6 +56,33 @@ export default {
 
   getNotification,
   hideNotification,
+
+  // runtimeReload: () => {
+  //   chrome.runtime.reload()
+  // },
+  // ...(() => {
+  //   const KEY = '@NBA://braveReload'
+
+  //   return {
+  //     getBraveReloadTmp: async () => {
+  //       const val: boolean = (await chrome.storage.session.get(KEY))[KEY] ?? false
+  //       return val
+  //     },
+
+  //     setBraveReloadTmp: async (val: boolean) => {
+  //       await chrome.storage.session.set({ [KEY]: val })
+  //     },
+
+  //     getBraveReload: async () => {
+  //       const val: boolean = (await chrome.storage.local.get(KEY))[KEY] ?? false
+  //       return val
+  //     },
+
+  //     setBraveReload: async (val: boolean) => {
+  //       await chrome.storage.local.set({ [KEY]: val })
+  //     }
+  //   }
+  // })(),
 
   // 'bing.getFromConversation': bingGetFromConversation,
   'bing.bingChatPing': bingChatPing,

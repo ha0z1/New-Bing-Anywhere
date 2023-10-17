@@ -118,7 +118,7 @@ let id = 0
 const uid = () => ++id
 
 export const bingChatCreateSession = async (): Promise<Bing.Session> => {
-  const API = 'https://www.bing.com/turing/conversation/create?bundleVersion=1.864.15'
+  const API = 'https://www.bing.com/turing/conversation/create?bundleVersion=1.1055.9'
   try {
     const xhr = await fetch(API, {
       headers: {
