@@ -49,12 +49,14 @@ const insertApp = throttle(async ($body) => {
 
     const $sidebar = $('#rhs')
     $sidebar.length && insertApp2SidebarFirstChild(isInBody, $sidebar[0])
-    // const $bestContainer = $((await $w('.liYKde.g.VjDLd', 0.1))!)
+
+    // const $bestContainer = $((await $w('.liYKde.g.VjDLd', 0.05))!)
     // if ($bestContainer.length) {
-    // $bestContainer.prepend($shadowRootWrap)
+    //   // $bestContainer.prepend($shadowRootWrap)
+    //   insertApp2SidebarFirstChild(isInBody, $bestContainer[0])
     // } else {
-    // insertApp2SidebarFirstChild(isInBody, $sidebar[0])
-    // // }
+    //   insertApp2SidebarFirstChild(isInBody, $sidebar[0])
+    // }
 
     // if (!$main.find($sidebar[0]).length) {
     //   // $sidebar.insertAfter(main)
