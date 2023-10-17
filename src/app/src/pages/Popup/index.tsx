@@ -45,7 +45,7 @@ export default () => {
         <hr className={s.hr} />
         <footer className={s.footer}>
           <a
-            href="#"
+            href="#/options"
             onClick={(e) => {
               e.preventDefault()
               window.open(`${AIPLUS}?invite_code=b90e84b5`)

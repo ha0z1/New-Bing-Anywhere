@@ -1,6 +1,6 @@
 {
   "name": "new-bing-anywhere",
-  "version": "2.4.6",
+  "version": "2.4.8",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
   "homepage": "https://github.com/ha0z1/New-Bing-Anywhere",
@@ -57,8 +57,8 @@
     "vite-node": "^0.34.3"
   },
   "engines": {
-    "node": "^20.3.0",
-    "pnpm": "^8.6.3"
+    "node": "^20.6.1",
+    "pnpm": "^8.8.0"
   },
   "extension-i18n": {
     "en": {
