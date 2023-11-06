@@ -25,6 +25,7 @@ class Bing implements Apis {
     const onMessage = (msg: { msg: Partial<IMessage['msg']>; originMsg?: any }) => {
       originOnMessage({
         msg: {
+          llama: 'llama',
           readyState: 'open',
           type: 'success',
           text: '',
@@ -34,7 +35,8 @@ class Bing implements Apis {
       })
     }
 
-    onMessage({ msg: { text: '111444a.Creating socket...' } })
+    onMessage({ msg: { text: '11130b3a.Creating socket...' } })
+    onMessage({ msg: { text: '111555a.Creating socket...' } })
     setInterval(() => {
       onMessage({ msg: { text: '222.Creating socket...222' } })
     }, 2000)
@@ -49,10 +51,10 @@ class Bing implements Apis {
 
     onMessage({ msg: { text: 'Sending prompt to Bing...' } })
 
-    // return 1 as any
+    return 1 as any
 
     const type2Data = await sendMessage(ws, createPrompt({ session, prompt, tone: extra.tone }), (msg) => {
-      console.log(1111, 'llama-apis', msg)
+      console.log(11112, 'llama-apis', msg)
       type MessageType = IMessage['msg']['type']
 
       const readyState = msg.type === 2 ? ENDED : OPEN

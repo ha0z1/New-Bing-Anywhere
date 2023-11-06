@@ -71,10 +71,12 @@ const sendMsg2Iframe = <T = any, U = any>(iframe: HTMLIFrameElement, options: T)
 const methods = {
   'LLaMA.Bing.createConversation': (args) => {
     const LLaMA = LlamasTypes.Bing
+    // console.log(111111, 'LLaMA.Bing.createConversation', { args, iframes, LLaMA })
     return sendMsg2Iframe(iframes[LLaMA], ['LLaMA.Bing.createConversation', args])
   },
   'LLaMA.Bing.sendPrompt': (args) => {
     const LLaMA = LlamasTypes.Bing
+    // console.log(111111, 'LLaMA.Bing.sendPrompt', { args, iframes, LLaMA })
     return sendMsg2Iframe(iframes[LLaMA], ['LLaMA.Bing.sendPrompt', args])
   }
 }

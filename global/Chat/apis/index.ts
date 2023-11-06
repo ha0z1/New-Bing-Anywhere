@@ -25,7 +25,7 @@ export const getDataFromBingNaturalSearch = async (prompt: string): Promise<Pick
   const text = await callBackground('Bing.naturalSearch', [prompt])
   const $dom = $(text)
 
-  let linkslist: CorePageData['links']['list'] = Array.from(
+  let linksList: CorePageData['links']['list'] = Array.from(
     $dom.find('#b_results > li.b_algo').map((_i, el) => {
       const $el = $(el)
       const $h2 = $el.find('h2 a')
@@ -45,22 +45,22 @@ export const getDataFromBingNaturalSearch = async (prompt: string): Promise<Pick
     })
   ).filter(({ link, title }) => link && title)
 
-  linkslist = unique(linkslist, 'link')
-  linkslist = unique(linkslist, 'title')
-  linkslist = linkslist
+  linksList = unique(linksList, 'link')
+  linksList = unique(linksList, 'title')
+  linksList = linksList
 
-  let suggestionslist: CorePageData['suggestions']['list'] = Array.from(
+  let suggestionsList: CorePageData['suggestions']['list'] = Array.from(
     $dom.find('#b_context > .b_ans .richrsrailsugwrapper .richrsrailsuggestion').map((_i, el) => {
       return { title: $(el).text().trim() }
     })
   ).filter(({ title }) => title)
 
-  suggestionslist = unique(suggestionslist, 'title')
-  suggestionslist = suggestionslist
+  suggestionsList = unique(suggestionsList, 'title')
+  suggestionsList = suggestionsList
 
   const ret = {
-    links: { list: linkslist },
-    suggestions: { list: suggestionslist }
+    links: { list: linksList },
+    suggestions: { list: suggestionsList }
   }
 
   return ret
