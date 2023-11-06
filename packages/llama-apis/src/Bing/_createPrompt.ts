@@ -1,7 +1,7 @@
 import { type Session } from './_utils'
 type ConversationStyle = 'Creative' | 'Precise' | 'Balanced'
 
-interface createPropmtOptions {
+interface createPromptOptions {
   tone: ConversationStyle
   session: Session
   invocationId?: 0
@@ -33,7 +33,7 @@ const timestamp = () => {
   return `${pad0(y)}-${pad0(mo)}-${pad0(d)}T${pad0(h)}:${pad0(m)}:${pad0(s)}${end}`
 }
 
-export const createPropmt = (options: createPropmtOptions) => {
+export const createPrompt = (options: createPromptOptions) => {
   const { prompt, isStartOfSession = true, session, tone } = options
   const { encryptedConversationSignature, clientId, conversationId } = session
   return {

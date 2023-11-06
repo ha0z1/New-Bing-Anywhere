@@ -1,7 +1,7 @@
 import type Apis from '../abstract'
 import { ISendPrompt, IMessage, Types } from '../abstract'
 import { createSession, createWebsocket, sendMessage, Type2Data, type Session } from './_utils'
-import { createPropmt } from './_createPropmt'
+import { createPrompt } from './_createPrompt'
 
 const ping = (ws: WebSocket) => {
   ws.send(JSON.stringify({ type: 6 }) + '\x1e')
@@ -23,6 +23,7 @@ class Bing implements Apis {
     const session = JSON.parse(conversationId) as Session
 
     const onMessage = (msg: { msg: Partial<IMessage['msg']>; originMsg?: any }) => {
+      console.log(1111111111)
       originOnMessage({
         msg: {
           readyState: 'open',
@@ -33,14 +34,14 @@ class Bing implements Apis {
         originMsg: msg.originMsg
       })
     }
-    debugger
-    onMessage({ msg: { text: '11133Creating socket...111777' } })
-    setTimeout(() => {
-      debugger
-      onMessage({ msg: { text: 'Creating socket...222' } })
+
+    onMessage({ msg: { text: '111444a.Creating socket...' } })
+    setInterval(() => {
+      onMessage({ msg: { text: '222.Creating socket...222' } })
     }, 2000)
+
     const ws = await createWebsocket(session.encryptedConversationSignature)
-    onMessage({ msg: { text: 'Created socket success!' } })
+    onMessage({ msg: { text: '333.Created socket success!' } })
 
     ping(ws)
     const timer = setInterval(() => {
@@ -48,8 +49,11 @@ class Bing implements Apis {
     }, 8000)
 
     onMessage({ msg: { text: 'Sending prompt to Bing...' } })
-    debugger
-    const type2Data = await sendMessage(ws, createPropmt({ session, prompt, tone: extra.tone }), (msg) => {
+
+    return 1 as any
+
+    const type2Data = await sendMessage(ws, createPrompt({ session, prompt, tone: extra.tone }), (msg) => {
+      console.log(1111, 'llama-apis', msg)
       type MessageType = IMessage['msg']['type']
 
       const readyState = msg.type === 2 ? ENDED : OPEN
@@ -60,7 +64,7 @@ class Bing implements Apis {
         text = (msg as Type2Data).item?.result?.message
         type = (msg as Type2Data).item?.result?.error ? 'failure' : 'success'
       }
-      debugger
+
       text &&
         onMessage({
           msg: { readyState, text, type },

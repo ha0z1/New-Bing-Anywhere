@@ -1,5 +1,5 @@
 import { type IMessage } from '@ha0z1/llama-apis'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useSWR from 'swr'
 
@@ -18,19 +18,20 @@ export default () => {
 
   const conversationStyle = config.Bing.conversationStyle
   const llamaApis = useMemo(() => genLLamaApis(LlamasTypes.Bing), [])!
-  const onMessage = (msg: IMessage) => {
-    debugger
-    console.log(msg, 1111, 4444444444114)
+  const onMessage = useCallback(({ msg }: IMessage) => {
+    console.log(1111, 'BingArticle', msg)
     // debugger
     dispatch(
       appSlice.actions.setContent({
         llamasType: LlamasTypes.Bing,
-        content: msg.msg
+        content: msg
       })
     )
-  }
+  }, [])
+
   const sendPrompt = async () => {
     const { conversationId } = await llamaApis.createConversation()
+    debugger
     // console.log(111, 222, 'conversationId', conversationId)
     const result = await llamaApis.sendPrompt({
       prompt,
@@ -40,8 +41,8 @@ export default () => {
         tone: conversationStyle
       }
     })
-    console.log(44444, 111, result)
-    debugger
+    // console.log(1111, 'BingArticle', result)
+    // debugger
     await llamaApis.deleteConversation(conversationId)
     return result
   }
@@ -63,7 +64,7 @@ export default () => {
     return <>error: {error.message}</>
   }
   if (text) {
-    return <>pendding: {text}</>
+    return <>pending: {text}</>
   }
   return <>finallyData: {finallyData?.msg}</>
 }

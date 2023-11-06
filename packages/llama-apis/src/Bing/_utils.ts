@@ -156,14 +156,14 @@ export const createWebsocket = async (encryptedConversationSignature: string): P
   })
 }
 
-export const sendMessage = async (ws: WebSocket, msg: object, oMmessage: (data: Type1Data | Type2Data) => void): Promise<Type2Data> => {
+export const sendMessage = async (ws: WebSocket, msg: object, onMessage: (data: Type1Data | Type2Data) => void): Promise<Type2Data> => {
   return await new Promise((resolve, _reject) => {
     ws.onmessage = (e) => {
       try {
         const msg = e.data
         for (const item of msg.split('\x1e').filter(Boolean)) {
           const data = JSON.parse(item.replaceAll('\n', '\\n'))
-          oMmessage(data)
+          onMessage(data)
 
           if (data.type === 2) {
             resolve(data)

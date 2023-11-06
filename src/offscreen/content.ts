@@ -11,7 +11,6 @@ const methods = {}
 export default () => {
   // document.documentElement.innerHTML = ''
   window.addEventListener('message', async (e) => {
-    debugger
     const { msg, uuid, onMessageUUID } = e.data
     const [method, ...args] = msg
     const replyMsg = (msg) => {
@@ -24,10 +23,8 @@ export default () => {
       )
     }
     try {
-      debugger
       if (onMessageUUID && typeof args[0] === 'object') {
         args[0].onMessage = (msg) => {
-          debugger
           // console.log(msg, e.source, 1111)
 
           e.source &&
@@ -40,7 +37,7 @@ export default () => {
             )
         }
       }
-      debugger
+
       const data = await methods[method](...args)
 
       replyMsg({

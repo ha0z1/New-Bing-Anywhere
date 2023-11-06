@@ -16,8 +16,8 @@ const app = createSlice({
       content: {},
       links: {},
       suggestions: {}
-    } as CorePageData,
-    state: {} as any
+    } as CorePageData
+    // state: {} as any
   } as AppData,
   reducers: {
     setProps: (state, action: PayloadAction<Partial<IChatAppProps>>) => {

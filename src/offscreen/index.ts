@@ -52,8 +52,9 @@ const sendMsg2Iframe = <T = any, U = any>(iframe: HTMLIFrameElement, options: T)
         window.removeEventListener('message', messageHandler)
       }
 
-      console.log(1111, onMessageUUID, uuid)
+      console.log(1111, 'offscreen onMessage', { onMessageUUID, callbackUUID, uuid, msg })
       if (hasOnMessage && callbackUUID === onMessageUUID) {
+        console.log(1111, 'offscreen onMessage', { msg })
         onMessage(msg)
       }
     }

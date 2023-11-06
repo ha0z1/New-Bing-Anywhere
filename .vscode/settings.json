@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["aiplus", "antd", "reduxjs", "styl", "vhra", "webextension"],
+  "cSpell.words": ["aiplus", "antd", "deduping", "encryptedconversationsignature", "iframes", "reduxjs", "styl", "vhra", "webextension"],
   "files.exclude": {
     ".editorconfig": true,
     ".eslintcache": true,
@@ -22,7 +22,6 @@
     "dist": true,
     "node_modules": true,
     "package.json": true,
-    "packages": true,
     "public": true,
     "raw": true,
     "scripts": true,
