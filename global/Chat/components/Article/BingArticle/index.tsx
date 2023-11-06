@@ -1,14 +1,14 @@
-import { genLLamaApis } from 'global/Chat/apis'
-import React, { useMemo } from 'react'
-
 import { type IMessage } from '@ha0z1/llama-apis'
-import { AppDispatch, AppState } from 'global/Chat/store'
-import useConfig from 'global/hooks/useConfig'
-import { LlamasTypes } from 'global/types/_config'
+import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import useSWR from 'swr'
-import useProps from 'global/hooks/useProps'
+
+import { genLLamaApis } from 'global/Chat/apis'
+import { AppDispatch, AppState } from 'global/Chat/store'
 import appSlice from 'global/Chat/store/app.slice'
+import useConfig from 'global/hooks/useConfig'
+import useProps from 'global/hooks/useProps'
+import { LlamasTypes } from 'global/types/_config'
 
 export default () => {
   const dispatch = useDispatch<AppDispatch>()

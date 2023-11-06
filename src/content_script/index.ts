@@ -6,12 +6,12 @@ import { extensionName } from '../../package.json'
 import bingHandler from './bing-handler'
 import chatHandler from './chat-handler'
 import googleHandler from './google-handler'
-import offscrenHandler from '../offscreen/content'
+import offscreenHandler from '../offscreen/content'
 
 const isInIframe = window !== top
 ;(async ($) => {
   if (isInIframe && location.hash.includes('###new-bing-anywhere-offscreen')) {
-    offscrenHandler()
+    offscreenHandler()
     return
   }
 

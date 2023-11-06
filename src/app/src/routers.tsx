@@ -16,15 +16,15 @@ const router: any = createHashRouter([
   {
     path: '/popup',
     element: <Popup />
-  },
+  }
   // {
   //   path: '/chat',
   //   element: <Navigate to="/chat/newtab" replace={true} />
   // },
-  {
-    path: '/chat/:scene',
-    element: <Chat />
-  }
+  // {
+  //   path: '/chat/:scene',
+  //   element: <Chat />
+  // }
 ])
 
 export default router
