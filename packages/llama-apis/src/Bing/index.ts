@@ -23,7 +23,6 @@ class Bing implements Apis {
     const session = JSON.parse(conversationId) as Session
 
     const onMessage = (msg: { msg: Partial<IMessage['msg']>; originMsg?: any }) => {
-      console.log(1111111111)
       originOnMessage({
         msg: {
           readyState: 'open',
@@ -50,7 +49,7 @@ class Bing implements Apis {
 
     onMessage({ msg: { text: 'Sending prompt to Bing...' } })
 
-    return 1 as any
+    // return 1 as any
 
     const type2Data = await sendMessage(ws, createPrompt({ session, prompt, tone: extra.tone }), (msg) => {
       console.log(1111, 'llama-apis', msg)

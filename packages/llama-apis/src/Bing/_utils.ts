@@ -1,3 +1,4 @@
+import { type BingPrompt } from './_createPrompt'
 export interface Session {
   encryptedConversationSignature: string
   clientId: string
@@ -156,7 +157,11 @@ export const createWebsocket = async (encryptedConversationSignature: string): P
   })
 }
 
-export const sendMessage = async (ws: WebSocket, msg: object, onMessage: (data: Type1Data | Type2Data) => void): Promise<Type2Data> => {
+export const sendMessage = async (
+  ws: WebSocket,
+  prompt: BingPrompt,
+  onMessage: (data: Type1Data | Type2Data) => void
+): Promise<Type2Data> => {
   return await new Promise((resolve, _reject) => {
     ws.onmessage = (e) => {
       try {
@@ -173,6 +178,6 @@ export const sendMessage = async (ws: WebSocket, msg: object, onMessage: (data: 
         resolve({} as any)
       }
     }
-    ws.send(JSON.stringify(msg) + '\x1e')
+    ws.send(JSON.stringify(prompt) + '\x1e')
   })
 }

@@ -117,3 +117,5 @@ export const createPrompt = (options: createPromptOptions) => {
     type: 4
   }
 }
+
+export type BingPrompt = ReturnType<typeof createPrompt>
