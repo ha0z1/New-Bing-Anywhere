@@ -155,13 +155,13 @@ export default () => {
       return <DoChat />
     } else if (config.triggerMode === 'Questionmark') {
       if (content.text) {
-        return <Markdown darkmode={darkmode} children={content.text} />
+        return <Markdown darkMode={darkMode} children={content.text} />
       } else {
         return <DoChat />
       }
     } else if (config.triggerMode === 'Always') {
       if (content.text) {
-        return <Markdown darkmode={darkmode} children={content.text} />
+        return <Markdown darkMode={darkMode} children={content.text} />
       }
     }
 

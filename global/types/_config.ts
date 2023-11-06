@@ -16,7 +16,7 @@ export const enum TriggerMode {
 }
 
 export interface Config {
-  darkmode: 'auto' | 'dark' | 'light'
+  darkMode: 'auto' | 'dark' | 'light'
   language: ILanguage
 
   showGoogleButtonOnBing: boolean

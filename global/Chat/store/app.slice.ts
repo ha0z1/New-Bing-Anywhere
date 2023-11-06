@@ -26,7 +26,7 @@ const app = createSlice({
         ...action.payload
       }
     },
-    setOrgaincData: (state, action: PayloadAction<Partial<CorePageData>>) => {
+    setNaturalSearchData: (state, action: PayloadAction<Partial<CorePageData>>) => {
       state.data = {
         ...state.data,
         ...action.payload

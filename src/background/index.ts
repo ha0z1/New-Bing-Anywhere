@@ -3,8 +3,8 @@ import { Bing, Claude, Types, methods as llamaMethods } from '@ha0z1/llama-apis'
 
 import { version } from '../../package.json'
 // import { getNotification, hideNotification } from './_notification'
-import { bingOrgaincSearch } from './_bing'
-import { googleOrgaincSearch } from './_google'
+import { bingNaturalSearch } from './_bing'
+import { googleNaturalSearch } from './_google'
 
 const getEnv = async () => {
   return {
@@ -25,8 +25,8 @@ chrome.offscreen.createDocument({
 const methods = {
   getEnv,
   openUrlInSameTab,
-  'Bing.orgaincSearch': bingOrgaincSearch,
-  'Google.orgaincSearch': googleOrgaincSearch
+  'Bing.naturalSearch': bingNaturalSearch,
+  'Google.naturalSearch': googleNaturalSearch
 }
 
 addBackgroundListener(methods)

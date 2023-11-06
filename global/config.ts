@@ -12,7 +12,7 @@ if (!Languages.includes(language)) {
 }
 
 export const defaultConfig: Config = {
-  darkmode: 'light',
+  darkMode: 'light',
   language,
   showGoogleButtonOnBing: true,
   showBingButtonOnGoogle: true,

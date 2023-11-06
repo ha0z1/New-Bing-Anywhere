@@ -26,7 +26,7 @@ export interface CorePageData {
 export interface IChatAppProps {
   prompt: string
   dir: 'ltr' | 'rtl'
-  darkmode: 'dark' | 'light'
+  darkMode: 'dark' | 'light'
   site: Sites
   style?: React.CSSProperties
 }

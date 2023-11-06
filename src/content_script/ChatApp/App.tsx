@@ -8,13 +8,13 @@ import React, { FC, useEffect, useState } from 'react'
 export { IChatAppProps }
 
 type IDir = 'ltr' | 'rtl'
-type IDarkmode = 'dark' | 'light'
+type IDarkMode = 'dark' | 'light'
 const siteType = getSiteType()
 
 const App = () => {
   const [dir, setDir] = useState<IDir>('ltr')
   const [prompt, setPrompt] = useState<string>('')
-  const [darkmode, setDarkmode] = useState<IDarkmode>('light')
+  const [darkMode, setDarkMode] = useState<IDarkMode>('light')
   const [site, setSite] = useState<Sites>()
   const [config] = useConfig()
 
@@ -43,25 +43,25 @@ const App = () => {
 
   useEffect(() => {
     if (!config) return
-    const userDarkmode = config.darkmode
-    const autoDarkmode = config.darkmode === 'auto'
-    !autoDarkmode && setDarkmode(userDarkmode as 'dark' | 'light')
+    const userDarkMode = config.darkMode
+    const autoDarkMode = config.darkMode === 'auto'
+    !autoDarkMode && setDarkMode(userDarkMode as 'dark' | 'light')
 
     const search = location.search
     if (siteType === Sites.Google) {
       setPrompt(getURLSearchParams(search).get('q') ?? '')
       setDir(document.documentElement.dir as IDir)
       setSite(Sites.Google)
-      autoDarkmode &&
-        setDarkmode((document.querySelector('meta[name="color-scheme"]') as HTMLMetaElement)?.content === 'dark' ? 'dark' : 'light')
+      autoDarkMode &&
+        setDarkMode((document.querySelector('meta[name="color-scheme"]') as HTMLMetaElement)?.content === 'dark' ? 'dark' : 'light')
     } else if (siteType === Sites.Baidu) {
       setPrompt(getURLSearchParams(search).get('wd') ?? '')
       setSite(Sites.Baidu)
     } else if (siteType === Sites.Yandex) {
       setPrompt(getURLSearchParams(search).get('text') ?? '')
       setSite(Sites.Yandex)
-      autoDarkmode &&
-        setDarkmode(
+      autoDarkMode &&
+        setDarkMode(
           document.cookie.match(/skin\.([sld])/)?.[1] === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches
             ? 'dark'
             : 'light'
@@ -71,18 +71,18 @@ const App = () => {
     //   prompt = getURLSearchParams(search).get('q') ?? ''
     //   dir = document.documentElement.dir
     //   await $w('body')
-    //   darkmode = (document.querySelector('body[class*="b_dark"]') as HTMLBodyElement) ? 'dark' : ''
+    //   darkMode = (document.querySelector('body[class*="b_dark"]') as HTMLBodyElement) ? 'dark' : ''
     // }
     // if (isSo) {
     //   prompt = getURLSearchParams(search).get('q') ?? ''
     // }
     // if (isDuckduckgo) {
     //   prompt = getURLSearchParams(search).get('q') ?? ''
-    //   darkmode = document.cookie.includes('ae=d') ? 'dark' : ''
+    //   darkMode = document.cookie.includes('ae=d') ? 'dark' : ''
     // }
     // if (isBrave) {
     //   prompt = getURLSearchParams(search).get('q') ?? ''
-    //   darkmode = document.cookie.includes('theme=dark') ? 'dark' : ''
+    //   darkMode = document.cookie.includes('theme=dark') ? 'dark' : ''
     // }
     // if (isEcosia) {
     //   prompt = getURLSearchParams(search).get('q') ?? ''
@@ -103,7 +103,7 @@ const App = () => {
     <Chat
       prompt={prompt}
       dir={dir || 'ltr'}
-      darkmode={darkmode || 'light'}
+      darkMode={darkMode || 'light'}
       site={site || Sites.Google}
       style={{ marginBottom: 10, maxWidth }}
     />

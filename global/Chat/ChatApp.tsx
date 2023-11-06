@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import useSWR from 'swr'
 import s from './app.module.styl'
 
-import { getDataFromBingOrgaincSearch } from 'global/Chat/apis'
+import { getDataFromBingNaturalSearch } from 'global/Chat/apis'
 import Article from 'global/Chat/components/Article'
 import Header from 'global/Chat/components/Header'
 import Links from 'global/Chat/components/Links'
@@ -16,12 +16,12 @@ import useProps from 'global/hooks/useProps'
 
 const ChatApp: FC<IChatAppProps> = (props) => {
   const dispatch = useDispatch<AppDispatch>()
-  const { prompt, darkmode, style } = props
+  const { prompt, darkMode, style } = props
   const [config] = useConfig()
 
   const { Bing } = config
   const conversationStyle = Bing.conversationStyle.toLowerCase() ?? ''
-  const { data: orgaincData } = useSWR(`${prompt}getDataFromBingOrgaincSearch`, () => getDataFromBingOrgaincSearch(prompt), {
+  const { data: naturalSearchData } = useSWR(`${prompt}getDataFromBingNaturalSearch`, () => getDataFromBingNaturalSearch(prompt), {
     revalidateOnFocus: false
   })
 
@@ -36,12 +36,13 @@ const ChatApp: FC<IChatAppProps> = (props) => {
     }, [props])
   }
   useEffect(() => {
-    if (!orgaincData) return
-    dispatch(appSlice.actions.setOrgaincData(orgaincData))
-  }, [orgaincData])
+    if (!naturalSearchData) return
+
+    dispatch(appSlice.actions.setNaturalSearchData(naturalSearchData))
+  }, [naturalSearchData])
 
   return (
-    <div className={[s.wrap, s[conversationStyle]].filter(Boolean).join(' ')} color-scheme={darkmode} style={style}>
+    <div className={[s.wrap, s[conversationStyle]].filter(Boolean).join(' ')} color-scheme={darkMode} style={style}>
       <Header />
       <main>
         <Article />

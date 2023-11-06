@@ -21,8 +21,8 @@ export const genLLamaApis = <T = IApis>(apisType?: Types): T | null => {
   return ret
 }
 
-export const getDataFromBingOrgaincSearch = async (prompt: string): Promise<Pick<CorePageData, 'links' | 'suggestions'>> => {
-  const text = await callBackground('Bing.orgaincSearch', [prompt])
+export const getDataFromBingNaturalSearch = async (prompt: string): Promise<Pick<CorePageData, 'links' | 'suggestions'>> => {
+  const text = await callBackground('Bing.naturalSearch', [prompt])
   const $dom = $(text)
 
   let linkslist: CorePageData['links']['list'] = Array.from(
