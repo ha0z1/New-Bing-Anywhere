@@ -45,7 +45,7 @@ export const callBackground = async <T = any>(method: string, args: any[] = []):
 
     const onMessage = args[0]?.onMessage
     if (onMessage) {
-      args[0].onMessage = undefined
+      args[0].onMessage = 'callBackground'
       onMessageUUID = crypto.randomUUID()
       // msgCb = (options: { msgId: string; msg: any }) => {
       // debugger

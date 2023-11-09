@@ -1,7 +1,7 @@
 import type Apis from '../abstract'
-import { ISendPrompt, IMessage, Types } from '../abstract'
-import { createSession, createWebsocket, sendMessage, Type2Data, type Session } from './_utils'
+import { IMessage, ISendPrompt, Types } from '../abstract'
 import { createPrompt } from './_createPrompt'
+import { createSession, createWebsocket, sendMessage, type Session, type Type1Data, type Type2Data } from './_utils'
 
 const ping = (ws: WebSocket) => {
   ws.send(JSON.stringify({ type: 6 }) + '\x1e')
@@ -23,23 +23,23 @@ class Bing implements Apis {
     const session = JSON.parse(conversationId) as Session
 
     const onMessage = (msg: { msg: Partial<IMessage['msg']>; originMsg?: any }) => {
-      originOnMessage({
-        msg: {
-          llama: 'llama',
-          readyState: 'open',
-          type: 'success',
-          text: '',
-          ...msg.msg
-        },
-        originMsg: msg.originMsg
-      })
+      originOnMessage &&
+        originOnMessage({
+          msg: {
+            readyState: 'open',
+            type: 'success',
+            text: '',
+            ...msg.msg
+          },
+          originMsg: msg.originMsg
+        })
     }
 
     onMessage({ msg: { text: '11130b3a.Creating socket...' } })
     onMessage({ msg: { text: '111555a.Creating socket...' } })
-    setInterval(() => {
-      onMessage({ msg: { text: '222.Creating socket...222' } })
-    }, 2000)
+    // setInterval(() => {
+    //   onMessage({ msg: { text: '222.Creating socket...222' } })
+    // }, 2000)
 
     const ws = await createWebsocket(session.encryptedConversationSignature)
     onMessage({ msg: { text: '333.Created socket success!' } })
@@ -51,24 +51,28 @@ class Bing implements Apis {
 
     onMessage({ msg: { text: 'Sending prompt to Bing...' } })
 
-    return 1 as any
+    // return 1 as any
 
     const type2Data = await sendMessage(ws, createPrompt({ session, prompt, tone: extra.tone }), (msg) => {
-      console.log(11112, 'llama-apis', msg)
+      // console.log(11112, 'llama-apis', msg)
       type MessageType = IMessage['msg']['type']
 
-      const readyState = msg.type === 2 ? ENDED : OPEN
+      const readyState = msg.type === 2 ? ENDED : OPEN // 2 ENDED; 1 OPEN
 
       let text = ''
       let type: MessageType = 'success'
-      if (readyState === ENDED) {
-        text = (msg as Type2Data).item?.result?.message
+
+      if (readyState === OPEN) {
+        text = (msg as Type1Data).arguments?.[0].messages?.[0].text ?? ''
+        type = (msg as Type1Data).arguments?.[0].result.error ? 'failure' : 'success'
+      } else if (readyState === ENDED) {
+        text = (msg as Type2Data).item?.result?.message ?? ''
         type = (msg as Type2Data).item?.result?.error ? 'failure' : 'success'
       }
 
       text &&
         onMessage({
-          msg: { readyState, text, type },
+          msg: { readyState, text: 'iiiiiiiiiiii' + text, type },
           originMsg: msg
         })
     })

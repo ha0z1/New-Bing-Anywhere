@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^5.2.6",
-    "@types/react": "^18.2.35",
+    "@types/react": "^18.2.36",
     "@types/react-dom": "^18.2.14",
     "@vitejs/plugin-react-swc": "^3.4.1",
     "antd": "^5.11.0",

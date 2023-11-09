@@ -12,6 +12,7 @@ export default () => {
   // document.documentElement.innerHTML = ''
   window.addEventListener('message', async (e) => {
     const { msg, uuid, onMessageUUID } = e.data
+    // console.log(88888, JSON.stringify(e.data))
     const [method, ...args] = msg
     const replyMsg = (msg) => {
       e.source!.postMessage(
@@ -23,7 +24,8 @@ export default () => {
       )
     }
     try {
-      if (onMessageUUID && typeof args[0] === 'object') {
+      console.log(8888, onMessageUUID, args[0])
+      if (onMessageUUID && typeof args[0] === 'object' && !args[0].onMessage) {
         args[0].onMessage = (msg) => {
           // console.log(msg, e.source, 1111)
 

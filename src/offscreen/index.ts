@@ -1,4 +1,4 @@
-import { addBackgroundListener } from '@ha0z1/extension-utils'
+import { addBackgroundListener, callBackground } from '@ha0z1/extension-utils'
 import { Types as LlamasTypes, methods as LlamasMethods } from '@ha0z1/llama-apis'
 
 const s = new URLSearchParams(location.search)
@@ -35,10 +35,11 @@ const sendMsg2Iframe = <T = any, U = any>(iframe: HTMLIFrameElement, options: T)
     const uuid = genUUID()
     const onMessageUUID = genUUID()
     const onMessage = options?.[1]?.onMessage
+    // console.log(4444444, onMessage)
     const hasOnMessage = typeof onMessage === 'function'
 
     if (hasOnMessage) {
-      options[1].onMessage = undefined
+      options[1].onMessage = 'undefined 4442222'
     }
 
     const messageHandler = (e: MessageEvent<IMessage>) => {
@@ -52,10 +53,14 @@ const sendMsg2Iframe = <T = any, U = any>(iframe: HTMLIFrameElement, options: T)
         window.removeEventListener('message', messageHandler)
       }
 
-      console.log(1111, 'offscreen onMessage', { onMessageUUID, callbackUUID, uuid, msg })
+      console.log(1111, 'offscreen onMessage', msg.msg.text, { onMessageUUID, callbackUUID, uuid, msg })
       if (hasOnMessage && callbackUUID === onMessageUUID) {
-        console.log(1111, 'offscreen onMessage', { msg })
+        // console.log(true)
+        // console.log(1111, 'offscreen onMessage', { msg })
         onMessage(msg)
+      } else {
+        // onMessage(msg)
+        // console.log(false)
       }
     }
 
@@ -71,7 +76,6 @@ const sendMsg2Iframe = <T = any, U = any>(iframe: HTMLIFrameElement, options: T)
 const methods = {
   'LLaMA.Bing.createConversation': (args) => {
     const LLaMA = LlamasTypes.Bing
-    // console.log(111111, 'LLaMA.Bing.createConversation', { args, iframes, LLaMA })
     return sendMsg2Iframe(iframes[LLaMA], ['LLaMA.Bing.createConversation', args])
   },
   'LLaMA.Bing.sendPrompt': (args) => {
