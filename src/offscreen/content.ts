@@ -9,10 +9,9 @@ const methods = {}
   }
 })
 export default () => {
-  // document.documentElement.innerHTML = ''
   window.addEventListener('message', async (e) => {
     const { msg, uuid, onMessageUUID } = e.data
-    // console.log(88888, JSON.stringify(e.data))
+    console.log(111111, JSON.stringify(e.data))
     const [method, ...args] = msg
     const replyMsg = (msg) => {
       e.source!.postMessage(
@@ -24,10 +23,11 @@ export default () => {
       )
     }
     try {
-      console.log(8888, onMessageUUID, args[0])
-      if (onMessageUUID && typeof args[0] === 'object' && !args[0].onMessage) {
+      console.log(1111, onMessageUUID, args[0])
+      if (onMessageUUID && typeof args[0] === 'object' && typeof args[0].onMessage !== 'function') {
         args[0].onMessage = (msg) => {
-          // console.log(msg, e.source, 1111)
+          console.log(msg, e.source, 1111, 'offscree/content')
+          debugger
 
           e.source &&
             e.source.postMessage(

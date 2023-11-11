@@ -41,7 +41,7 @@
     "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.250",
+    "@types/chrome": "^0.0.251",
     "@types/fs-extra": "^11.0.4",
     "@types/jquery": "^3.5.27",
     "@types/lodash-es": "^4.17.11",

@@ -19,10 +19,12 @@ class Bing implements Apis {
   }
 
   async sendPrompt(options: ISendPrompt): Promise<IMessage> {
+    console.log(11111, 'LLaMA.sendPrompt')
     const { conversationId, onMessage: originOnMessage, prompt, extra } = options
     const session = JSON.parse(conversationId) as Session
 
     const onMessage = (msg: { msg: Partial<IMessage['msg']>; originMsg?: any }) => {
+      debugger
       originOnMessage &&
         originOnMessage({
           msg: {
@@ -35,23 +37,23 @@ class Bing implements Apis {
         })
     }
 
-    onMessage({ msg: { text: '11130b3a.Creating socket...' } })
-    onMessage({ msg: { text: '111555a.Creating socket...' } })
+    // onMessage({ msg: { text: '111.Creating socket...' } })
+    onMessage({ msg: { text: '222.Creating socket...' } })
     // setInterval(() => {
     //   onMessage({ msg: { text: '222.Creating socket...222' } })
     // }, 2000)
 
-    const ws = await createWebsocket(session.encryptedConversationSignature)
+    // const ws = await createWebsocket(session.encryptedConversationSignature)
     onMessage({ msg: { text: '333.Created socket success!' } })
 
-    ping(ws)
-    const timer = setInterval(() => {
-      ping(ws)
-    }, 8000)
+    // ping(ws)
+    // const timer = setInterval(() => {
+    //   ping(ws)
+    // }, 8000)
 
-    onMessage({ msg: { text: 'Sending prompt to Bing...' } })
+    onMessage({ msg: { text: '444.Sending prompt to Bing...' } })
 
-    // return 1 as any
+    return 1 as any
 
     const type2Data = await sendMessage(ws, createPrompt({ session, prompt, tone: extra.tone }), (msg) => {
       // console.log(11112, 'llama-apis', msg)

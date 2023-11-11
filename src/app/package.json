@@ -17,7 +17,7 @@
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@vitejs/plugin-react-swc": "^3.4.1",
-    "antd": "^5.11.0",
+    "antd": "^5.11.1",
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
     "vite-plugin-imp": "^2.4.0",

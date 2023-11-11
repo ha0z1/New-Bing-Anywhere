@@ -11,7 +11,7 @@
     "build": "vite build & tsc"
   },
   "dependencies": {
-    "@types/chrome": "^0.0.250",
+    "@types/chrome": "^0.0.251",
     "@types/webextension-polyfill": "^0.10.6",
     "webextension-polyfill": "^0.10.0"
   },
