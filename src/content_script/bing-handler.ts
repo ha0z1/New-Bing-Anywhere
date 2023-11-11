@@ -1,4 +1,4 @@
-import { callBackground, escapeHtml, getConfig, isEdge, setConfig } from '@@/utils'
+import { callBackground, escapeHtml, getConfig, isChinese, isEdge, setConfig } from '@@/utils'
 import $ from 'jquery'
 import { $w, mutationConfig, openUrlInSameTab } from './utils'
 
@@ -36,6 +36,22 @@ export default async () => {
       }, 2000)
     })()
   })
+
+  if (location.href.startsWith('https://www.bing.com/create')) {
+    const $support = $(await $w('#gil .land_loginc'))
+    if ($support.length) {
+      $support.after(`
+        <a href="${chrome.runtime.getURL('/app/index.html#/options')}"  target="_blank" style="display: block;color:#f00; font-size: 14px">
+          ${
+            isChinese
+              ? '所在地区不可用？试试开启 DRF(Dangerous Request Forgery) 模式'
+              : 'Region not available? Try enabling DRF (Dangerous Request Forgery) mode.'
+          }
+        </a>
+      `)
+    }
+    return
+  }
 
   if (!location.href.startsWith('https://www.bing.com/search?')) return
   const config = await getConfig()
