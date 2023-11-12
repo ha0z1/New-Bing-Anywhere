@@ -33,7 +33,7 @@
     "@ha0z1/extension-utils": "workspace:*",
     "@ha0z1/llama-apis": "workspace:*",
     "global": "workspace:*",
-    "idmp": "^1.3.0",
+    "idmp": "^1.5.1",
     "jquery": "^3.7.1",
     "lodash-es": "^4.17.21",
     "react": "^18.2.0",
