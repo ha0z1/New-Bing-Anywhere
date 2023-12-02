@@ -8,6 +8,7 @@ const methods = {}
     Object.assign(methods, { [`LLaMA.${Types[LLaMA.type]}.${method}`]: instance[method].bind(instance) })
   }
 })
+let oldSource
 export default () => {
   window.addEventListener('message', async (e) => {
     const { msg, uuid, onMessageUUID } = e.data
@@ -23,20 +24,18 @@ export default () => {
       )
     }
     try {
+      oldSource = e.source
       console.log(1111, onMessageUUID, args[0])
       if (onMessageUUID && typeof args[0] === 'object' && typeof args[0].onMessage !== 'function') {
         args[0].onMessage = (msg) => {
-          console.log(msg, e.source, 1111, 'offscree/content')
-          debugger
-
-          e.source &&
-            e.source.postMessage(
-              {
-                msg,
-                uuid: onMessageUUID
-              },
-              e.origin as WindowPostMessageOptions
-            )
+          console.log(msg, e.source, 1111, oldSource === e.source, 'offscree/content')
+          e.source!.postMessage(
+            {
+              msg,
+              uuid: onMessageUUID
+            },
+            e.origin as WindowPostMessageOptions
+          )
         }
       }
 

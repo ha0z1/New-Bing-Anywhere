@@ -44,14 +44,17 @@ const sendMsg2Iframe = <T = any, U = any>(iframe: HTMLIFrameElement, options: T)
 
     const messageHandler = (e: MessageEvent<IMessage>) => {
       const { msg, uuid: callbackUUID } = e.data
-      if (callbackUUID === uuid) {
-        if (msg.code === 200) {
-          resolve(msg.data)
-        } else {
-          reject(msg)
-        }
-        window.removeEventListener('message', messageHandler)
+      // debugger
+      console.log(11111, 'messageHandler', callbackUUID, uuid, callbackUUID === uuid)
+      resolve(msg)
+      // if (callbackUUID === uuid) {
+      if (msg.code === 200) {
+        resolve(msg.data)
+      } else {
+        reject(msg)
       }
+      // window.removeEventListener('message', messageHandler)
+      // }
 
       console.log(1111, 'offscreen onMessage', msg.msg.text, { onMessageUUID, callbackUUID, uuid, msg })
       if (hasOnMessage && callbackUUID === onMessageUUID) {

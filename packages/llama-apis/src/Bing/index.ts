@@ -24,7 +24,7 @@ class Bing implements Apis {
     const session = JSON.parse(conversationId) as Session
 
     const onMessage = (msg: { msg: Partial<IMessage['msg']>; originMsg?: any }) => {
-      debugger
+      // debugger
       originOnMessage &&
         originOnMessage({
           msg: {
@@ -45,7 +45,9 @@ class Bing implements Apis {
 
     // const ws = await createWebsocket(session.encryptedConversationSignature)
     onMessage({ msg: { text: '333.Created socket success!' } })
-
+    setInterval(() => {
+      onMessage({ msg: { text: '444.Created socket success!' } })
+    }, 2000)
     // ping(ws)
     // const timer = setInterval(() => {
     //   ping(ws)
