@@ -26,17 +26,18 @@ export default () => {
         <hr className={s.hr} />
 
         <ul className={s.nav}>
-          {Object.entries(contextMenus).map(([key, value]) => {
+          {Object.entries(contextMenus).map(([key, item]) => {
             return (
               <li key={key} className={s.item}>
                 <a
                   href="###"
                   onClick={(e) => {
                     e.preventDefault()
-                    value.onclick()
+                    item.onclick()
                   }}
                 >
-                  {value.title}
+                  {item.icon ? <img src={item.icon} className={s.icon} /> : <span className={s.icon}>{item.emoji}</span>}
+                  {item.title}
                 </a>
               </li>
             )
