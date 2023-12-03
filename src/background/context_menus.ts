@@ -5,7 +5,7 @@ export default () => {
     for (const [id, menu] of Object.entries(contextMenus)) {
       chrome.contextMenus.create({
         id,
-        title: menu.title,
+        title: `${menu.emoji} ${menu.title}`,
         contexts: menu.contexts
       })
     }
