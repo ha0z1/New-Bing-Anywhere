@@ -319,9 +319,14 @@ export default () => {
                           Allow `wss://*.bing.com/` permissions{' '}
                           <Button
                             type="primary"
-                            onClick={() => {
-                              chrome.permissions.request({
-                                origins: ['wss://*.bing.com/']
+                            onClick={async () => {
+                              try {
+                                await chrome.permissions.request({
+                                  origins: ['wss://*.bing.com/']
+                                })
+                              } catch {}
+                              setTimeout(() => {
+                                chrome.runtime.reload()
                               })
                             }}
                           >

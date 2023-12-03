@@ -4,6 +4,8 @@ import { genIssueUrl, openPage } from './_misc'
 
 type Contexts = chrome.contextMenus.ContextType[]
 interface IInitContextMenu {
+  emoji: string
+  icon?: string
   title: string
   contexts: Contexts
   onclick: (info?: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab | undefined) => void
@@ -17,8 +19,21 @@ export const contextMenus: Record<string, IInitContextMenu> = {
   //     openPage(`${repositoryUrl}/releases/tag/${version}`)
   //   }
   // },
+
+  openCopilot: {
+    emoji: '🚗',
+    icon: chrome.runtime.getURL('images/copilot.png'),
+    title: 'Copilot',
+    contexts: ['action'],
+    onclick: (_info) => {
+      openPage('https://copilot.microsoft.com/')
+    }
+  },
+
   openChat: {
-    title: '💬 New Bing',
+    emoji: '💬',
+    icon: chrome.runtime.getURL('images/bing-chat.png'),
+    title: 'New Bing',
     contexts: ['action'],
     onclick: (_info) => {
       openPage('https://www.bing.com/search?q=Bing+AI&showconv=1')
@@ -26,7 +41,9 @@ export const contextMenus: Record<string, IInitContextMenu> = {
   },
 
   openImageCreate: {
-    title: '🖼️ New Bing Image Creator',
+    emoji: '🖼️',
+    icon: chrome.runtime.getURL('images/designer.svg'),
+    title: 'New Bing Image Creator',
     contexts: ['action'],
     onclick: (_info) => {
       openPage('https://www.bing.com/create')
@@ -34,7 +51,9 @@ export const contextMenus: Record<string, IInitContextMenu> = {
   },
 
   likeIt: {
-    title: '❤️ Like it',
+    emoji: '❤️',
+    icon: chrome.runtime.getURL('images/like.png'),
+    title: 'Like it',
     contexts: ['action'],
     onclick: () => {
       openPage('https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en')
@@ -42,7 +61,9 @@ export const contextMenus: Record<string, IInitContextMenu> = {
   },
 
   reportIssues: {
-    title: '🐛 Report issues',
+    emoji: '🐛',
+    icon: chrome.runtime.getURL('images/bugs.png'),
+    title: 'Report issues',
     contexts: ['action'],
     onclick: async (_info) => {
       const url = await genIssueUrl()
