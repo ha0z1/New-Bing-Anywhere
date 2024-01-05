@@ -31,14 +31,14 @@
     "SECURITY.md": true,
     "bun.lockb": true,
     "node_modules": true,
-    "package.json": true,
     "public": true,
     "raw": true,
     "scripts": true,
     "stylus-supremacy.json": true,
     "tsconfig-base.json": true,
-    "tsconfig.json": true,
+    "**/tsconfig.json": true,
     "uninstall.md": true,
-    "vite-env.d.ts": true
+    "vite-env.d.ts": true,
+    "**/vite.config.ts": true
   }
 }
