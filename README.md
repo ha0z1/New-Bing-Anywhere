@@ -51,6 +51,27 @@ update 2023.7.6: Hong Kong IP doesn’t work either
 - Arabic and other right-to-left language support
 - Multi-level caching strategy acceleration
 
+## Support the Author
+
+Maintaining software is not easy. You can support the author in the following ways:
+
+<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/343190af-95ce-4615-affe-46100e6eb6c8" width=120 align="right"> <img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/b241ba84-a528-470f-8512-67eb26e9f18f" width=120 align="right">
+
+- Buy the author a coffee (you can add the author as a friend to get priority response to requests and acknowledgment in the credits list)
+- Give the software positive [ratings](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en) and stars on the app store
+- Review Github Notifications and help others answer issues in the [issue tracker](https://github.com/ha0z1/New-Bing-Anywhere/issues)
+- When reporting issues, provide as many details and reproducible steps as possible to help the author locate the problem instead of single line reports or duplicates
+- Share and recommend to friends
+- View sponsor ads (friendly reminder to consume rationally)
+
+## Thank you to the following donors
+
+- \*\*霖 CNY 0.01 01/24/2024
+- \*\*毛 CNY 0.01 01/242024
+- [Vileicht](https://github.com/Vileicht) CNY 50 01/03/2024
+- \*\*彤 CNY 1.00 11/14/2023
+- \*\*欣 CNY 10 10/31/2023
+
 ## Communication
 
 [![Telegram](https://user-images.githubusercontent.com/4150641/229351983-a6a455e8-7b5e-4f58-bf80-1f4949ae8276.jpg 'Telegram')](https://t.me/new_bing_anywhere)
