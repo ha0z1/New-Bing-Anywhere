@@ -327,6 +327,7 @@ export default () => {
                               } catch {}
                               setTimeout(() => {
                                 chrome.runtime.reload()
+                                location.reload()
                               })
                             }}
                           >
