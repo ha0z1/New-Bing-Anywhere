@@ -10,16 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react-router-dom": "^6.21.1"
+    "react-router-dom": "^6.21.3"
   },
   "devDependencies": {
     "@ant-design/icons": "^5.2.6",
-    "@types/react": "^18.2.46",
+    "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@vitejs/plugin-react-swc": "^3.5.0",
-    "antd": "^5.12.7",
+    "antd": "^5.13.2",
     "typescript": "^5.3.3",
-    "vite": "^5.0.10",
+    "vite": "^5.0.12",
     "vite-plugin-imp": "^2.4.0",
     "vite-plugin-minify": "^1.5.2"
   },
