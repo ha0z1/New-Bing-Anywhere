@@ -147,17 +147,18 @@ export default async () => {
     const changeGoogleLinkPosition = async () => {
       const $searchboxForm = $(await $w('.b_searchboxForm'))
       const $conv = $('#b-scopeListItem-conv')
-      const isNewBingOpen = $conv.hasClass('b_active')
+      const $notebook = $('#b-scopeListItem-notebook')
+      const isNewBingOpen = $conv.hasClass('b_active') || $notebook.hasClass('b_active')
       const $bingIcon = $('.b_phead_chat_link')
 
       const isFixed = $('#id_phead').hasClass('phead_border')
-      const hasBingIcon = $bingIcon.length && (isFixed ? window.innerWidth >= 840 : window.innerWidth >= 1164)
+      const hasBingIcon = $bingIcon.length && $bingIcon.is(':visible') && (isFixed ? window.innerWidth >= 840 : window.innerWidth >= 1164)
 
       let left = 0
       let top = 0
 
       if (isNewBingOpen) {
-        left = $conv.offset()!.left + $conv.width()! + 30 + (isRtl ? -200 : 0)
+        left = $notebook.offset()!.left + $notebook.width()! + 30 + (isRtl ? -200 : 0)
         top = 33
         $a.css({
           position: 'absolute',
