@@ -64,6 +64,14 @@
 - 向好友转发和推荐
 - 浏览赞助商广告(友情提示，请理性消费)
 
+## 鸣谢名单
+
+- \*\*霖 CNY 0.01 01/24/2024
+- \*\*毛 CNY 0.01 01/242024
+- [Vileicht](https://github.com/Vileicht) CNY 50 01/03/2024
+- \*\*彤 CNY 1.00 11/14/2023
+- \*\*欣 CNY 10 10/31/2023
+
 ## 找到我们
 
 [![Telegram](https://user-images.githubusercontent.com/4150641/229351983-a6a455e8-7b5e-4f58-bf80-1f4949ae8276.jpg 'Telegram')](https://t.me/new_bing_anywhere)
