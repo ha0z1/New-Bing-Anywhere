@@ -66,6 +66,9 @@
 
 ## 鸣谢名单
 
+> 如果你有特殊广告需求可在捐款备注或[联系本人](https://github.com/ha0z1/New-Bing-Anywhere?tab=security-ov-file)
+
+- \*\* 张 CNY 20 01/31/2024
 - \*\*霖 CNY 0.01 01/24/2024
 - \*\*毛 CNY 0.01 01/242024
 - [Vileicht](https://github.com/Vileicht) CNY 50 01/03/2024
