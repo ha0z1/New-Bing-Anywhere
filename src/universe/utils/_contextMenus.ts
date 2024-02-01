@@ -11,7 +11,7 @@ interface IInitContextMenu {
   onclick: (info?: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab | undefined) => void
 }
 
-export const contextMenus: Record<string, IInitContextMenu> = {
+export const contextMenus: Record<string, IInitContextMenu> = /* @__PURE__ */ {
   // version: {
   //   title: `🧃 Version: ${version}`,
   //   contexts: ['action'],
@@ -22,7 +22,7 @@ export const contextMenus: Record<string, IInitContextMenu> = {
 
   openCopilot: {
     emoji: '🚗',
-    icon: chrome.runtime.getURL('images/copilot.png'),
+    icon: /* @__PURE__ */ chrome.runtime.getURL('images/copilot.png'),
     title: 'Copilot',
     contexts: ['action'],
     onclick: (_info) => {
@@ -32,7 +32,7 @@ export const contextMenus: Record<string, IInitContextMenu> = {
 
   openChat: {
     emoji: '💬',
-    icon: chrome.runtime.getURL('images/bing-chat.png'),
+    icon: /* @__PURE__ */ chrome.runtime.getURL('images/bing-chat.png'),
     title: 'New Bing',
     contexts: ['action'],
     onclick: (_info) => {
@@ -42,7 +42,7 @@ export const contextMenus: Record<string, IInitContextMenu> = {
 
   openImageCreate: {
     emoji: '🖼️',
-    icon: chrome.runtime.getURL('images/designer.svg'),
+    icon: /* @__PURE__ */ chrome.runtime.getURL('images/designer.svg'),
     title: 'New Bing Image Creator',
     contexts: ['action'],
     onclick: (_info) => {
@@ -52,7 +52,7 @@ export const contextMenus: Record<string, IInitContextMenu> = {
 
   likeIt: {
     emoji: '❤️',
-    icon: chrome.runtime.getURL('images/like.png'),
+    icon: /* @__PURE__ */ chrome.runtime.getURL('images/like.png'),
     title: 'Like it',
     contexts: ['action'],
     onclick: () => {
@@ -62,7 +62,7 @@ export const contextMenus: Record<string, IInitContextMenu> = {
 
   reportIssues: {
     emoji: '🐛',
-    icon: chrome.runtime.getURL('images/bugs.png'),
+    icon: /* @__PURE__ */ chrome.runtime.getURL('images/bugs.png'),
     title: 'Report issues',
     contexts: ['action'],
     onclick: async (_info) => {
