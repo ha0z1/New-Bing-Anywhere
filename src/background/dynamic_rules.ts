@@ -1,11 +1,11 @@
 import { AIPLUS, ALL_RESOURCE_TYPES } from '@@/constants'
 
-import { genUA, isChinese } from '@@/utils'
+import { isChinese } from '@@/utils'
 
-const MODIFY_HEADERS_LIST = {
-  // 'X-Forwarded-For': '8.8.8.8',
-  'User-Agent': genUA()
-}
+// const MODIFY_HEADERS_LIST = {
+// 'X-Forwarded-For': '8.8.8.8',
+// 'User-Agent': genUA()
+// }
 const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS
 const REDIRECT = 'redirect' as chrome.declarativeNetRequest.RuleActionType.REDIRECT
 // const APPEND = 'append' as chrome.declarativeNetRequest.HeaderOperation.APPEND
@@ -13,21 +13,21 @@ const REDIRECT = 'redirect' as chrome.declarativeNetRequest.RuleActionType.REDIR
 const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
 export const dynamicRules = [
-  {
-    priority: 2001,
-    action: {
-      type: MODIFY_HEADERS,
-      requestHeaders: Object.entries(MODIFY_HEADERS_LIST).map(([header, value]) => ({
-        operation: SET,
-        header,
-        value
-      }))
-    },
-    condition: {
-      requestDomains: ['bing.com', 'www.bing.com', 'cn.bing.com'],
-      resourceTypes: ALL_RESOURCE_TYPES
-    }
-  },
+  // {
+  //   priority: 2001,
+  //   action: {
+  //     type: MODIFY_HEADERS,
+  //     requestHeaders: Object.entries(MODIFY_HEADERS_LIST).map(([header, value]) => ({
+  //       operation: SET,
+  //       header,
+  //       value
+  //     }))
+  //   },
+  //   condition: {
+  //     requestDomains: ['bing.com', 'www.bing.com', 'cn.bing.com'],
+  //     resourceTypes: ALL_RESOURCE_TYPES
+  //   }
+  // },
   isChinese && [
     {
       action: {
@@ -48,7 +48,7 @@ export const dynamicRules = [
   .flat()
   .filter(Boolean)
   .map((rule, index) => ({
-    id: index + 1 + 2000,
+    id: index + 1 + 2000 + 100,
     ...rule
   })) as chrome.declarativeNetRequest.Rule[]
 

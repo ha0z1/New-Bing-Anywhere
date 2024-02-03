@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FULL_VERSION, GOOGLE_DOMAINS, MAIN_VERSION, YANDEX_DOMAINS } from '@@/constants'
+import { GOOGLE_DOMAINS, YANDEX_DOMAINS } from '@@/constants'
 import { type Bing } from '@@/types'
 import { version as pkgVersion, repository } from '../../../package.json'
 
@@ -291,17 +291,17 @@ export const isSimpleChinese = /* @__PURE__ */ checkIsSimpleChinese()
 export const isCanary: boolean = /* @__PURE__ */ !!globalThis.__NBA_isCanary
 export const version: string = /* @__PURE__ */ isCanary ? `0.${pkgVersion}` : pkgVersion
 
-export const genUA = () => {
-  let ua = userAgent
-  if (!isEdge) {
-    if (isMac) {
-      ua = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${MAIN_VERSION}.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
-    } else {
-      ua = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${MAIN_VERSION}.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
-    }
-  }
-  return ua
-}
+// export const genUA = () => {
+//   let ua = userAgent
+//   if (!isEdge) {
+//     if (isMac) {
+//       ua = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${MAIN_VERSION}.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
+//     } else {
+//       ua = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${MAIN_VERSION}.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
+//     }
+//   }
+//   return ua
+// }
 
 export const genIssueUrl = async (extra?: Record<string, string | null | undefined>) => {
   const repositoryUrl: string = repository.url
