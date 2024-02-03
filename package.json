@@ -1,6 +1,6 @@
 {
   "name": "new-bing-anywhere",
-  "version": "2.7.0",
+  "version": "2.7.1",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
   "homepage": "https://github.com/ha0z1/New-Bing-Anywhere",
@@ -19,7 +19,7 @@
     "dev": "pnpm run lint && pnpm run '/^dev:.*/'",
     "dev:app": "pnpm --filter app run dev",
     "dev:bundle": "vite-node scripts/build.ts -- dev",
-    "lint": "pnpm run prettier && pnpm run '/^lint:.*/'",
+    "lint": "pnpm run prettier && pnpm run lint:eslint && pnpm run lint:stylus",
     "lint:eslint": "eslint --ext .js,.ts ./src --fix --cache",
     "lint:stylus": "stylus-supremacy format ./src/**/*.styl  --options ./stylus-supremacy.json --replace",
     "prepare": "husky install && pnpm run build",

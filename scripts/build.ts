@@ -96,7 +96,7 @@ const buildChromiumBase = async () => {
       rule_resources: [
         {
           enabled: true,
-          id: 'new-bing-anywhere',
+          id: 'new-bing-anywhere-v2',
           path: 'rules.json'
         }
       ]

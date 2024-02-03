@@ -7,62 +7,62 @@ const APPEND = 'append' as chrome.declarativeNetRequest.HeaderOperation.APPEND
 const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
 export const staticRules: chrome.declarativeNetRequest.Rule[] = [
-  {
-    action: {
-      type: MODIFY_HEADERS,
-      requestHeaders: [
-        {
-          operation: SET,
-          header: 'sec-ch-ua',
-          value: `"Not.A/Brand";v="8", "Chromium";v="114", "Microsoft Edge";v="114"`
-        },
-        // {
-        //   operation: SET,
-        //   header: 'sec-ch-ua-arch',
-        //   value: '"x86"'
-        // },
-        // {
-        //   operation: SET,
-        //   header: 'sec-ch-ua-bitness',
-        //   value: '"64"'
-        // },
-        {
-          operation: SET,
-          header: 'sec-ch-ua-full-version',
-          value: `"${FULL_VERSION}"`
-        },
-        {
-          operation: SET,
-          header: 'sec-ch-ua-full-version-list',
-          value: `"Not.A/Brand";v="8.0.0.0", "Chromium";v="114.0.5735.201", "Microsoft Edge";v="114.0.1823.82"`
-        },
-        {
-          operation: SET,
-          header: 'sec-ms-gec-version',
-          value: `1-${FULL_VERSION}`
-        },
-        {
-          operation: SET,
-          header: 'User-Agent',
-          value: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${MAIN_VERSION}.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
-        }
+  // {
+  //   action: {
+  //     type: MODIFY_HEADERS,
+  //     requestHeaders: [
+  //       // {
+  //       //   operation: SET,
+  //       //   header: 'sec-ch-ua',
+  //       //   value: `"Not.A/Brand";v="8", "Chromium";v="114", "Microsoft Edge";v="114"`
+  //       // },
+  //       // {
+  //       //   operation: SET,
+  //       //   header: 'sec-ch-ua-arch',
+  //       //   value: '"x86"'
+  //       // },
+  //       // {
+  //       //   operation: SET,
+  //       //   header: 'sec-ch-ua-bitness',
+  //       //   value: '"64"'
+  //       // },
+  //       // {
+  //       //   operation: SET,
+  //       //   header: 'sec-ch-ua-full-version',
+  //       //   value: `"${FULL_VERSION}"`
+  //       // },
+  //       // {
+  //       //   operation: SET,
+  //       //   header: 'sec-ch-ua-full-version-list',
+  //       //   value: `"Not.A/Brand";v="8.0.0.0", "Chromium";v="114.0.5735.201", "Microsoft Edge";v="114.0.1823.82"`
+  //       // },
+  //       // {
+  //       //   operation: SET,
+  //       //   header: 'sec-ms-gec-version',
+  //       //   value: `1-${FULL_VERSION}`
+  //       // },
+  //       // {
+  //       //   operation: SET,
+  //       //   header: 'User-Agent',
+  //       //   value: `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${MAIN_VERSION}.0.0.0 Safari/537.36 Edg/${FULL_VERSION}`
+  //       // }
 
-        // {
-        //   operation: SET,
-        //   header: 'sec-ms-gec',
-        //   value: 'B55DF865827912FB0EDCCEC47284BFB22D3D2D453623DE97B2CCEDDBB57DAD23'
-        // }
-        // {
-        //   operation: REMOVE,
-        //   header: 'X-Forwarded-For'
-        // }
-      ]
-    },
-    condition: {
-      requestDomains: ['bing.com', 'www.bing.com', 'cn.bing.com'],
-      resourceTypes: ALL_RESOURCE_TYPES
-    }
-  },
+  //       // {
+  //       //   operation: SET,
+  //       //   header: 'sec-ms-gec',
+  //       //   value: 'B55DF865827912FB0EDCCEC47284BFB22D3D2D453623DE97B2CCEDDBB57DAD23'
+  //       // }
+  //       // {
+  //       //   operation: REMOVE,
+  //       //   header: 'X-Forwarded-For'
+  //       // }
+  //     ]
+  //   },
+  //   condition: {
+  //     requestDomains: ['bing.com', 'www.bing.com', 'cn.bing.com'],
+  //     resourceTypes: ALL_RESOURCE_TYPES
+  //   }
+  // },
   {
     action: {
       type: MODIFY_HEADERS,
@@ -171,7 +171,7 @@ export const staticRules: chrome.declarativeNetRequest.Rule[] = [
   //   condition: { urlFilter: 'https://www.bing.com/', resourceTypes: ALL_RESOURCE_TYPES }
   // }
 ].map((rule, index) => ({
-  id: index + 1,
+  id: index + 100,
   ...rule
 }))
 
