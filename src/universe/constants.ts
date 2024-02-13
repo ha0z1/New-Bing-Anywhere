@@ -3,8 +3,10 @@ export const CN_REDIRECT_URL = 'https://cn.bing.com/'
 export const AIPLUS = 'https://chat.aiplus.lol/login'
 export const BAND_MKTS = ['zh-CN', 'ru', 'ru-ru']
 
-export const MAIN_VERSION = '114'
-// export const FULL_VERSION = '114.0.1823.82'
+export const MAIN_VERSION = '121'
+export const FULL_VERSION = '121.0.2277.106'
+
+// User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0
 
 export const ALL_RESOURCE_TYPES = [
   'csp_report',
