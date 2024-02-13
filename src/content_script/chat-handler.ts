@@ -49,7 +49,12 @@ export default async (_config: Config) => {
   if (isGoogle) {
     prompt = new URLSearchParams(location.search).get('q') ?? ''
     dir = document.documentElement.dir
-    darkmode = (document.querySelector('meta[name="color-scheme"]') as HTMLMetaElement)?.content === 'dark' ? 'dark' : ''
+    darkmode =
+      (document.querySelector('meta[name="color-scheme"]') as HTMLMetaElement)?.content === 'dark' ||
+      getComputedStyle(document.body || document.documentElement).backgroundColor === 'rgb(32, 33, 36)' ||
+      document.querySelector('meta[name="color-scheme"]')
+        ? 'dark'
+        : ''
   }
   // if (isBing) {
   //   prompt = new URLSearchParams(location.search).get('q') ?? ''

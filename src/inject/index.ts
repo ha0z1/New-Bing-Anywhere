@@ -1,46 +1,46 @@
-// import { genUA } from '@@/utils'
+import { genUA } from '@@/utils'
 import { MAIN_VERSION } from '@@/constants'
 
 try {
-  // const ua = genUA()
-  // Object.defineProperty(navigator, 'userAgent', {
-  //   get: () => ua
-  // })
+  const ua = genUA()
+  Object.defineProperty(navigator, 'userAgent', {
+    get: () => ua
+  })
 
-  // interface NewNavigator extends Navigator {
-  //   userAgentData?: {
-  //     brands?: Array<{
-  //       brand: string
-  //       version: string
-  //     }>
-  //   }
-  // }
-  // const userAgentData = (navigator as NewNavigator).userAgentData
-  // const brands = userAgentData?.brands
-  // if (Array.isArray(brands)) {
-  //   Object.defineProperty(navigator, 'userAgentData', {
-  //     get: () => {
-  //       const deepClonedUserAgentData = JSON.parse(JSON.stringify(userAgentData))
-  //       return {
-  //         ...deepClonedUserAgentData,
-  //         brands: [
-  //           {
-  //             brand: 'Not.A/Brand',
-  //             version: '8'
-  //           },
-  //           {
-  //             brand: 'Chromium',
-  //             version: MAIN_VERSION
-  //           },
-  //           {
-  //             brand: 'Microsoft Edge',
-  //             version: MAIN_VERSION
-  //           }
-  //         ]
-  //       }
-  //     }
-  //   })
-  // }
+  interface NewNavigator extends Navigator {
+    userAgentData?: {
+      brands?: Array<{
+        brand: string
+        version: string
+      }>
+    }
+  }
+  const userAgentData = (navigator as NewNavigator).userAgentData
+  const brands = userAgentData?.brands
+  if (Array.isArray(brands)) {
+    Object.defineProperty(navigator, 'userAgentData', {
+      get: () => {
+        return {
+          brands: [
+            {
+              brand: 'Not A(Brand',
+              version: '99'
+            },
+            {
+              brand: 'Microsoft Edge',
+              version: '121'
+            },
+            {
+              brand: 'Chromium',
+              version: '121'
+            }
+          ],
+          mobile: false,
+          platform: 'Windows'
+        }
+      }
+    })
+  }
 
   if (location.pathname === '/search') {
     let count = 0

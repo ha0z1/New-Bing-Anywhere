@@ -1,10 +1,10 @@
 import { AIPLUS, ALL_RESOURCE_TYPES } from '@@/constants'
 
-import { isChinese } from '@@/utils'
+import { genUA, isChinese } from '@@/utils'
 
 // const MODIFY_HEADERS_LIST = {
-// 'X-Forwarded-For': '8.8.8.8',
-// 'User-Agent': genUA()
+//   // 'X-Forwarded-For': '8.8.8.8',
+//   'User-Agent': genUA()
 // }
 const MODIFY_HEADERS = 'modifyHeaders' as chrome.declarativeNetRequest.RuleActionType.MODIFY_HEADERS
 const REDIRECT = 'redirect' as chrome.declarativeNetRequest.RuleActionType.REDIRECT
@@ -48,7 +48,7 @@ export const dynamicRules = [
   .flat()
   .filter(Boolean)
   .map((rule, index) => ({
-    id: index + 1 + 2000 + 100,
+    id: index + 1 + 2000,
     ...rule
   })) as chrome.declarativeNetRequest.Rule[]
 
