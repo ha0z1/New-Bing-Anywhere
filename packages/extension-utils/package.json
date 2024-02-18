@@ -12,12 +12,12 @@
     "build": "vite build & tsc"
   },
   "dependencies": {
-    "@types/chrome": "^0.0.258",
+    "@types/chrome": "^0.0.260",
     "@types/webextension-polyfill": "^0.10.7",
     "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {
     "typescript": "^5.3.3",
-    "vite": "^5.0.12"
+    "vite": "^5.1.3"
   }
 }
