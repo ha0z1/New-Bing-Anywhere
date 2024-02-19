@@ -6,7 +6,7 @@ const APPEND = 'append' as chrome.declarativeNetRequest.HeaderOperation.APPEND
 // const REMOVE = 'remove' as chrome.declarativeNetRequest.HeaderOperation.REMOVE
 const SET = 'set' as chrome.declarativeNetRequest.HeaderOperation.SET
 
-export const staticRules: chrome.declarativeNetRequest.Rule[] = [
+export const staticRules: Pick<chrome.declarativeNetRequest.Rule, 'id'>[] = [
   {
     action: {
       type: MODIFY_HEADERS,

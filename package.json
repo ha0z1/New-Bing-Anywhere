@@ -1,6 +1,6 @@
 {
   "name": "new-bing-anywhere",
-  "version": "2.7.2",
+  "version": "2.7.3",
   "private": true,
   "description": "New Bing isn't just for Edge anymore. Anywhere you want",
   "homepage": "https://github.com/ha0z1/New-Bing-Anywhere",
@@ -62,21 +62,21 @@
   },
   "extension-i18n": {
     "en": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
+      "extensionName": "New Bing Anywhere (Copilot GPT-4)",
       "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country."
     },
     "zh_CN": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
+      "extensionName": "New Bing Anywhere (Copilot GPT-4)",
       "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country. 随时随地，有求必应。"
     },
     "zh_TW": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
+      "extensionName": "New Bing Anywhere (Copilot GPT-4)",
       "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country. 隨時隨地，有求必應"
     },
     "ru": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
+      "extensionName": "New Bing Anywhere (Copilot GPT-4)",
       "extensionDescription": "Чат New Bing может использоваться в любом браузере, с любым поисковым движком и в любой стране."
     }
   },
-  "extensionName": "New Bing Anywhere (Bing Chat GPT-4)"
+  "extensionName": "New Bing Anywhere (Copilot GPT-4)"
 }

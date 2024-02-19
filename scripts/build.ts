@@ -72,6 +72,7 @@ const buildChromiumBase = async () => {
         resources: ['inject.js', 'app/*', 'images/*'],
         matches: [
           'https://www.bing.com/*',
+          // 'https://copilot.microsoft.com/*',
           'https://www.baidu.com/*',
           'https://www.so.com/*',
           'https://*.sogou.com/*',
@@ -118,6 +119,10 @@ const buildChromiumBase = async () => {
       // '<all_urls>',
       'http://*.bing.com/*',
       'https://*.bing.com/*',
+      'wss://*.bing.com/*',
+      // 'https://*.microsoft.com/*',
+      'https://*.live.com/*',
+      'https://*.live.cn/*',
       'https://www.baidu.com/*',
       'https://www.so.com/*',
       'https://*.sogou.com/*',
@@ -151,6 +156,7 @@ const buildChromiumBase = async () => {
       {
         matches: [
           'https://www.bing.com/*',
+          // 'https://copilot.microsoft.com/*',
           'https://www.baidu.com/*',
           'https://www.so.com/*',
           'https://*.sogou.com/*',
