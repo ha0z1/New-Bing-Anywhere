@@ -55,7 +55,9 @@
 
 软件维护不易，您可以通过以下方式支持作者：
 
-<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/343190af-95ce-4615-affe-46100e6eb6c8" width=120 align="right"> <img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/b241ba84-a528-470f-8512-67eb26e9f18f" width=120 align="right">
+<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/343190af-95ce-4615-affe-46100e6eb6c8" width=120 align="right">
+<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/b241ba84-a528-470f-8512-67eb26e9f18f" width=120 align="right">
+<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/8472f9bc-a5b5-4f3e-a676-f8cda33a8232" alt="TJw762hu2u4cT9PJbc1eqaqgyHQGe3FgRv" width=120 align="right">
 
 - 请作者喝一杯咖啡(可以加作者好友，获得需求优先响应权及鸣谢名单)
 - 给予软件中肯的[评价](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)和 star
@@ -70,6 +72,7 @@
 
 |                                         |          |            |
 | --------------------------------------- | -------- | ---------- |
+| \*法                                    | CNY 8.8  | 03/14/2024 |
 | A\*e                                    | CNY 20   | 02/27/2024 |
 | \*\* 张                                 | CNY 20   | 01/31/2024 |
 | \*\*霖                                  | CNY 0.01 | 01/24/2024 |
