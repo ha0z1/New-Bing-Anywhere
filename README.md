@@ -68,12 +68,15 @@ Maintaining software is not easy. You can support the author in the following wa
 
 > If you want to advertise, please leave a donation note or [contact me](https://github.com/ha0z1/New-Bing-Anywhere?tab=security-ov-file)
 
-- \*\* 张 CNY 20 01/31/2024
-- \*\*霖 CNY 0.01 01/24/2024
-- \*\*毛 CNY 0.01 01/242024
-- [Vileicht](https://github.com/Vileicht) CNY 50 01/03/2024
-- \*\*彤 CNY 1.00 11/14/2023
-- \*\*欣 CNY 10 10/31/2023
+|                                         |          |            |
+| --------------------------------------- | -------- | ---------- |
+| A\*e                                    | CNY 20   | 02/27/2024 |
+| \*\* 张                                 | CNY 20   | 01/31/2024 |
+| \*\*霖                                  | CNY 0.01 | 01/24/2024 |
+| \*\*毛                                  | CNY 0.01 | 01/242024  |
+| [Vileicht](https://github.com/Vileicht) | CNY 50   | 01/03/2024 |
+| \*\*彤                                  | CNY 1.00 | 11/14/2023 |
+| \*\*欣                                  | CNY 10   | 10/31/2023 |
 
 ## Communication
 
