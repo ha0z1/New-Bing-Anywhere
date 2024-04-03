@@ -135,7 +135,7 @@ importers:
         version: 9.0.2
       '@vitejs/plugin-react-swc':
         specifier: ^3.3.2
-        version: 3.3.2(vite@4.4.9)
+        version: 3.3.2(vite@4.5.3)
       stylus:
         specifier: ^0.59.0
         version: 0.59.0
@@ -143,14 +143,14 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
       vite:
-        specifier: ^4.4.9
-        version: 4.4.9(@types/node@20.5.7)(stylus@0.59.0)
+        specifier: ^4.5.3
+        version: 4.5.3(@types/node@20.5.7)(stylus@0.59.0)
       vite-plugin-imp:
         specifier: ^2.4.0
-        version: 2.4.0(vite@4.4.9)
+        version: 2.4.0(vite@4.5.3)
       vite-plugin-minify:
         specifier: ^1.5.2
-        version: 1.5.2(vite@4.4.9)
+        version: 1.5.2(vite@4.5.3)
 
 packages:
 
@@ -1589,13 +1589,13 @@ packages:
       eslint-visitor-keys: 3.4.3
     dev: true
 
-  /@vitejs/plugin-react-swc@3.3.2(vite@4.4.9):
+  /@vitejs/plugin-react-swc@3.3.2(vite@4.5.3):
     resolution: {integrity: sha512-VJFWY5sfoZerQRvJrh518h3AcQt6f/yTuWn4/TRB+dqmYU0NX1qz7qM5Wfd+gOQqUzQW4gxKqKN3KpE/P3+zrA==}
     peerDependencies:
       vite: ^4
     dependencies:
       '@swc/core': 1.3.78
-      vite: 4.4.9(@types/node@20.5.7)(stylus@0.59.0)
+      vite: 4.5.3(@types/node@20.5.7)(stylus@0.59.0)
     transitivePeerDependencies:
       - '@swc/helpers'
     dev: true
@@ -5922,7 +5922,7 @@ packages:
       mlly: 1.4.0
       pathe: 1.1.1
       picocolors: 1.0.0
-      vite: 4.4.9(@types/node@20.5.7)(stylus@0.59.0)
+      vite: 4.5.3(@types/node@20.5.7)(stylus@0.59.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -5934,7 +5934,7 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-imp@2.4.0(vite@4.4.9):
+  /vite-plugin-imp@2.4.0(vite@4.5.3):
     resolution: {integrity: sha512-L/6/nvOw+MyNh4UxAlCZHsmKd5MitmHamqqAWB15sbUgVIEz/OQ8jpKr6kkQU0eA/AIe8fkCVbQBlP81ajrqWg==}
     peerDependencies:
       vite: '>= 2.0.0-beta.5'
@@ -5946,22 +5946,22 @@ packages:
       chalk: 4.1.2
       param-case: 3.0.4
       pascal-case: 3.1.2
-      vite: 4.4.9(@types/node@20.5.7)(stylus@0.59.0)
+      vite: 4.5.3(@types/node@20.5.7)(stylus@0.59.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-plugin-minify@1.5.2(vite@4.4.9):
+  /vite-plugin-minify@1.5.2(vite@4.5.3):
     resolution: {integrity: sha512-clf3THHlet1jD35y8+mbw/xgACbdUQ1Eyc9zZFiqaxVOZLSC3UbrkOYOG+Nf4cleRjWgb8czbXrnQiWZICVh3Q==}
     peerDependencies:
       vite: '*'
     dependencies:
       html-minifier-terser: 6.1.0
-      vite: 4.4.9(@types/node@20.5.7)(stylus@0.59.0)
+      vite: 4.5.3(@types/node@20.5.7)(stylus@0.59.0)
     dev: true
 
-  /vite@4.4.9(@types/node@20.5.7)(stylus@0.59.0):
-    resolution: {integrity: sha512-2mbUn2LlUmNASWwSCNSJ/EG2HuSRTnVNaydp6vMCm5VIqJsjMfbIWtbH2kDuwUVW5mMUKKZvGPX/rqeqVvv1XA==}
+  /vite@4.5.3(@types/node@20.5.7)(stylus@0.59.0):
+    resolution: {integrity: sha512-kQL23kMeX92v3ph7IauVkXkikdDRsYMGTVl5KY2E9OY4ONLvkHf04MDTbnfo6NKxZiDLWzVpP5oTa8hQD8U3dg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
