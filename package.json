@@ -1,0 +1,32 @@
+{
+  "name": "aa-www",
+  "type": "module",
+  "private": true,
+  "description": "tmux.online — static marketing site",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "images": "node scripts/gen-images.mjs",
+    "lint": "prettier --check . && astro check",
+    "format": "prettier --write .",
+    "deploy": "astro build && wrangler deploy"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/react": "^6.0.2",
+    "@astrojs/sitemap": "^3.7.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "astro": "^5.16.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sharp": "^0.34.5",
+    "terser": "^5.49.2",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.45.0"
+  }
+}

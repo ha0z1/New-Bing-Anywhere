@@ -1,0 +1,89 @@
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# The marketing HTML documents. First 30 min: served straight from cache, no network at all.
+# Next 30 min: still served instantly from cache, but the browser revalidates in the background
+# so the *next* open shows the fresh copy. A stale copy is thus served for at most
+# max-age + stale-while-revalidate = 3600s, so a deploy reaches every visitor within the hour.
+# (SWR only starts after max-age, and only in browsers that implement it — Safari/Firefox just
+# revalidate once the 30 min is up; either way nothing older than an hour is ever shown.) Set
+# per-route rather than via a `/*` default on purpose: Cloudflare's _headers *concatenates*
+# every matching rule's Cache-Control (it does not let the most specific win), so a catch-all
+# would append a second max-age onto the immutable /_astro/* assets and onto the no-store
+# account pages. Each language home is one line.
+/
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+/zh-Hant
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+# Piped straight into sh — must be served as plain text, and must not sit in a CDN cache
+# for long after it is updated. Crawlable (models may want to read it) but kept out of the
+# search index: a shell script is not a document.
+/install.sh
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=300, must-revalidate
+  X-Robots-Tag: noindex
+
+# The optional account pages. Per-user utilities, not content — and /device carries a
+# one-time code in its query string, which has no business in a search index. Both also set
+# `noindex` in their own <head>; this covers crawlers that read headers first.
+#
+# Listed once bare and once behind a wildcard so the translated paths (/zh-Hant/account …)
+# are covered too — they are the same pages and were previously getting neither header.
+/account
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/device
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/*/account
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/*/device
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+# Machine-readable mirrors of the page. Same reasoning: fetchable, not a search result.
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+  X-Robots-Tag: noindex
+
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+  X-Robots-Tag: noindex
+
+/manifest.webmanifest
+  Content-Type: application/manifest+json; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+# Unfingerprinted but rarely changed; a day is short enough to fix a bad social card.
+/og.png
+  Cache-Control: public, max-age=86400
+
+# Icons referenced by fixed, unfingerprinted names (the <link> tags and the manifest). Same
+# reasoning as og.png: cache a day so a swapped icon still propagates quickly.
+/favicon.svg
+  Cache-Control: public, max-age=86400
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=86400
+
+/icon-192.png
+  Cache-Control: public, max-age=86400
+
+/icon-512.png
+  Cache-Control: public, max-age=86400
+
+# Astro fingerprints these filenames, so they can be cached forever.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

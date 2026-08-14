@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro'
+import Icon from './Icon.astro'
+import { useCopy, localizePath, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const c = useCopy(lang)
+---
+
+<Base lang={lang} path="/404" title={`${c.notFound.code} — ${c.brand.name}`} description={c.notFound.body}>
+  <section class="oops">
+    <div class="wrap">
+      <p class="eyebrow">{c.notFound.code}</p>
+      <h1>{c.notFound.title}</h1>
+      <p class="lede">{c.notFound.body}</p>
+      <a class="link-quiet back" href={localizePath('/', lang)}>
+        {c.notFound.cta}
+        <Icon name="arrowRight" size={16} />
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .oops {
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - 62px - 180px);
+    padding-block: 120px;
+  }
+
+  h1 {
+    margin-top: 16px;
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.2rem);
+  }
+
+  .lede {
+    margin-top: 18px;
+    max-width: calc(44ch * var(--measure-scale));
+  }
+
+  .back {
+    margin-top: 28px;
+  }
+</style>

@@ -1,0 +1,105 @@
+---
+import '../styles/global.css'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import Schema from '../components/Schema.astro'
+import LangCookie from '../components/LangCookie.astro'
+import { localizePath, shippedLangs, defaultLang, ogLocales, useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+  /** Locale-free path of this page, e.g. `/` or `/pricing`. Used for the alternate links. */
+  path?: string
+  title?: string
+  description?: string
+  /** The compact landing page ends after its proof points; utility pages retain the site footer. */
+  showFooter?: boolean
+  /**
+   * Keep this page out of search results. Set on the account pages: they are per-user
+   * utilities, not content. Also drops the JSON-LD and the hreflang alternates, both of
+   * which only mean anything for a page that is meant to be indexed — and the JSON-LD in
+   * particular carries the landing page's FAQ, which would be a lie anywhere else.
+   */
+  noindex?: boolean
+}
+
+const { lang, path = '/', title, description, showFooter = true, noindex = false } = Astro.props
+const c = useCopy(lang)
+const site = Astro.site ?? new URL('https://tmux.online')
+const canonical = new URL(localizePath(path, lang), site)
+const pageTitle = title ?? c.meta.title
+const pageDescription = description ?? c.meta.description
+const ogImage = new URL('/og.png', site)
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {
+      /*
+      Cloudflare's edge injects its Web Analytics beacon (static.cloudflareinsights.com/beacon.min.js)
+      into every HTML response — it is not in our output. It is deferred, so it holds the load event
+      (the tab's loading indicator) until it arrives. We cannot change the injected tag, but we can
+      warm the connection so only the download is left when it fires. dns-prefetch is the fallback for
+      browsers that ignore preconnect. Drop both if the beacon is ever turned off in the dashboard.
+    */
+    }
+    <link rel="preconnect" href="https://static.cloudflareinsights.com" />
+    <link rel="dns-prefetch" href="https://static.cloudflareinsights.com" />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical.href} />
+
+    {/* Let crawlers use full-length snippets and large previews instead of the truncated defaults. */}
+    {
+      noindex ? (
+        <meta name="robots" content="noindex, nofollow" />
+      ) : (
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+      )
+    }
+    <meta name="author" content="AI Anywhere" />
+
+    {!noindex && shippedLangs.map((l) => <link rel="alternate" hreflang={l} href={new URL(localizePath(path, l), site).href} />)}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={new URL(localizePath(path, defaultLang), site).href} />}
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#070907" />
+
+    {/* Machine-readable mirror of this page, for models that read rather than render. */}
+    <link rel="alternate" type="text/plain" href={localizePath('/llms.txt', lang)} title="llms.txt" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={c.brand.name} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={c.meta.ogAlt} />
+    <meta property="og:locale" content={ogLocales[lang]} />
+    {shippedLangs.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={ogLocales[l]} />)}
+    <meta property="og:image:type" content="image/png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    {!noindex && <Schema lang={lang} canonical={canonical.href} />}
+    <LangCookie lang={lang} />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip" href="#main">{c.nav.skipToContent}</a>
+    <Header lang={lang} />
+    <main id="main">
+      <slot />
+    </main>
+    {showFooter && <Footer lang={lang} />}
+  </body>
+</html>

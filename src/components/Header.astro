@@ -1,0 +1,569 @@
+---
+import Logo from './Logo.astro'
+import Icon from './Icon.astro'
+import { useCopy, localizePath, shippedLangs, languages, type Lang } from '../i18n'
+import { API_URL, GITHUB_STARS_FALLBACK, REPO_SLUG, REPO_URL } from '../config'
+import { formatStars } from '../lib/stars'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = useCopy(lang)
+const home = localizePath('/', lang)
+const account = localizePath('/account', lang)
+const starsText = formatStars(GITHUB_STARS_FALLBACK)
+// Prefixed with the home path because this header also renders away from the landing page.
+const links = [{ label: c.nav.install, href: `${home}#install` }]
+---
+
+<header class="site-header" id="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={home}>
+      <Logo size={24} />
+      <span class="brand-name">{c.brand.name}</span>
+      <span class="brand-tag">{c.brand.tagline}</span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+
+    <div class="tail">
+      {/* Star count baked in from the fallback, then refreshed by the script below. */}
+      <a class="gh" href={REPO_URL} rel="noopener" aria-label={`${c.nav.github} · ${starsText} stars`}>
+        <Icon name="github" size={19} />
+        <span class="gh-stars">
+          <Icon name="star" size={13} class="gh-star" />
+          <span data-gh-stars>{starsText}</span>
+        </span>
+      </a>
+
+      {
+        shippedLangs.length > 1 && (
+          // <details> rather than a JS-built menu: it opens, closes and takes keyboard
+          // focus on its own, so the script below only has to add the two behaviours the
+          // element does not provide — closing on outside click and on Escape.
+          <details class="lang" data-lang-menu>
+            <summary aria-label={c.footer.langLabel} title={c.footer.langLabel}>
+              <Icon name="globe" size={18} />
+              <Icon name="chevronDown" size={13} class="caret" />
+            </summary>
+            <ul>
+              {shippedLangs.map((l) => (
+                <li>
+                  <a href={localizePath('/', l)} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>
+                    <span>{languages[l]}</span>
+                    {l === lang && <Icon name="check" size={14} />}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        )
+      }
+
+      {
+        /*
+        A fixed-size circle in every state: a generic user glyph signed out, the GitHub
+        avatar signed in. Same footprint either way, so resolving the session swaps the
+        glyph in place without reflowing the bar — that is what killed the old flicker,
+        where a name appeared and shoved everything left. Rendered visible immediately
+        (the signed-out glyph is the correct default), then upgraded by the script below.
+      */
+      }
+      <a class="acct" href={account} data-account aria-label={c.nav.signIn} data-label-out={c.nav.signIn} data-label-in={c.nav.account}>
+        <Icon name="user" size={17} />
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .site-header[data-scrolled] {
+    border-bottom-color: var(--line);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    height: 62px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    flex: none;
+  }
+
+  .brand :global(svg) {
+    align-self: center;
+  }
+
+  .brand-name {
+    font-size: 15px;
+    font-weight: 560;
+    letter-spacing: -0.015em;
+  }
+
+  .brand-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .nav {
+    display: flex;
+    gap: 24px;
+    margin-left: auto;
+    font-size: 14px;
+    color: var(--fg-dim);
+  }
+
+  .nav a {
+    transition: color 0.15s ease;
+  }
+
+  .nav a:hover {
+    color: var(--fg);
+  }
+
+  .tail {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: 8px;
+  }
+
+  .lang {
+    position: relative;
+  }
+
+  .lang summary {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 30px;
+    padding-inline: 7px;
+    border-radius: 8px;
+    color: var(--fg-muted);
+    cursor: pointer;
+    list-style: none;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
+  }
+
+  .lang summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang summary:hover,
+  .lang[open] summary {
+    color: var(--fg);
+    background: var(--surface-2);
+  }
+
+  .lang summary .caret {
+    opacity: 0.7;
+    transition: transform 0.18s ease;
+  }
+
+  .lang[open] summary .caret {
+    transform: rotate(180deg);
+  }
+
+  .lang ul {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 156px;
+    padding: 5px;
+    background: var(--surface-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    box-shadow: 0 18px 44px -18px rgb(0 0 0 / 0.85);
+    animation: drop 0.14s ease;
+  }
+
+  @keyframes drop {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+
+  .lang li a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 13.5px;
+    color: var(--fg-dim);
+    white-space: nowrap;
+    transition:
+      color 0.12s ease,
+      background 0.12s ease;
+  }
+
+  .lang li a:hover {
+    color: var(--fg);
+    background: color-mix(in srgb, var(--surface-2) 60%, var(--fg) 8%);
+  }
+
+  .lang li a[aria-current] {
+    color: var(--fg);
+  }
+
+  .lang li a[aria-current] :global(svg) {
+    color: var(--accent);
+  }
+
+  .gh {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--fg-muted);
+    transition: color 0.15s ease;
+  }
+
+  .gh:hover {
+    color: var(--fg);
+  }
+
+  .gh-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg-dim);
+  }
+
+  .gh:hover .gh-stars {
+    color: var(--fg);
+  }
+
+  .gh-star {
+    color: var(--attention);
+  }
+
+  @media (max-width: 380px) {
+    /* On the narrowest phones the count is the first thing to go; the icon still links out. */
+    .gh-stars {
+      display: none;
+    }
+  }
+
+  /* Fixed 30px circle, identical footprint signed in or out — the avatar or the glyph sits
+     inside it, and neither state carries text, so the bar never reflows when the session
+     resolves. Visible from first paint: the signed-out glyph is the correct default. */
+  .acct {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--fg-dim);
+    overflow: hidden;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .acct:hover {
+    color: var(--fg);
+    background: var(--surface-2);
+    border-color: var(--line-strong);
+  }
+
+  .acct[data-auth-state='in'] {
+    color: var(--fg);
+    border-color: var(--line-strong);
+  }
+
+  /*
+    `:global` because the avatar is created by the script below; a scoped rule would not
+    match a runtime-inserted element, and an unsized <img> renders at its intrinsic size
+    (the GitHub avatar is 460px — it once shoved the whole header off the page). Fills the
+    circle so there is no border ring around the photo.
+  */
+  :global(.acct-avatar) {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 720px) {
+    .brand-tag,
+    .nav {
+      display: none;
+    }
+    .tail {
+      margin-left: auto;
+    }
+  }
+</style>
+
+<script is:inline define:vars={{ api: API_URL, repoSlug: REPO_SLUG }}>
+  ;(() => {
+    const header = document.getElementById('site-header')
+    if (!header) return
+    const sync = () => header.toggleAttribute('data-scrolled', window.scrollY > 8)
+    sync()
+    addEventListener('scroll', sync, { passive: true })
+
+    // ── GitHub stars ─────────────────────────────────────────────────────────
+    // The build baked in a fallback count so a number is already on screen. On top of that we
+    // keep the last fetched count in localStorage and only hit GitHub again once it is older
+    // than 5 hours — so a visitor clicking through several pages fetches at most once, and the
+    // stored number (closer to live than the baked-in fallback) paints immediately meanwhile.
+    // The committed width is reserved by the fallback, so a refresh to a nearby value never
+    // reflows the bar. Fetches run from the visitor's own IP (their 60/hr GitHub budget, not
+    // the shared CI one).
+    const starsEl = document.querySelector('[data-gh-stars]')
+    if (starsEl) {
+      const STARS_KEY = 'aa_stars'
+      const STARS_TTL = 5 * 60 * 60 * 1000 // 5 hours
+      const format = (n) => {
+        if (n < 1000) return String(n)
+        const k = n / 1000
+        return k.toFixed(k < 10 ? 1 : 0).replace(/\.0$/, '') + 'k'
+      }
+      const readCache = () => {
+        try {
+          return JSON.parse(localStorage.getItem(STARS_KEY)) || null
+        } catch {
+          return null
+        }
+      }
+      const cached = readCache()
+      if (cached && typeof cached.n === 'number') starsEl.textContent = format(cached.n)
+
+      const fresh = cached && typeof cached.t === 'number' && Date.now() - cached.t < STARS_TTL
+      if (!fresh) {
+        fetch('https://api.github.com/repos/' + repoSlug, { headers: { accept: 'application/vnd.github+json' } })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => {
+            const n = data && data.stargazers_count
+            if (typeof n !== 'number') return
+            starsEl.textContent = format(n)
+            try {
+              localStorage.setItem(STARS_KEY, JSON.stringify({ n, t: Date.now() }))
+            } catch {}
+          })
+          .catch(() => {}) // rate-limited or offline: the cached / baked-in number stays
+      }
+    }
+
+    const menus = () => document.querySelectorAll('details[data-lang-menu][open]')
+
+    document.addEventListener('click', (event) => {
+      for (const menu of menus()) if (!menu.contains(event.target)) menu.open = false
+    })
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return
+      for (const menu of menus()) {
+        menu.open = false
+        menu.querySelector('summary').focus()
+      }
+    })
+
+    /*
+      Resolve the optional account entry.
+
+      This header renders on the landing page too, so it deliberately does its own fetch
+      rather than importing src/lib/api.ts: an import here would make the marketing pages
+      pull in the island bundle, and with it React, to decide the label on one link.
+    */
+    const acct = document.querySelector('[data-account]')
+    if (!acct) return
+
+    /*
+      Avatar, glyph, and a localStorage cache of the last-seen avatar.
+
+      The session answer is async, so a returning signed-in visitor would otherwise stare at
+      the default glyph until it lands, then watch it swap to their photo — a blink on every
+      navigation. We paint the cached avatar synchronously and reconcile once the truth
+      arrives; if they have since signed out, the photo shows briefly then reverts to the
+      glyph, which is the acceptable direction to be wrong in.
+
+      The cache is `{ src, data }`: `src` is the avatar URL from the session, `data` is that
+      image inlined as a base64 data URL. We prefer `data` — it paints with no network and
+      survives offline. Only avatars on avatars.githubusercontent.com are inlined (they send
+      `Access-Control-Allow-Origin: *`, so the bytes are actually readable); anything else
+      caches the URL alone. The visible avatar is swapped only after the base64 is in hand,
+      so a refresh never shows a half-loaded image.
+    */
+    const AVATAR_KEY = 'aa_avatar'
+    const GH_AVATAR_HOST = 'avatars.githubusercontent.com'
+    const glyph = acct.querySelector('svg')
+    let avatarEl = null
+
+    const store = {
+      get: () => {
+        try {
+          return JSON.parse(localStorage.getItem(AVATAR_KEY)) || null
+        } catch {
+          return null
+        }
+      },
+      set: (value) => {
+        try {
+          value ? localStorage.setItem(AVATAR_KEY, JSON.stringify(value)) : localStorage.removeItem(AVATAR_KEY)
+        } catch {}
+      },
+    }
+
+    const showGlyph = () => {
+      if (!avatarEl) return
+      avatarEl.replaceWith(glyph)
+      avatarEl = null
+    }
+
+    const showAvatar = (src) => {
+      if (!src) return showGlyph()
+      if (avatarEl && avatarEl.src === src) return // already showing it — no reload, no blink
+      const img = document.createElement('img')
+      img.className = 'acct-avatar'
+      // Intrinsic size as well as the CSS rule: the image can decode before the stylesheet
+      // is applied, and an unsized avatar is a full-width one.
+      img.width = 30
+      img.height = 30
+      img.alt = ''
+      img.decoding = 'async'
+      img.referrerPolicy = 'no-referrer'
+      img.onerror = showGlyph // blocked / 404 / a stale cached URL → fall back to the glyph
+      img.src = src
+      ;(avatarEl || glyph).replaceWith(img)
+      avatarEl = img
+    }
+
+    // Fetch a GitHub avatar and return it as a base64 data URL, or null if it is not an
+    // inlineable GitHub avatar or the fetch fails. `s=80` keeps the 30px (@2x) image small.
+    const inlineAvatar = async (src) => {
+      try {
+        const url = new URL(src)
+        if (url.hostname !== GH_AVATAR_HOST) return null
+        url.searchParams.set('s', '80')
+        const response = await fetch(url.toString(), { cache: 'force-cache' })
+        if (!response.ok) return null
+        const blob = await response.blob()
+        if (!blob.type.startsWith('image/')) return null
+        return await new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result)
+          reader.onerror = reject
+          reader.readAsDataURL(blob)
+        })
+      } catch {
+        return null
+      }
+    }
+
+    // Optimistic paint from cache, before any network. A cached avatar means "was signed in
+    // last time", so mirror the signed-in chrome too. Prefer the inlined base64.
+    const cached = store.get()
+    if (cached) {
+      acct.setAttribute('data-auth-state', 'in')
+      acct.setAttribute('aria-label', acct.dataset.labelIn)
+      showAvatar(cached.data || cached.src)
+    }
+
+    /*
+      Only check the session when there is a reason to. The marketing pages otherwise fire a
+      credentialed cross-origin request to api.tmux.online on every visit — pointless for the
+      logged-out visitor it usually is, and, behind a proxy that maps that host into a
+      private IP range, enough to make the browser raise a "this site wants to access your
+      local network" prompt. So: fetch on the account/device pages (where the answer is the
+      point), or when a cached avatar says this person has signed in before. A first-time
+      visitor to the landing page makes no account request at all.
+
+      Parked on window so src/lib/api.ts (the account/device islands) awaits the same request
+      instead of issuing a second one.
+    */
+    const onAuthPage = /\/(account|device)(\/|$)/.test(location.pathname)
+    if (!cached && !onAuthPage) return
+
+    /*
+      Resolve the session as one of three outcomes — signed in, definitely signed out, or
+      could-not-tell. The last one is the point: a rate-limited (429), 5xx, or offline answer
+      is NOT proof of being signed out. Collapsing it into "signed out" used to clear the
+      avatar cache and flip the header to the glyph; once cleared, marketing pages stop
+      re-checking (they only fetch when a cached avatar says "signed in before"), so a single
+      transient blip stranded a signed-in visitor looking logged out until they opened
+      /account. Behind a proxy that maps api.tmux.online into a private range those blips are
+      routine, which reads as "the login keeps expiring". So only a real 200 answer touches
+      state; a failure leaves the optimistic paint and the cache exactly as they were, and the
+      next navigation retries.
+
+      Parked on window as a plain Promise<Session|null> so src/lib/api.ts awaits the same
+      request; a could-not-tell result maps to null there, the safe default for the account page.
+    */
+    const sessionResult = fetch(api + '/api/auth/get-session', { credentials: 'include' })
+      .then((response) => {
+        if (!response.ok) return { state: 'error' } // 429 / 5xx: not a signed-out signal
+        return response.json().then((session) => (session && session.user ? { state: 'in', session } : { state: 'out' }))
+      })
+      .catch(() => ({ state: 'error' })) // offline / blocked: also indeterminate
+
+    window.__aaSession = sessionResult.then((r) => (r.state === 'in' ? r.session : null))
+
+    sessionResult.then(async (r) => {
+      if (r.state === 'error') return // keep the optimistic avatar and cache; the next load retries
+
+      if (r.state === 'out') {
+        acct.setAttribute('data-auth-state', 'out')
+        acct.setAttribute('aria-label', acct.dataset.labelOut)
+        store.set(null)
+        showGlyph() // revert the optimistic avatar, if any
+        return
+      }
+
+      const user = r.session.user
+      acct.setAttribute('data-auth-state', 'in')
+      // Same footprint, so the aria-label is the only thing that changes for a screen
+      // reader — no visible text, no reflow.
+      acct.setAttribute('aria-label', acct.dataset.labelIn)
+
+      if (!user.image) {
+        store.set(null)
+        showGlyph()
+        return
+      }
+
+      // Same avatar as cached and already inlined → nothing to fetch, nothing to swap.
+      if (cached && cached.src === user.image && cached.data) {
+        showAvatar(cached.data)
+        return
+      }
+
+      // Refresh the base64 first, so the visible image only changes once we have bytes.
+      // Fall back to the raw URL when the avatar is not inlineable or the fetch fails.
+      const data = await inlineAvatar(user.image)
+      store.set({ src: user.image, data })
+      showAvatar(data || user.image)
+    })
+  })()
+</script>

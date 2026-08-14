@@ -1,0 +1,252 @@
+/*
+ * Dark only, terminal-first — the same palette the app itself uses, so the site and the
+ * product do not look like two different pieces of software. No light variant on purpose.
+ */
+
+:root {
+  /* Palette follows the tmux brand: the green is #19BA1F, sampled straight from the
+     tmux wordmark, and the neutrals are kept genuinely neutral rather than slate-blue so
+     they do not fight it. tmux has no site of its own to match — tmux.github.io is a
+     redirect to the wiki — so the logo is the whole brand. */
+  --bg: #070907;
+  --bg-raised: #0d0f0d;
+  --surface: #141614;
+  --surface-2: #1e211e;
+  --line: rgb(168 176 168 / 0.13);
+  --line-strong: rgb(168 176 168 / 0.24);
+  --fg: #e9ede9;
+  --fg-dim: #a8b0a8;
+  --fg-muted: #7d857d;
+  --accent: #19ba1f;
+  --accent-soft: rgb(25 186 31 / 0.14);
+  /* On the accent, text must be dark, not white: white on #19BA1F is 2.62:1 and fails
+     outright, while the page background on it is 7.6:1. That is also how the tmux mark
+     itself reads — a green field carrying dark panes. */
+  --on-accent: #070907;
+  --ok: #3ecf8e;
+  --attention: #f5b544;
+  --danger: #e36a6a;
+
+  --font-sans:
+    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC', 'Noto Sans', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --gutter: 24px;
+  --measure: 1140px;
+  /* Multiplies every `ch`-based prose column; see the CJK block at the bottom. */
+  --measure-scale: 1;
+  --radius: 10px;
+  --radius-lg: 14px;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis-weight: none;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 560;
+  letter-spacing: -0.028em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+svg {
+  display: block;
+}
+
+::selection {
+  background: rgb(25 186 31 / 0.3);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── layout primitives ─────────────────────────────────────────────── */
+
+.wrap {
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: clamp(72px, 10vw, 120px);
+  border-top: 1px solid var(--line);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.lede {
+  color: var(--fg-dim);
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.2rem);
+  line-height: 1.62;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 12px;
+  padding: 10px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  z-index: 100;
+}
+
+.skip:focus {
+  left: 16px;
+}
+
+/* ── links & buttons ───────────────────────────────────────────────── */
+
+.link-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--fg-dim);
+  font-size: 0.9375rem;
+  transition: color 0.15s ease;
+}
+
+.link-quiet:hover {
+  color: var(--fg);
+}
+
+.link-quiet svg {
+  opacity: 0.62;
+  transition:
+    transform 0.18s ease,
+    opacity 0.15s ease;
+}
+
+.link-quiet:hover svg {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+/* Yellow belongs exclusively to tasks that are waiting for input. The protected header
+   still uses its existing semantic variable, but renders the GitHub star neutrally. */
+.site-header {
+  --attention: var(--fg-muted);
+}
+
+/* ── CJK ───────────────────────────────────────────────────────────── */
+
+/*
+ * Latin display settings actively hurt Hanzi: negative tracking jams square glyphs into
+ * each other, and a 1.08 heading leading that looks tight and modern in Inter looks broken
+ * once glyphs fill their em box. `ch` is the width of "0", which is half an em in most CJK
+ * faces, so every `Nch` measure ends up holding N/2 characters — the prose columns are
+ * widened to compensate. Scoped by :lang so an English string inside a Chinese page (the
+ * hero slogan carries lang="en") keeps its own settings.
+ */
+:lang(zh-Hant) {
+  --font-sans:
+    system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 'Hiragino Sans CNS', 'Noto Sans TC', 'Microsoft JhengHei',
+    'Heiti TC', sans-serif;
+  --measure-scale: 1.3;
+}
+
+:lang(zh-Hant) h1,
+:lang(zh-Hant) h2,
+:lang(zh-Hant) h3,
+:lang(zh-Hant) h4 {
+  letter-spacing: 0;
+  line-height: 1.28;
+}
+
+:lang(zh-Hant) p,
+:lang(zh-Hant) li,
+:lang(zh-Hant) summary {
+  line-height: 1.82;
+}
+
+/* Hanzi has no ascender/descender rhythm to separate a run of Latin, so give embedded
+   identifiers (`tmux`, `send-keys`, `127.0.0.1`) a hair of room. */
+:lang(zh-Hant) {
+  text-spacing-trim: space-all;
+}
+
+/*
+ * Eyebrows are mono + wide tracking + uppercase, none of which a mono face can do to Hanzi:
+ * there are no CJK glyphs in the mono stack (so it silently falls back to a different face),
+ * uppercase is a no-op, and 0.16em between square glyphs reads as a gap, not as emphasis.
+ */
+:lang(zh-Hant) .eyebrow {
+  font-family: var(--font-sans);
+  letter-spacing: 0.08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

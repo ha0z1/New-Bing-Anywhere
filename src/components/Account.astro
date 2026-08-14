@@ -1,0 +1,29 @@
+---
+/**
+ * The account page is a shell: <head>, header and footer are prerendered like every other
+ * page, and the one stateful region hydrates as a React island.
+ *
+ * `client:load` rather than `client:visible` or `client:idle` — the panel's first act is to
+ * ask the API whether there is a session, and everything visible depends on the answer.
+ * Deferring that only lengthens the "…" the visitor stares at.
+ */
+import Base from '../layouts/Base.astro'
+import AccountPanel from '../islands/AccountPanel'
+import { useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const c = useCopy(lang)
+---
+
+<Base lang={lang} path="/account" title={c.account.metaTitle} description={c.account.metaDescription} noindex>
+  <section class="section aa-auth">
+    <div class="wrap">
+      <p class="eyebrow">{c.account.label}</p>
+      <AccountPanel client:load copy={{ auth: c.auth, account: c.account }} />
+    </div>
+  </section>
+</Base>

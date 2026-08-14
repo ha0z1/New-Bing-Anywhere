@@ -1,0 +1,54 @@
+// @ts-check
+import { defineConfig } from 'astro/config'
+import sitemap from '@astrojs/sitemap'
+import react from '@astrojs/react'
+import minifyInlineScripts from './scripts/minify-inline.mjs'
+import inlineHomeCss from './scripts/inline-home-css.mjs'
+
+const SITE = 'https://tmux.online'
+
+// English is the default locale and gets no prefix (`/`). Every other locale is served
+// under its own prefix (`/zh-Hant/…`) — see src/i18n/index.ts for the copy tables.
+export default defineConfig({
+  site: SITE,
+  // Matches `html_handling: "drop-trailing-slash"` in wrangler.jsonc, so the sitemap names
+  // the same URLs the site actually answers with a 200.
+  trailingSlash: 'never',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'zh-Hant'],
+    routing: { prefixDefaultLocale: false, redirectToDefaultLocale: false },
+  },
+  integrations: [
+    // Islands only. Every page is prerendered to HTML at build time; React hydrates the two
+    // stateful surfaces (/account, /device) and nothing else, so the marketing pages still
+    // ship no framework at all.
+    react(),
+    sitemap({
+      i18n: { defaultLocale: 'en', locales: { en: 'en', 'zh-Hant': 'zh-Hant' } },
+      // The .txt endpoints are for crawlers to fetch, not for search engines to list.
+      // /account and /device are per-user utilities rather than content — they also carry
+      // `noindex` in their <head> and in public/_headers, this just keeps them out of the
+      // sitemap in the first place.
+      filter: (page) =>
+        !page.includes('/404') && !page.endsWith('.txt') && !/\/(account|device)$/.test(new URL(page).pathname.replace(/\/$/, '')),
+      changefreq: 'weekly',
+      priority: 1,
+      lastmod: new Date(),
+    }),
+    // Fold the landing page's stylesheets into the HTML so its first paint needs no second
+    // round-trip. Home pages only — see the integration for why the utility pages stay external.
+    inlineHomeCss(),
+    // Last: minify the inline scripts the bundler leaves verbatim. Runs on the finished HTML.
+    minifyInlineScripts(),
+  ],
+  build: {
+    inlineStylesheets: 'auto',
+    // `preserve` mirrors src/pages into dist, so `zh-Hant/404.astro` lands at
+    // `dist/zh-Hant/404.html`. The default `directory` format would emit
+    // `zh-Hant/404/index.html`, which Cloudflare's `not_found_handling: "404-page"` does
+    // not look for — the localized 404 would silently fall back to the English one.
+    format: 'preserve',
+  },
+  devToolbar: { enabled: false },
+})

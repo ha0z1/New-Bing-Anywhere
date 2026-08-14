@@ -1,0 +1,241 @@
+---
+import Icon from './Icon.astro'
+import { useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = useCopy(lang)
+const s = c.stats
+---
+
+<section class="stats">
+  <div class="wrap inner">
+    <div class="intro">
+      <p class="eyebrow">{s.eyebrow}</p>
+      <span class="signal" aria-hidden="true"></span>
+    </div>
+    <div class="grid">
+      {
+        s.items.map((item) => (
+          <div class:list={['stat', { qualitative: item.to == null }]}>
+            <span class="register" aria-hidden="true" />
+            {
+              // The final value is in the HTML — no-JS and crawlers see the real number.
+              // The script resets it to zero and counts up only when it scrolls into view.
+              item.to != null ? (
+                <span class="num" data-count-to={item.to} data-unit={item.unit}>{`${item.to}${item.unit}`}</span>
+              ) : (
+                <span class="num icon">
+                  <Icon name={item.icon as any} size={38} />
+                </span>
+              )
+            }
+            <span class="label">{item.label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats {
+    position: relative;
+    background: var(--bg);
+  }
+
+  .inner {
+    display: grid;
+    grid-template-columns: minmax(158px, 0.56fr) minmax(0, 2.44fr);
+    padding-block: 88px 72px;
+  }
+
+  .intro {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 8px 32px 0 0;
+  }
+
+  .signal {
+    width: 30px;
+    height: 1px;
+    background: var(--accent);
+    box-shadow: 0 0 18px var(--accent);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .stat {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 12px;
+    min-width: 0;
+    min-height: 238px;
+    padding: 54px 30px 32px;
+    border-right: 1px solid var(--line);
+  }
+
+  .stat:first-child {
+    border-left: 1px solid var(--line);
+  }
+
+  .register {
+    position: absolute;
+    top: 17px;
+    left: 30px;
+    width: 4px;
+    height: 4px;
+    background: var(--fg-muted);
+    border-radius: 50%;
+  }
+
+  .num {
+    font-size: 4rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1;
+    color: var(--accent);
+    /* Keeps the width steady digit-to-digit while the count-up runs. */
+    font-variant-numeric: tabular-nums;
+  }
+
+  .num.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 4rem;
+  }
+
+  .label {
+    font-size: 14px;
+    color: var(--fg-dim);
+    max-width: calc(20ch * var(--measure-scale));
+  }
+
+  .qualitative .label {
+    font-size: 1.24rem;
+    line-height: 1.28;
+  }
+
+  @media (max-width: 720px) {
+    .inner {
+      grid-template-columns: 1fr;
+      padding-block: 64px 36px;
+    }
+
+    .intro {
+      flex-direction: row;
+      align-items: center;
+      padding: 0 0 22px;
+    }
+
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .stat {
+      min-height: 190px;
+      padding: 48px 20px 24px;
+    }
+
+    .stat:first-child {
+      border-left: 0;
+    }
+
+    .stat:last-child {
+      grid-column: 1 / -1;
+      align-items: center;
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      min-height: 130px;
+      padding: 32px 20px 24px;
+      border-right: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .stat:last-child .register {
+      left: 20px;
+    }
+
+    .num {
+      font-size: 3.2rem;
+    }
+
+    .num.icon {
+      height: 3.2rem;
+    }
+
+    .qualitative .label {
+      font-size: 1.14rem;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .stat {
+      padding-inline: 14px;
+    }
+
+    .register,
+    .stat:last-child .register {
+      left: 14px;
+    }
+
+    .label {
+      font-size: 13px;
+    }
+  }
+</style>
+
+<script is:inline>
+  ;(() => {
+    const nums = document.querySelectorAll('.stats [data-count-to]')
+    if (!nums.length) return
+
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
+    // No IntersectionObserver or reduced motion: leave the baked-in final value alone.
+    if (reduce || !('IntersectionObserver' in window)) return
+
+    const run = (el) => {
+      const target = Number(el.dataset.countTo)
+      const unit = el.dataset.unit || ''
+      const duration = 900
+      let start = null
+
+      const tick = (now) => {
+        if (start === null) start = now
+        const t = Math.min((now - start) / duration, 1)
+        // easeOutCubic — fast then settling, so the number feels like it lands.
+        const eased = 1 - Math.pow(1 - t, 3)
+        el.textContent = Math.round(target * eased) + unit
+        if (t < 1) requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          run(entry.target)
+          io.unobserve(entry.target) // count once
+        }
+      },
+      { threshold: 0.6 },
+    )
+
+    // Reset to zero, then let the observer count each up as it appears.
+    for (const el of nums) {
+      el.textContent = '0' + (el.dataset.unit || '')
+      io.observe(el)
+    }
+  })()
+</script>

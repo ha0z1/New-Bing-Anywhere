@@ -1,0 +1,239 @@
+---
+import Icon from './Icon.astro'
+import { useCopy, type Lang } from '../i18n'
+import { INSTALL_COMMANDS } from '../config'
+
+interface Props {
+  lang: Lang
+  id: string
+}
+const { lang, id } = Astro.props
+const c = useCopy(lang)
+// wget first — the default tab (see src/config.ts).
+const commands = INSTALL_COMMANDS
+---
+
+<div class="install-cmd" data-install>
+  <div class="cmd-tabs" role="tablist" aria-label="Install method">
+    {
+      commands.map((cmd, i) => (
+        <button
+          type="button"
+          role="tab"
+          class:list={['cmd-tab', { active: i === 0 }]}
+          data-cmd={cmd.command}
+          data-cmd-target={id}
+          aria-selected={i === 0 ? 'true' : 'false'}
+        >
+          {cmd.id}
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="cmd" data-copy-root>
+    <span class="prompt" aria-hidden="true">$</span>
+    <code id={id}>{commands[0].command}</code>
+    <button
+      type="button"
+      class="copy"
+      data-copy-for={id}
+      data-label={c.hero.copy}
+      data-label-done={c.hero.copied}
+      aria-label={c.hero.copyAria}
+    >
+      <span class="ico" data-copy-icon>
+        <Icon name="copy" size={15} />
+      </span>
+      <span class="ico done" data-copy-icon-done>
+        <Icon name="check" size={15} />
+      </span>
+      <span class="txt" data-copy-text>{c.hero.copy}</span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .install-cmd {
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .cmd-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .cmd-tab {
+    font: inherit;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--fg-muted);
+    padding: 5px 12px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    cursor: pointer;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .cmd-tab:hover {
+    color: var(--fg-dim);
+  }
+
+  .cmd-tab[aria-selected='true'] {
+    color: var(--fg);
+    background: var(--surface-2);
+    border-color: var(--line);
+  }
+
+  .cmd {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 54px;
+    padding: 5px 5px 5px 17px;
+    background: color-mix(in srgb, var(--surface) 86%, transparent);
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    box-shadow:
+      0 18px 55px -28px var(--bg),
+      0 1px 0 var(--line) inset;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .prompt {
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    text-shadow: 0 0 14px var(--accent);
+    user-select: none;
+  }
+
+  code {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    font-size: clamp(12px, 3vw, 13.5px);
+    line-height: 42px;
+    color: var(--fg);
+    scrollbar-width: none;
+  }
+
+  code::-webkit-scrollbar {
+    display: none;
+  }
+
+  .copy {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 40px;
+    padding-inline: 12px;
+    font: inherit;
+    font-size: 13px;
+    color: var(--fg-dim);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
+  }
+
+  .copy:hover {
+    color: var(--fg);
+    background: color-mix(in srgb, var(--surface-2) 70%, var(--fg) 6%);
+  }
+
+  .copy[data-done] {
+    color: var(--ok);
+  }
+
+  .ico {
+    display: grid;
+    place-items: center;
+  }
+
+  .ico.done,
+  .copy[data-done] .ico:not(.done) {
+    display: none;
+  }
+
+  .copy[data-done] .ico.done {
+    display: grid;
+  }
+
+  @media (max-width: 480px) {
+    .copy .txt {
+      display: none;
+    }
+    .copy {
+      padding-inline: 10px;
+    }
+  }
+</style>
+
+<script is:inline>
+  ;(() => {
+    // Tab switch: swap the command shown in the paired <code>, so Copy picks up the new one.
+    document.addEventListener('click', (event) => {
+      const tab = event.target instanceof Element ? event.target.closest('[data-cmd][data-cmd-target]') : null
+      if (!tab) return
+      const code = document.getElementById(tab.getAttribute('data-cmd-target'))
+      if (!code) return
+      code.textContent = tab.getAttribute('data-cmd')
+      for (const sibling of tab.parentElement.querySelectorAll('[role="tab"]')) {
+        sibling.setAttribute('aria-selected', String(sibling === tab))
+      }
+    })
+
+    // Copy: writes whatever is currently in the paired <code>. One delegated listener.
+    const write = async (text) => {
+      try {
+        await navigator.clipboard.writeText(text)
+        return true
+      } catch {
+        // clipboard API is unavailable outside a secure context and in some embedded browsers
+        const ta = document.createElement('textarea')
+        ta.value = text
+        ta.setAttribute('readonly', '')
+        ta.style.cssText = 'position:fixed;top:-9999px'
+        document.body.appendChild(ta)
+        ta.select()
+        let ok = false
+        try {
+          ok = document.execCommand('copy')
+        } catch {}
+        ta.remove()
+        return ok
+      }
+    }
+
+    document.addEventListener('click', async (event) => {
+      const button = event.target instanceof Element ? event.target.closest('[data-copy-for]') : null
+      if (!button) return
+      const source = document.getElementById(button.getAttribute('data-copy-for'))
+      if (!source) return
+      if (!(await write(source.textContent.trim()))) return
+
+      const label = button.querySelector('[data-copy-text]')
+      button.setAttribute('data-done', '')
+      if (label) label.textContent = button.getAttribute('data-label-done')
+      clearTimeout(button._t)
+      button._t = setTimeout(() => {
+        button.removeAttribute('data-done')
+        if (label) label.textContent = button.getAttribute('data-label')
+      }, 1800)
+    })
+  })()
+</script>

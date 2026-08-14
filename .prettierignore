@@ -1,0 +1,6 @@
+dist
+.astro
+.wrangler
+node_modules
+pnpm-lock.yaml
+public/install.sh

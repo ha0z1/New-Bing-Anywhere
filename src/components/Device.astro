@@ -1,0 +1,25 @@
+---
+/**
+ * Device authorisation shell. Same shape as Account.astro — prerendered chrome, one React
+ * island for the part that depends on the session and on `?user_code=`.
+ */
+import Base from '../layouts/Base.astro'
+import DevicePanel from '../islands/DevicePanel'
+import { useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const c = useCopy(lang)
+---
+
+<Base lang={lang} path="/device" title={c.device.metaTitle} description={c.device.metaDescription} noindex>
+  <section class="section aa-auth">
+    <div class="wrap aa-auth-narrow">
+      <p class="eyebrow">{c.device.label}</p>
+      <DevicePanel client:load copy={{ auth: c.auth, device: c.device }} />
+    </div>
+  </section>
+</Base>

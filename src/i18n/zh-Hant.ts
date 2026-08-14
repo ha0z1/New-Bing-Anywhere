@@ -1,0 +1,292 @@
+import { INSTALL_URL, ISSUES_URL, NPM_URL, REPO_URL } from '../config'
+import type { Copy } from './index'
+
+// 繁體中文，使用臺灣標準用語（帳號、登入、伺服器、檔案、遠端、連線、設定、金鑰、工作階段）。
+export const zhHant: Copy = {
+  meta: {
+    title: 'tmux.online — 你的 tmux，現在有了瀏覽器介面',
+    description: '在瀏覽器裡打開現有的 tmux 工作階段；本機與遠端伺服器同處一個工作區，AI CLI 等你輸入時自動提醒。',
+    ogAlt: 'tmux.online 瀏覽器工作區，顯示本機與遠端 tmux 工作階段',
+  },
+  brand: {
+    name: 'tmux.online',
+    tagline: 'by AI Anywhere',
+  },
+  nav: {
+    install: '安裝',
+    features: '功能',
+    faq: '常見問題',
+    github: 'GitHub',
+    signIn: '登入',
+    account: '帳號',
+    skipToContent: '跳到主要內容',
+  },
+  hero: {
+    eyebrow: '讓命令列像網頁一樣簡單',
+    title: '你的 tmux，現在有了瀏覽器介面',
+    lede: '打開本機或 SSH 上正在執行的工作階段，在任務與 pane 間穿梭，等它需要你時再回來。',
+    installLabel: 'macOS 與 Linux',
+    copy: '複製',
+    copied: '已複製',
+    copyAria: '複製安裝指令',
+    scriptLink: '先看看腳本內容',
+    requirement: '需要 tmux 和 Node.js 22.5+。',
+  },
+  demo: {
+    caption: '本機與遠端伺服器同處一個工作區，任務與 pane 一覽無遺。',
+    tabs: ['tmux.online', 'localhost:16666'],
+    url: '127.0.0.1:16666',
+    railTitle: '機器與任務',
+    groups: [
+      {
+        name: '本機',
+        items: [
+          { name: 'api-server', detail: 'main · 3 panes', state: 'waiting' },
+          { name: 'web', detail: 'feat/i18n', state: 'busy' },
+          { name: 'notes', detail: 'main', state: 'idle' },
+        ],
+      },
+      {
+        name: 'caniforia',
+        items: [
+          { name: 'deploy', detail: 'main · 2 panes', state: 'idle' },
+          { name: 'logs', detail: 'tail -f', state: 'busy' },
+        ],
+      },
+    ],
+    paneTabs: ['claude', 'server', 'git'],
+    stateLabels: { waiting: '等你回應', busy: '執行中', idle: '' },
+    terminal: [
+      { kind: 'prompt', text: 'claude' },
+      { kind: 'dim', text: '  ⏵ reading src/lib/layout.ts' },
+      { kind: 'dim', text: '  ⏵ reading src/state/useAttention.ts' },
+      { kind: 'plain', text: 'The drag target is computed from the pane tree, not the tmux' },
+      { kind: 'plain', text: 'layout, so splitting the view never sends a tmux command.' },
+      { kind: 'blank', text: '' },
+      { kind: 'attention', text: '  Apply this change to layout.ts?' },
+      { kind: 'plain', text: '  1. Yes   2. Yes, and don’t ask again   3. No' },
+      { kind: 'cursor', text: '  ❯ ' },
+    ],
+  },
+  steps: {
+    title: '三行之內，從零到能用',
+    items: [
+      {
+        n: '01',
+        title: '執行安裝腳本',
+        body: '缺 tmux 便替你補上，從 npm 取來伺服器，交給 launchd 或 systemd 託管——重新開機後自行歸位。',
+      },
+      {
+        n: '02',
+        title: '打開它印出的連結',
+        body: '待服務就緒，腳本印出一個帶 token 的本機位址；在那台機器上，隨便哪個瀏覽器打開即可。',
+      },
+      {
+        n: '03',
+        title: '接著剛才的進度做',
+        body: '你原有的 window 已列在左側——不曾重新啟動，不曾重新 attach，終端機裡的一切紋絲不動。',
+      },
+    ],
+  },
+  features: {
+    title: '自行運轉，需要時才喚你',
+    items: [
+      {
+        icon: 'terminal',
+        title: '現有 tmux，原樣打開',
+        body: '現有的 tmux 工作階段原樣進入瀏覽器——不遷移、不複製、不重新啟動，從目前狀態接著往下。',
+      },
+      {
+        icon: 'nodes',
+        title: '所有機器，一條側欄',
+        body: '本機與遠端伺服器同處一個工作區，每台主機各成一組，所有工作階段在同一條側欄裡一眼可尋。',
+      },
+      {
+        icon: 'signal',
+        title: '它要你回應的那一刻',
+        body: 'AI CLI 一停下等待輸入，對應任務便亮起提醒。你儘管去忙別的，不必守著每個終端機等它開口。',
+      },
+      {
+        icon: 'checklist',
+        title: '每個子代理，各自成任務',
+        body: 'CLI 展開出子代理時，每一個都成為一項獨立追蹤的任務——哪個分支在做什麼、哪個正等你，一目瞭然，而非一句籠統的「執行中……」。',
+      },
+      {
+        icon: 'history',
+        title: '斷開，也不打斷',
+        body: '關掉分頁、斷開 SSH，任務仍在 tmux 裡繼續。稍後重新連上，一切停在你離開之處。',
+      },
+      {
+        icon: 'power',
+        title: '重新開機後，照樣還在',
+        body: '電腦重新開機，工作區自行歸位——常用的任務與 pane 再次就緒，不勞你動手。',
+      },
+      {
+        icon: 'shield',
+        title: '資料不離開本機',
+        body: '整個工作區都在你的硬體上執行；輸出、按鍵、檔案與憑證，一律不上傳。',
+      },
+      {
+        icon: 'image',
+        title: '圖片 Token 只花四分之一',
+        body: '圖片在送達模型前自動最佳化——同一張圖，只耗四分之一的 Token，你什麼都不必多做。',
+      },
+      {
+        icon: 'phone',
+        title: '手機上也照樣操作',
+        body: '同一個工作區在手機上打開——查看任務、回應提示、遠端操作伺服器，人不在桌前也行。',
+      },
+    ],
+  },
+  stats: {
+    eyebrow: '幾個數字',
+    items: [
+      { to: 75, unit: '%', icon: null, label: '圖片 Token 節省' },
+      { to: 70, unit: '%', icon: null, label: '圖片上傳更小' },
+      { to: null, unit: '', icon: 'shield', label: '從不索取你的檔案' },
+    ],
+  },
+  sells: {
+    eyebrow: '還有這些',
+    items: [
+      { icon: 'history', label: '工作階段永不遺失' },
+      { icon: 'signal', label: '任務需要你時，自動提醒' },
+      { icon: 'power', label: '重新開機，任務還在' },
+      { icon: 'nodes', label: '遠端主機，集中管理' },
+      { icon: 'phone', label: '手機上也能操作' },
+      { icon: 'shield', label: '本機託管，不收集任何資料' },
+    ],
+  },
+  extension: {
+    label: 'Chrome 擴充功能',
+    title: '或者把它放在側邊欄',
+    body: '同一個工作區可以作為 Chrome 側邊欄執行，就在你正讀的東西旁邊。它多帶一個元素選取器：點頁面上任意一塊區域，它的 URL、CSS 選擇器和 HTML 片段就直接落進 CLI 的輸入行——「就這塊，這裡」這句話，終於變成了 AI 能動手的東西。',
+    cta: '看看這個擴充功能',
+  },
+  security: {
+    label: '它跑在哪',
+    title: '在你的機器上，別無他處',
+    body: '本站不過是一個頁面加一份 shell 腳本，旁邊配一個可選的帳號服務——tmux.online 的全部就在於此。伺服器、工作階段、CLI 與你的金鑰，從不離開你的硬體。',
+    points: [
+      '伺服器只聽 127.0.0.1；要換別的位址，得由你親手遞上一個 token。',
+      '每次連線都查驗 Origin，而網頁偽造不來——你隨手開著的分頁，永遠夠不到它。',
+      '遠端機器走你自己的 ssh 設定：沒有中繼，沒有遙測，除非主動去找，否則無需登入。',
+    ],
+  },
+  faq: {
+    title: '一些問題',
+    items: [
+      {
+        q: '它會改我的 tmux 設定嗎？',
+        a: '一個位元組都不寫。它只針對一個工作階段運作——預設是 main，可以用 --tmux-session 換掉——其餘的只讀。被它改過尺寸的 window，在你關掉頁面時會恢復成自動。',
+      },
+      {
+        q: '需要先裝什麼？',
+        a: 'tmux 和 Node.js 22.5 或更新的版本。',
+      },
+      {
+        q: '遠端伺服器上能用嗎？',
+        a: '能——在那台機器上跑同一行指令。然後回到你已經開著的頁面，把它新增為一個主機並連線。它的任務會以那台機器的名字分組，出現在同一條軌上，和本機任務混排。',
+      },
+      {
+        q: '一定要裝擴充功能嗎？',
+        a: '不用。伺服器本身就託管著網頁版，位址是 127.0.0.1:16666。擴充功能是在它之上多加了側邊欄和元素選取器。',
+      },
+      {
+        q: '有什麼東西會傳到 tmux.online 嗎？',
+        a: '除非你登入，否則沒有——而你從來不需要登入。安裝腳本從 npm 拉套件，之後不再向任何地方回報。就算你真的建了帳號，它持有的也只有你的 GitHub 身分和你授權過的裝置，絕不包括你的工作階段、按鍵或金鑰。',
+      },
+      {
+        q: '我需要帳號嗎？',
+        a: '不需要。這頁上的一切在未登入狀態下都能用，在你自己的機器上，一直如此。帳號只服務於少數幾件離了它做不成的事：給一台開不了瀏覽器的機器授權 CLI，以及為腳本簽發 API key。登入是點一下 GitHub，撤銷再點一下。',
+      },
+      {
+        q: '怎麼移除？',
+        a: '刪掉安裝腳本寫的那個 launchd agent 或 systemd user unit，然後 npm uninstall -g ai-anywhere-server。你的 tmux 工作階段不受影響。',
+      },
+    ],
+  },
+  cta: {
+    title: '讓終端機繼續跑，讓你少盯著它。',
+    body: '一行安裝，打開它給的連結——然後，把目光移開。',
+  },
+  footer: {
+    rights: '開源。跑在你自己的機器上。',
+    columns: [
+      {
+        title: '專案',
+        links: [
+          { label: 'GitHub', href: REPO_URL },
+          { label: 'Issues', href: ISSUES_URL },
+        ],
+      },
+      {
+        title: '安裝',
+        links: [
+          { label: 'install.sh', href: INSTALL_URL },
+          { label: 'ai-anywhere-server', href: NPM_URL },
+        ],
+      },
+    ],
+    langLabel: '語言',
+  },
+  // 可選的帳號。首頁上的任何東西都不依賴這些——見上面常見問題裡的「我需要帳號嗎？」。
+  auth: {
+    signInWithGitHub: '用 GitHub 繼續',
+    signOut: '登出',
+    loading: '正在確認…',
+    genericError: '出了點問題，過一會兒再試。',
+    networkError: '連不上帳號服務。',
+  },
+  account: {
+    metaTitle: '帳號 — tmux.online',
+    metaDescription: '管理可選的 tmux.online 帳號：你的 GitHub 身分，以及你簽發過的 API key。',
+    label: '帳號',
+    signedOutTitle: '登入 tmux.online',
+    signedOutBody:
+      '帳號是可選的。沒有它 AI Anywhere 照樣跑在你自己的機器上——它存在只為兩件事：給一台開不了瀏覽器的機器授權 CLI，以及為腳本簽發 API key。',
+    signedInAs: '目前登入',
+    keysTitle: 'API key',
+    keysBody: '給腳本和 CI 用的長期憑證。用 x-api-key 請求標頭發送。撤銷即刻生效。',
+    keysEmpty: '還沒有 key。',
+    keyNameLabel: '名稱',
+    keyNamePlaceholder: 'ci-deploy',
+    keyCreate: '建立 key',
+    keyCreating: '建立中…',
+    keyCreatedTitle: '現在就把它複製走',
+    keyCreatedBody: '它以雜湊形式儲存，不會再顯示第二次。弄丟了就撤銷這一把，再建一把新的。',
+    keyCopy: '複製',
+    keyCopied: '已複製',
+    keyRevoke: '撤銷',
+    keyRevokeConfirm: '撤銷這個 key？正在用它的東西會立刻失效。',
+    keyCreatedAt: '建立於',
+    keyNameRequired: '給這個 key 取個名字，以後才分得清。',
+  },
+  device: {
+    metaTitle: '授權裝置 — tmux.online',
+    metaDescription: '批准或拒絕一台請求以你的身分登入 tmux.online 的裝置。',
+    label: '裝置',
+    title: '授權裝置',
+    body: '有一台裝置請求以你的身分登入。核對下面的碼和它印出來的一致，然後批准。',
+    codeLabel: '裝置印出的碼',
+    codePlaceholder: 'ABCD-1234',
+    continue: '繼續',
+    signInFirst: '先登入，我們會把你直接帶回這一頁。',
+    approve: '批准',
+    deny: '拒絕',
+    working: '處理中…',
+    approvedTitle: '裝置已授權',
+    approvedBody: '可以關掉這個分頁了——裝置那邊已經收到。',
+    deniedTitle: '裝置已拒絕',
+    deniedBody: '什麼都沒有被授權。可以關掉這個分頁了。',
+    invalidCode: '這個碼無效。對照裝置印出來的再核對一遍。',
+    expiredCode: '這個碼已過期。讓裝置重新要一個。',
+    missingCode: '請輸入裝置印出來的碼。',
+  },
+  notFound: {
+    code: '404',
+    title: '這裡沒有 pane',
+    body: '本站不存在這個網址。',
+    cta: '回到首頁',
+  },
+}

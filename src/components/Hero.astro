@@ -1,0 +1,126 @@
+---
+import InstallCommand from './InstallCommand.astro'
+import Demo from './Demo.astro'
+import { useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = useCopy(lang)
+---
+
+<section class="hero">
+  <div class="wrap stage">
+    <div class="inner">
+      <p class="positioning">{c.hero.eyebrow}</p>
+      <h1>{c.hero.title}</h1>
+      <p class="lede">{c.hero.lede}</p>
+
+      <div class="install">
+        <InstallCommand lang={lang} id="install-command-hero" />
+      </div>
+    </div>
+    <Demo lang={lang} />
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: calc(100svh - 62px);
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(340px, 0.78fr) minmax(560px, 1.22fr);
+    align-items: center;
+    gap: clamp(40px, 5vw, 72px);
+    max-width: 1320px;
+    min-height: inherit;
+    padding-block: 52px 64px;
+  }
+
+  .inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+  }
+
+  .positioning {
+    max-width: calc(38ch * var(--measure-scale));
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--accent);
+  }
+
+  h1 {
+    max-width: calc(12ch * var(--measure-scale));
+    margin-top: 18px;
+    font-size: 3.75rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1;
+    text-wrap: balance;
+  }
+
+  .lede {
+    max-width: calc(42ch * var(--measure-scale));
+    margin-top: 24px;
+    color: var(--fg-dim);
+    font-size: 1rem;
+    line-height: 1.62;
+  }
+
+  .install {
+    width: 100%;
+    max-width: 560px;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 1020px) {
+    .hero {
+      min-height: auto;
+    }
+
+    .stage {
+      grid-template-columns: 1fr;
+      gap: 48px;
+      padding-block: 64px 72px;
+    }
+
+    .inner {
+      width: min(680px, 100%);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .stage {
+      gap: 38px;
+      padding-block: 44px 52px;
+    }
+
+    h1 {
+      margin-top: 14px;
+      font-size: 2.8rem;
+      line-height: 1.04;
+    }
+
+    .lede {
+      margin-top: 20px;
+    }
+
+    .install {
+      margin-top: 24px;
+    }
+  }
+
+  @media (max-width: 390px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+  }
+</style>
