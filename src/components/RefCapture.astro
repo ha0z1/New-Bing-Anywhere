@@ -1,0 +1,27 @@
+---
+/**
+ * Captures an invite code off the URL (`/?ref=CODE`) into localStorage, so it survives the
+ * GitHub OAuth round-trip and is there to prefill the redeem box when the account page
+ * hydrates. Written as an inline script on purpose — the same reason as LangCookie: the
+ * marketing pages ship no JS bundle, and reading one query parameter must not be the thing
+ * that pulls a framework runtime onto them.
+ *
+ * It only ever writes; the account island reads and clears it. An unused code just sits in
+ * storage harmlessly until the visitor redeems or a later ?ref= overwrites it.
+ */
+---
+
+<script is:inline>
+  ;(() => {
+    try {
+      const raw = new URLSearchParams(location.search).get('ref')
+      if (!raw) return
+      // Same shape the server normalises to: trimmed, uppercased. Cap the length so a junk
+      // query string cannot stuff arbitrary data into storage under our key.
+      const code = raw.trim().toUpperCase().slice(0, 32)
+      if (code) localStorage.setItem('aa_ref', code)
+    } catch {
+      // No query string, or storage denied — nothing to capture, nothing to do.
+    }
+  })()
+</script>

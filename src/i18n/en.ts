@@ -267,6 +267,43 @@ export const en = {
     keyCreatedAt: 'Created',
     keyNameRequired: 'Give the key a name so you can tell it apart later.',
   },
+  // The invite / referral growth loop, shown under the API keys on the account page. Everything
+  // here is optional too — the trial and the tiers only gate the account service, never the CLI
+  // running on your own machines. `{n}` / `{points}` / `{threshold}` are filled in by the panel.
+  membership: {
+    title: 'Invite & membership',
+    intro:
+      'Your plan is set by how many people you bring. Redeem a friend’s code to become a member, then invite three of your own for permanent, unlimited access.',
+    tierTrial: 'Trial',
+    tierMember: 'Member',
+    tierPermanent: 'Permanent',
+    trialLeft: '{n} days left in your trial',
+    trialLastDay: 'Last day of your trial',
+    trialEnded: 'Your trial has ended',
+    memberProgress: '{points} of {threshold} invited toward permanent',
+    permanentBody: 'Unlimited access — you brought enough people. Thank you.',
+    inviteTitle: 'Your invite link',
+    inviteBody: 'Share this link. Anyone who signs up and redeems it counts toward your total — one code works for any number of people.',
+    inviteCopy: 'Copy',
+    inviteCopied: 'Copied',
+    redeemTitle: 'Have an invite code?',
+    redeemBody: 'Enter a friend’s code to become a member. You can do this once.',
+    redeemPlaceholder: 'INVITE CODE',
+    redeem: 'Redeem',
+    redeeming: 'Redeeming…',
+    redeemErrors: {
+      invalid_code: 'That code is not valid. Check it and try again.',
+      already_redeemed: 'You have already redeemed a code.',
+      self_invite: 'You cannot redeem your own code.',
+      cycle: 'You cannot redeem a code from someone you invited.',
+    },
+    downlineTitle: 'People you invited',
+    downlineEmpty: 'No one yet. Share your link to get started.',
+    downlineJoined: 'Joined',
+    downlineAnon: 'Someone',
+    downlineMore: 'Load more',
+    downlineLoading: 'Loading…',
+  },
   device: {
     metaTitle: 'Authorise a device — tmux.online',
     metaDescription: 'Approve or deny a device that is asking to sign in to your tmux.online account.',

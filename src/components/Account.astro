@@ -9,6 +9,7 @@
  */
 import Base from '../layouts/Base.astro'
 import AccountPanel from '../islands/AccountPanel'
+import MembershipPanel from '../islands/MembershipPanel'
 import { useCopy, type Lang } from '../i18n'
 
 interface Props {
@@ -24,6 +25,7 @@ const c = useCopy(lang)
     <div class="wrap">
       <p class="eyebrow">{c.account.label}</p>
       <AccountPanel client:load copy={{ auth: c.auth, account: c.account }} />
+      <MembershipPanel client:load copy={{ auth: c.auth, membership: c.membership }} />
     </div>
   </section>
 </Base>

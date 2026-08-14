@@ -137,3 +137,39 @@ export const device = {
   approve: (userCode: string): Promise<unknown> => post('/api/auth/device/approve', { userCode }),
   deny: (userCode: string): Promise<unknown> => post('/api/auth/device/deny', { userCode }),
 }
+
+export type Tier = 'trial' | 'member' | 'permanent'
+
+export interface Membership {
+  tier: Tier
+  /** ISO 8601. createdAt + trial window. Only meaningful while tier === 'trial'. */
+  trialExpiresAt: string
+  /** Downline count. */
+  points: number
+  /** Downline needed for the permanent tier. */
+  threshold: number
+  inviteCode: string
+  /** Upline id, or null when the user may still redeem a code. */
+  referredBy: string | null
+}
+
+export interface Downline {
+  name?: string | null
+  image?: string | null
+  joinedAt?: string | null
+}
+
+export interface DownlinePage {
+  items: Downline[]
+  nextCursor: string | null
+}
+
+export const membership = {
+  /** The caller's entitlement + own invite code. Safe to call on every account-page load. */
+  status: (): Promise<Membership> => request('/membership'),
+  /** Redeem someone else's code, once. Errors carry a code: invalid_code | already_redeemed | self_invite | cycle. */
+  redeem: (code: string): Promise<Membership> => post('/membership/redeem', { code }),
+  /** The caller's downline, newest first. Pass the previous page's `nextCursor` verbatim. */
+  referrals: (cursor?: string): Promise<DownlinePage> =>
+    request(`/membership/referrals${cursor ? `?cursor=${encodeURIComponent(cursor)}` : ''}`),
+}
