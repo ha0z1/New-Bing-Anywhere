@@ -5,6 +5,7 @@ import react from '@astrojs/react'
 import minifyInlineScripts from './scripts/minify-inline.mjs'
 import inlineHomeCss from './scripts/inline-home-css.mjs'
 import prefetchPageAssets from './scripts/prefetch-page-assets.mjs'
+import sitemapRootSlash from './scripts/sitemap-root-slash.mjs'
 
 const SITE = 'https://tmux.online'
 
@@ -37,6 +38,8 @@ export default defineConfig({
       },
       // Do not manufacture `lastmod` from the build time. A deploy is not necessarily a
       // content edit, and repeated false timestamps teach crawlers to ignore the signal.
+      // The root `<loc>` is repaired afterwards by sitemapRootSlash() below — `serialize` is not
+      // the lever, the integration rewrites the serialized text downstream of it.
     }),
     // Fold the landing page's stylesheets into the HTML so its first paint needs no second
     // round-trip. Home pages only — see the integration for why the utility pages stay external.
@@ -44,6 +47,8 @@ export default defineConfig({
     // Warm both directions while idle: dashboard documents/assets from the landing page, and the
     // localized landing document from every dashboard route.
     prefetchPageAssets(),
+    // Undo the one URL @astrojs/sitemap's trailing-slash rule gets wrong: the root.
+    sitemapRootSlash(SITE),
     // Last: minify the inline scripts the bundler leaves verbatim. Runs on the finished HTML.
     minifyInlineScripts(),
   ],
