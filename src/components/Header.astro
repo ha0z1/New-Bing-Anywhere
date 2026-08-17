@@ -3,6 +3,7 @@ import Logo from './Logo.astro'
 import Icon from './Icon.astro'
 import { useCopy, localizePath, shippedLangs, languageMenu, type Lang } from '../i18n'
 import { API_URL, GITHUB_STARS_FALLBACK, REPO_SLUG, REPO_URL } from '../config'
+import { INVITE_CODE_PATTERN_SOURCE } from '../lib/referral'
 import { formatStars } from '../lib/stars'
 
 interface Props {
@@ -72,7 +73,13 @@ const links = [{ label: c.nav.install, href: `${home}#install` }]
         )
       }
 
-      <div class="account-menu" data-account-menu data-dashboard={dashboard} data-membership={membership}>
+      <div
+        class="account-menu"
+        data-account-menu
+        data-dashboard={dashboard}
+        data-membership={membership}
+        data-invite-pattern={INVITE_CODE_PATTERN_SOURCE}
+      >
         <button
           class="acct"
           type="button"
@@ -610,10 +617,16 @@ const links = [{ label: c.nav.install, href: `${home}#install` }]
     // A referral visitor belongs on Membership after sign-in, not the default Devices page.
     // RefCapture runs in <head>, so this also works after the install flow opens a fresh tab.
     const referralParams = new URLSearchParams(location.search)
+    const hasReferralParam = referralParams.has('t') || referralParams.has('ref')
     const rawReferral = referralParams.has('t') ? referralParams.get('t') : referralParams.get('ref')
-    let referralCode = rawReferral?.trim().toUpperCase().slice(0, 32)
+    const inviteCodePattern = new RegExp(`^${accountMenu.dataset.invitePattern}$`)
+    const normalizeInviteCode = (value) => {
+      const code = value?.trim().toUpperCase() || ''
+      return inviteCodePattern.test(code) ? code : ''
+    }
+    let referralCode = normalizeInviteCode(rawReferral)
     try {
-      referralCode ||= localStorage.getItem('aa_ref') || ''
+      if (!hasReferralParam) referralCode = normalizeInviteCode(localStorage.getItem('aa_ref'))
     } catch {}
     if (referralCode && accountMenu.dataset.membership) {
       const destination = `${accountMenu.dataset.membership}?ref=${encodeURIComponent(referralCode)}`
