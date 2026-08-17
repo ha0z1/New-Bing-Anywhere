@@ -7,6 +7,7 @@ import { membership as membershipApi, ApiError, type DownlinePage, type Membersh
 import { SITE_URL } from '../config'
 import type { Copy, Lang } from '../i18n'
 import { dashboardKeys, referralPageKey } from '../lib/dashboardCache'
+import { normalizeInviteCode } from '../lib/referral'
 import '../styles/auth.css'
 
 interface Props {
@@ -64,8 +65,6 @@ function useCampaignDeadline(lang: Lang): string {
   return deadline
 }
 
-const normalizeReferral = (value: string | null): string => value?.trim().toUpperCase().slice(0, 32) ?? ''
-
 const clearPendingReferral = (): void => {
   try {
     localStorage.removeItem(REFERRAL_KEY)
@@ -83,11 +82,10 @@ const clearPendingReferral = (): void => {
 
 const pendingReferral = (): string => {
   const params = new URLSearchParams(location.search)
-  const direct = normalizeReferral(params.has('t') ? params.get('t') : params.get('ref'))
-  if (direct) return direct
+  if (params.has('t') || params.has('ref')) return normalizeInviteCode(params.has('t') ? params.get('t') : params.get('ref'))
 
   try {
-    const saved = normalizeReferral(localStorage.getItem(REFERRAL_KEY))
+    const saved = normalizeInviteCode(localStorage.getItem(REFERRAL_KEY))
     const capturedAt = Number(localStorage.getItem(REFERRAL_CAPTURED_AT_KEY))
     if (saved && (!capturedAt || Date.now() - capturedAt <= REFERRAL_TTL)) return saved
     if (saved || capturedAt) clearPendingReferral()
@@ -233,13 +231,17 @@ export default function MembershipPanel({ copy, lang }: Props) {
 
   const onBind = async (event: FormEvent) => {
     event.preventDefault()
-    const trimmed = code.trim()
-    if (!trimmed || !status) return
+    const normalized = normalizeInviteCode(code)
+    if (!status) return
+    if (!normalized) {
+      setBindError(m.bindErrors.invalid_code || auth.genericError)
+      return
+    }
 
     setBinding(true)
     setBindError(null)
     try {
-      await mutateStatus(() => membershipApi.bindInviteCode(trimmed), {
+      await mutateStatus(() => membershipApi.bindInviteCode(normalized), {
         optimisticData: withInviteBonus(status),
         populateCache: true,
         revalidate: true,

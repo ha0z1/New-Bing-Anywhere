@@ -1,4 +1,6 @@
 ---
+import { INVITE_CODE_PATTERN_SOURCE } from '../lib/referral'
+
 /**
  * Keep an invite code across the install flow and GitHub OAuth. localStorage is intentional:
  * `ai-anywhere login` may open a new tab, so sessionStorage would lose the referral between the
@@ -6,15 +8,21 @@
  */
 ---
 
-<script is:inline>
+<script is:inline define:vars={{ inviteCodePatternSource: INVITE_CODE_PATTERN_SOURCE }}>
   ;(() => {
     const key = 'aa_ref'
     const capturedAtKey = 'aa_ref_at'
     const maxAge = 7 * 24 * 60 * 60 * 1000
+    const inviteCodePattern = new RegExp(`^${inviteCodePatternSource}$`)
+    const normalizeInviteCode = (value) => {
+      const code = value?.trim().toUpperCase() || ''
+      return inviteCodePattern.test(code) ? code : ''
+    }
 
     const params = new URLSearchParams(location.search)
+    const hasReferralParam = params.has('t') || params.has('ref')
     const raw = params.has('t') ? params.get('t') : params.get('ref')
-    const code = raw?.trim().toUpperCase().slice(0, 32)
+    const code = normalizeInviteCode(raw)
     if (code) {
       try {
         localStorage.setItem(key, code)
@@ -42,6 +50,8 @@
       }
       return
     }
+
+    if (hasReferralParam) return
 
     try {
       const capturedAt = Number(localStorage.getItem(capturedAtKey))
