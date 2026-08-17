@@ -1,6 +1,7 @@
 ---
 import InstallCommand from './InstallCommand.astro'
 import Demo from './Demo.astro'
+import { CLI_MARKS } from '../lib/clis'
 import { useCopy, type Lang } from '../i18n'
 
 interface Props {
@@ -11,6 +12,25 @@ const c = useCopy(lang)
 ---
 
 <section class="hero">
+  {/* Decorative: the marks say what this works with, the copy says it in words. */}
+  {/* Decorative: the marks say what this works with, the copy says it in words. */}
+  <div class="marks" aria-hidden="true">
+    {
+      CLI_MARKS.filter((m) => !m.off).map((m, i) => (
+        <img
+          class:list={['mark', m.from && 'wide']}
+          style={`--x:${m.x}%;--y:${m.y}%;--r:${m.r}deg;--d:${9 + i * 1.7}s;--delay:-${i * 1.3}s;--lift:${i % 2 ? -9 : 7}px`}
+          src={`/marks/${m.id}.svg`}
+          width={m.s}
+          height={m.s}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          fetchpriority="low"
+        />
+      ))
+    }
+  </div>
   <div class="wrap stage">
     <div class="inner">
       <p class="positioning">{c.hero.eyebrow}</p>
@@ -27,9 +47,61 @@ const c = useCopy(lang)
 
 <style>
   .hero {
+    position: relative;
     min-height: calc(100svh - 62px);
     overflow: hidden;
     border-bottom: 1px solid var(--line);
+  }
+
+  /**
+   * Hand-placed around the two things that must stay clean: the headline column on the left and
+   * the demo mock on the right. They live in the margins the layout leaves empty, which is what
+   * makes them read as material lying around rather than a logo strip — and why they are below
+   * the content in the stacking order, dim, and never in the way of a click.
+   */
+  .marks {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    color: var(--accent);
+    pointer-events: none;
+  }
+
+  /**
+   * The static offset rides on the individual `translate`/`rotate` properties so `transform` is
+   * left free for the animation — the two compose, and the drift stays a compositor-only job.
+   * Each mark gets its own period, phase and direction, so they never fall into step and the
+   * scatter keeps looking incidental rather than choreographed.
+   */
+  .mark {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    translate: -50% -50%;
+    rotate: var(--r);
+    opacity: 0.72;
+    animation: mark-drift var(--d) var(--delay) ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  @keyframes mark-drift {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(0, var(--lift), 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mark {
+      animation: none;
+    }
+  }
+
+  .stage {
+    position: relative;
+    z-index: 1;
   }
 
   .stage {
@@ -84,6 +156,15 @@ const c = useCopy(lang)
   @media (max-width: 1020px) {
     .hero {
       min-height: auto;
+    }
+
+    /* one column: the left gutter is gone, so the marks that lived in it go too */
+    .mark.wide {
+      display: none;
+    }
+
+    .mark {
+      opacity: 0.28;
     }
 
     .stage {
