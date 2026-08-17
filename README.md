@@ -79,7 +79,8 @@ response headers, `robots.txt`, and sitemap filtering.
 
 Localized dashboard routes use the same language prefixes as the public pages. The `L`
 cookie records the active language so compatibility routes can select the correct location;
-unknown values fall back to English.
+the bare `/` home follows a saved non-English preference, and unknown values fall back to
+English.
 
 ## Project Structure
 
