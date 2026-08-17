@@ -46,8 +46,8 @@ importers:
         specifier: ^19.2.8
         version: 19.2.8(react@19.2.8)
       sharp:
-        specifier: ^0.34.5
-        version: 0.34.5
+        specifier: ^0.35.0
+        version: 0.35.2
       terser:
         specifier: ^5.49.2
         version: 5.49.2
@@ -5710,6 +5710,7 @@ snapshots:
       '@img/sharp-win32-arm64': 0.34.5
       '@img/sharp-win32-ia32': 0.34.5
       '@img/sharp-win32-x64': 0.34.5
+    optional: true
 
   sharp@0.35.2:
     dependencies:
