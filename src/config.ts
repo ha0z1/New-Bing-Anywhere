@@ -1,11 +1,7 @@
-/**
- * Outbound URLs, in one place. The code repository still lives at its pre-rename path on
- * GitHub — when it moves, this is the only line that changes (GitHub keeps redirecting the
- * old path either way).
- */
+/** Outbound URLs, kept in one place so every page and machine-readable mirror stays aligned. */
 export const SITE_URL = 'https://tmux.online'
-export const REPO_URL = 'https://github.com/ha0z1/New-Bing-Anywhere'
-export const REPO_SLUG = 'ha0z1/New-Bing-Anywhere'
+export const REPO_URL = 'https://github.com/AI-Anywhere/AI-Anywhere'
+export const REPO_SLUG = 'AI-Anywhere/AI-Anywhere'
 export const ISSUES_URL = `${REPO_URL}/issues`
 export const NPM_URL = 'https://www.npmjs.com/package/@ai-anywhere/cli'
 export const INSTALL_URL = '/install.sh'
