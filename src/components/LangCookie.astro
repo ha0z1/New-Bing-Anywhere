@@ -48,7 +48,6 @@ const localizedHomes = Object.fromEntries(shippedLangs.map((locale) => [locale, 
       // a Domain attribute naming a different host is rejected outright, which would
       // silently drop the cookie on localhost and on preview deployments.
       if (host === domain || host.endsWith(`.${domain}`)) parts.push(`domain=.${domain}`)
-      if (location.protocol === 'https:') parts.push('secure')
 
       document.cookie = parts.join('; ')
     }
