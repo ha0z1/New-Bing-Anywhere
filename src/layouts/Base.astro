@@ -8,6 +8,7 @@ import RefCapture from '../components/RefCapture.astro'
 import ReferralErrorBanner from '../components/ReferralErrorBanner.astro'
 import AnalyticsHead from '../components/AnalyticsHead.astro'
 import AnalyticsConsent from '../components/AnalyticsConsent.astro'
+import LinkPrefetch from '../components/LinkPrefetch.astro'
 import { localizePath, shippedLangs, defaultLang, ogLocales, useCopy, type Lang } from '../i18n'
 
 interface Props {
@@ -116,5 +117,6 @@ const ogImage = new URL('/og.png', site)
     </main>
     {showFooter && <Footer lang={lang} />}
     <AnalyticsConsent copy={c.analytics} />
+    <LinkPrefetch />
   </body>
 </html>

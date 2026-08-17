@@ -1,0 +1,43 @@
+<script is:inline>
+  ;(() => {
+    if (navigator.connection?.saveData) return
+
+    const prefetched = new Set()
+    function prefetch(anchor) {
+      const url = new URL(anchor.href, location.href)
+      url.hash = ''
+      const href = url.href
+      if (url.origin !== location.origin || href === location.href.replace(/#.*$/, '') || prefetched.has(href)) return
+
+      prefetched.add(href)
+      const link = document.createElement('link')
+      link.rel = 'prefetch'
+      link.as = 'document'
+      link.href = href
+      link.fetchPriority = 'low'
+      document.head.append(link)
+    }
+
+    function anchorFrom(target) {
+      return target instanceof Element ? target.closest('a[href]') : null
+    }
+
+    document.addEventListener(
+      'pointerover',
+      (event) => {
+        const anchor = anchorFrom(event.target)
+        if (anchor) prefetch(anchor)
+      },
+      { passive: true },
+    )
+
+    document.addEventListener(
+      'focusin',
+      (event) => {
+        const anchor = anchorFrom(event.target)
+        if (anchor) prefetch(anchor)
+      },
+      { passive: true },
+    )
+  })()
+</script>
