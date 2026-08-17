@@ -46,7 +46,7 @@ const external = (href: string) => href.startsWith('http')
             <ul>
               {shippedLangs.map((l) => (
                 <li>
-                  <a href={localizePath('/', l)} aria-current={l === lang ? 'true' : undefined}>
+                  <a href={localizePath('/', l)} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>
                     {languages[l]}
                   </a>
                 </li>

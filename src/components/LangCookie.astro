@@ -1,38 +1,82 @@
 ---
 /**
- * Records the language of the page being viewed in a cookie on the registrable domain, so
- * that other services under tmux.online can read the visitor's preference straight off the
- * request instead of re-deriving it.
+ * Records the language of the page being viewed in a cookie on the registrable domain. The
+ * default-language home checks the existing preference before overwriting it and redirects to
+ * the matching localized home. Language links write their destination before navigating, so
+ * explicitly switching back to English does not bounce through the previous preference.
  *
  * Written from the client rather than as a `Set-Cookie` from worker/index.js on purpose: a
  * response carrying Set-Cookie is not edge-cacheable, and paying for that on every HTML hit
- * when only the root /device compatibility route reads the preference is a bad trade.
+ * when only compatibility entry points read the preference is a bad trade.
  *
  * The value is overwritten on every page view, so it always names the last language the
  * visitor actually looked at — including when they arrive on a translated URL from a link
  * rather than from the switcher.
  */
 import { COOKIE_DOMAIN, LANG_COOKIE, LANG_COOKIE_MAX_AGE } from '../config'
-import type { Lang } from '../i18n'
+import { defaultLang, localizePath, shippedLangs, type Lang } from '../i18n'
 
 interface Props {
   lang: Lang
 }
 
 const { lang } = Astro.props
+const localizedHomes = Object.fromEntries(shippedLangs.map((locale) => [locale, localizePath('/', locale)]))
 ---
 
-<script is:inline define:vars={{ lang, name: LANG_COOKIE, domain: COOKIE_DOMAIN, maxAge: LANG_COOKIE_MAX_AGE }}>
+<script
+  is:inline
+  define:vars={{ lang, defaultLang, localizedHomes, cookieName: LANG_COOKIE, domain: COOKIE_DOMAIN, maxAge: LANG_COOKIE_MAX_AGE }}
+>
   ;(() => {
-    const host = location.hostname
-    const parts = [`${name}=${lang}`, 'path=/', `max-age=${maxAge}`, 'samesite=lax']
+    const readLanguage = () => {
+      const prefix = `${cookieName}=`
+      const entry = document.cookie
+        .split(';')
+        .map((part) => part.trim())
+        .find((part) => part.startsWith(prefix))
+      const preferred = entry?.slice(prefix.length)
+      return preferred && localizedHomes[preferred] !== undefined ? preferred : null
+    }
 
-    // Only scope the cookie to the registrable domain when we are actually on it —
-    // a Domain attribute naming a different host is rejected outright, which would
-    // silently drop the cookie on localhost and on preview deployments.
-    if (host === domain || host.endsWith(`.${domain}`)) parts.push(`domain=.${domain}`)
-    if (location.protocol === 'https:') parts.push('secure')
+    const writeLanguage = (selected) => {
+      if (localizedHomes[selected] === undefined) return
+      const host = location.hostname
+      const parts = [`${cookieName}=${selected}`, 'path=/', `max-age=${maxAge}`, 'samesite=lax']
 
-    document.cookie = parts.join('; ')
+      // Only scope the cookie to the registrable domain when we are actually on it —
+      // a Domain attribute naming a different host is rejected outright, which would
+      // silently drop the cookie on localhost and on preview deployments.
+      if (host === domain || host.endsWith(`.${domain}`)) parts.push(`domain=.${domain}`)
+      if (location.protocol === 'https:') parts.push('secure')
+
+      document.cookie = parts.join('; ')
+    }
+
+    const redirectDefaultHome = () => {
+      if (lang !== defaultLang || location.pathname !== localizedHomes[defaultLang]) return false
+      const preferred = readLanguage()
+      if (!preferred || preferred === defaultLang) return false
+
+      location.replace(localizedHomes[preferred] + location.search + location.hash)
+      return true
+    }
+
+    if (redirectDefaultHome()) return
+    writeLanguage(lang)
+
+    document.addEventListener(
+      'click',
+      (event) => {
+        const link = event.target instanceof Element ? event.target.closest('a[hreflang]') : null
+        const selected = link?.getAttribute('hreflang')
+        if (selected) writeLanguage(selected)
+      },
+      { capture: true },
+    )
+
+    addEventListener('pageshow', (event) => {
+      if (event.persisted) redirectDefaultHome()
+    })
   })()
 </script>
