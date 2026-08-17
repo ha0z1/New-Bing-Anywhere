@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro'
 import Schema from '../components/Schema.astro'
 import LangCookie from '../components/LangCookie.astro'
 import RefCapture from '../components/RefCapture.astro'
+import ReferralErrorBanner from '../components/ReferralErrorBanner.astro'
 import { localizePath, shippedLangs, defaultLang, ogLocales, useCopy, type Lang } from '../i18n'
 
 interface Props {
@@ -100,6 +101,11 @@ const ogImage = new URL('/og.png', site)
   <body>
     <a class="skip" href="#main">{c.nav.skipToContent}</a>
     <Header lang={lang} path={path} />
+    <ReferralErrorBanner
+      message={c.membership.invalidInviteLink}
+      dismissLabel={c.membership.dismissInvalidInvite}
+      home={localizePath('/', lang)}
+    />
     <main id="main">
       <slot />
     </main>

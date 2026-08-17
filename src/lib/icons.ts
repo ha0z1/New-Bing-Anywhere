@@ -25,6 +25,8 @@ export const iconPaths = {
   check: '<path d="m4.8 12.6 4.8 4.8L19.4 7.6"/>',
   checklist: '<path d="m3.4 7.2 1.7 1.7 3-3"/><path d="M11 7.4h9.6"/><path d="m3.4 15.8 1.7 1.7 3-3"/><path d="M11 16h9.6"/>',
   plus: '<path d="M12 5.5v13"/><path d="M5.5 12h13"/>',
+  x: '<path d="m6 6 12 12"/><path d="M18 6 6 18"/>',
+  circleAlert: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.2"/><path d="M12 16.5h.01"/>',
   globe: '<circle cx="12" cy="12" r="8.8"/><path d="M3.3 12h17.4"/><path d="M12 3.2a12.4 12.4 0 0 1 0 17.6 12.4 12.4 0 0 1 0-17.6"/>',
   chevronDown: '<path d="m6.8 9.8 5.2 5.2 5.2-5.2"/>',
   star: '<path fill="currentColor" stroke="none" d="m12 3.6 2.55 5.17 5.7.83-4.12 4.02.97 5.68L12 16.6l-5.1 2.5.97-5.68L3.75 9.6l5.7-.83z"/>',
