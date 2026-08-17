@@ -7,6 +7,14 @@ const HOME_PAGES = [
   { file: 'ko/index.html', dashboard: '/ko/dashboard/devices' },
 ]
 
+const DASHBOARD_LOCALES = [
+  { dir: '', home: '/' },
+  { dir: 'zh-Hant/', home: '/zh-Hant' },
+  { dir: 'ja/', home: '/ja' },
+  { dir: 'ko/', home: '/ko' },
+]
+const DASHBOARD_PAGES = ['index', 'devices', 'api-keys', 'membership', 'device']
+
 // Astro records island entry points in component-url/renderer-url attributes rather than
 // regular script tags, so collect every fingerprinted CSS/JS URL present in utility HTML.
 const BUILD_ASSET = /\/_astro\/[^"'<>\s]+?\.(?:css|js)(?:\?[^"'<>\s]*)?/g
@@ -37,12 +45,11 @@ const collectPageAssets = async (dir) => {
   return [...assets].sort()
 }
 
-const injectPrefetch = async (fileUrl, dashboard, assets) => {
+const injectPrefetch = async (fileUrl, resources) => {
   const html = await readFile(fileUrl, 'utf8')
   const bodyEnd = html.lastIndexOf('</body>')
   if (bodyEnd === -1) return false
 
-  const resources = [dashboard, ...assets]
   const script = `<script>(() => {
     const resources = ${JSON.stringify(resources)};
     const prefetch = () => {
@@ -73,11 +80,21 @@ export default function prefetchPageAssets() {
     hooks: {
       'astro:build:done': async ({ dir, logger }) => {
         const assets = await collectPageAssets(dir)
-        let injected = 0
+        let homePages = 0
         for (const page of HOME_PAGES) {
-          if (await injectPrefetch(new URL(page.file, dir), page.dashboard, assets)) injected++
+          if (await injectPrefetch(new URL(page.file, dir), [page.dashboard, ...assets])) homePages++
         }
-        logger.info(`injected ${assets.length + 1} idle prefetches into ${injected} home page(s)`)
+
+        let dashboardPages = 0
+        for (const locale of DASHBOARD_LOCALES) {
+          for (const page of DASHBOARD_PAGES) {
+            const file = `${locale.dir}dashboard/${page}.html`
+            if (await injectPrefetch(new URL(file, dir), [locale.home])) dashboardPages++
+          }
+        }
+        logger.info(
+          `injected ${assets.length + 1} idle prefetches into ${homePages} home page(s) and a home prefetch into ${dashboardPages} dashboard page(s)`,
+        )
       },
     },
   }

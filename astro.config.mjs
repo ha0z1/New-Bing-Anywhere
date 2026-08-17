@@ -42,7 +42,8 @@ export default defineConfig({
     // Fold the landing page's stylesheets into the HTML so its first paint needs no second
     // round-trip. Home pages only — see the integration for why the utility pages stay external.
     inlineHomeCss(),
-    // Once the landing page is idle, warm the localized devices document and its static CSS/JS.
+    // Warm both directions while idle: dashboard documents/assets from the landing page, and the
+    // localized landing document from every dashboard route.
     prefetchPageAssets(),
     // Last: minify the inline scripts the bundler leaves verbatim. Runs on the finished HTML.
     minifyInlineScripts(),
