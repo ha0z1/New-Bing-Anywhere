@@ -129,6 +129,93 @@
   margin-top: 26px;
 }
 
+/* ── shadcn / Radix alert dialog ─────────────────────────────────── */
+
+.aa-alert-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgb(0 0 0 / 0.72);
+  animation: aa-dialog-fade-in 0.15s ease-out;
+}
+
+.aa-alert-dialog-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1001;
+  width: min(calc(100vw - 32px), 440px);
+  padding: 22px;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  box-shadow: 0 24px 80px rgb(0 0 0 / 0.55);
+  transform: translate(-50%, -50%);
+  animation: aa-dialog-enter 0.16s ease-out;
+}
+
+.aa-alert-dialog-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+.aa-alert-dialog-description {
+  margin-top: 10px;
+  color: var(--fg-dim);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.aa-alert-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.aa-alert-dialog-action {
+  color: var(--bg);
+  background: var(--danger);
+  border-color: transparent;
+}
+
+.aa-alert-dialog-action:hover:not(:disabled) {
+  color: var(--bg);
+  background: color-mix(in srgb, var(--danger) 86%, #fff 14%);
+}
+
+@keyframes aa-dialog-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes aa-dialog-enter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 8px)) scale(0.98);
+  }
+}
+
+@media (max-width: 480px) {
+  .aa-alert-dialog-content {
+    padding: 20px;
+  }
+
+  .aa-alert-dialog-actions {
+    flex-direction: column-reverse;
+  }
+
+  .aa-alert-dialog-actions .aa-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
 /* ── inputs ────────────────────────────────────────────────────────── */
 
 .aa-input {

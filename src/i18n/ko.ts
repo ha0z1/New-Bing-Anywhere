@@ -208,7 +208,7 @@ export const ko: Copy = {
     body: '한 줄로 설치하고 표시된 링크만 여세요. 이제 다른 일에 집중해도 됩니다.',
   },
   footer: {
-    rights: '오픈 소스. 내 컴퓨터에서 직접 실행하세요.',
+    rights: '기본적으로 로컬에서만 실행됩니다. 터미널 접근은 인증 정보로 보호됩니다.',
     columns: [
       {
         title: '프로젝트',
@@ -251,6 +251,7 @@ export const ko: Copy = {
     deviceLastSeen: '마지막 접속',
     deviceRevoke: '삭제',
     deviceRevokeConfirm: '{name} 기기를 삭제할까요? 이 기기의 AI Anywhere가 즉시 잠깁니다.',
+    confirmCancel: '취소',
     keysTitle: 'API 키',
     keysBody: '스크립트와 CI에서 사용하는 장기 인증 정보입니다. x-api-key 요청 헤더에 넣어 사용합니다. 키를 폐기하면 즉시 적용됩니다.',
     keysEmpty: '아직 API 키가 없습니다.',
@@ -269,6 +270,8 @@ export const ko: Copy = {
   },
   membership: {
     navTitle: '기간 한정 초대 이벤트',
+    invalidInviteLink: '유효하지 않은 초대 링크입니다. 초대한 사람에게 새 링크를 요청해 주세요.',
+    dismissInvalidInvite: '닫기',
     title: '친구 3명을 초대하고 평생 이용권 받기',
     intro: '원래 유료인 평생 이용권을 지금은 무료로 받을 수 있습니다. 이벤트 기간에 초대한 친구 3명이 가입하면 평생 이용권이 적용됩니다.',
     deadline: '이벤트 종료: {deadline}',

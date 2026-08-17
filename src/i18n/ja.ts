@@ -208,7 +208,7 @@ export const ja: Copy = {
     body: '1 行でインストールして、表示されたリンクを開くだけ。あとは別のことをしていて大丈夫です。',
   },
   footer: {
-    rights: 'オープンソース。自分のマシンで動かせます。',
+    rights: 'デフォルトではローカル限定。ターミナルへのアクセスは認証情報で保護されます。',
     columns: [
       {
         title: 'プロジェクト',
@@ -251,6 +251,7 @@ export const ja: Copy = {
     deviceLastSeen: '最終接続',
     deviceRevoke: '削除',
     deviceRevokeConfirm: '{name} を削除しますか？このデバイスの AI Anywhere は直ちにロックされます。',
+    confirmCancel: 'キャンセル',
     keysTitle: 'API キー',
     keysBody: 'スクリプトや CI 向けの長期認証情報です。x-api-key リクエストヘッダーに設定して使用します。無効化すると直ちに反映されます。',
     keysEmpty: 'API キーはまだありません。',
@@ -270,6 +271,8 @@ export const ja: Copy = {
   },
   membership: {
     navTitle: '期間限定の招待キャンペーン',
+    invalidInviteLink: 'この招待リンクは無効です。招待した方に新しいリンクを確認してください。',
+    dismissInvalidInvite: '閉じる',
     title: '友だち3人を招待して、永久会員を無料で獲得',
     intro: '通常は有料の永久会員を、今だけ無料で獲得できます。期間中に招待した友だち3人が登録すると、永久会員にアップグレードされます。',
     deadline: 'キャンペーン終了：{deadline}',

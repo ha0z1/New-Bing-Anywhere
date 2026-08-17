@@ -212,7 +212,7 @@ export const en = {
     body: 'One line to install, one link to open. Then look away.',
   },
   footer: {
-    rights: 'Open source. Run it on your own machines.',
+    rights: 'Local-only by default. Terminal access is credential-protected.',
     columns: [
       {
         title: 'Project',
@@ -256,6 +256,7 @@ export const en = {
     deviceLastSeen: 'Last seen',
     deviceRevoke: 'Remove',
     deviceRevokeConfirm: 'Remove {name}? AI Anywhere on that device will be locked immediately.',
+    confirmCancel: 'Cancel',
     keysTitle: 'API keys',
     keysBody:
       'Long-lived credentials for scripts and CI. Use one in the x-api-key request header. Revoking a key takes effect immediately.',
@@ -278,6 +279,8 @@ export const en = {
   // running on your own machines. Template variables are filled in by the panel.
   membership: {
     navTitle: 'Limited-time invite',
+    invalidInviteLink: 'This invite link is invalid. Ask your friend for a new one.',
+    dismissInvalidInvite: 'Dismiss',
     title: 'Invite 3 friends for lifetime membership',
     intro: 'Lifetime membership normally requires payment. For a limited time, invite 3 friends who join and unlock it for free.',
     deadline: 'Offer ends {deadline}',

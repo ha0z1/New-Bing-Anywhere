@@ -23,6 +23,16 @@ import { INVITE_CODE_PATTERN_SOURCE } from '../lib/referral'
     const hasReferralParam = params.has('t') || params.has('ref')
     const raw = params.has('t') ? params.get('t') : params.get('ref')
     const code = normalizeInviteCode(raw)
+    const membershipPath = {
+      '/': '/dashboard/membership',
+      '/ja': '/ja/dashboard/membership',
+      '/ja/': '/ja/dashboard/membership',
+      '/ko': '/ko/dashboard/membership',
+      '/ko/': '/ko/dashboard/membership',
+      '/zh-Hant': '/zh-Hant/dashboard/membership',
+      '/zh-Hant/': '/zh-Hant/dashboard/membership',
+    }[location.pathname]
+
     if (code) {
       try {
         localStorage.setItem(key, code)
@@ -30,16 +40,6 @@ import { INVITE_CODE_PATTERN_SOURCE } from '../lib/referral'
       } catch {
         // The query parameter still reaches Membership when storage is unavailable.
       }
-
-      const membershipPath = {
-        '/': '/dashboard/membership',
-        '/ja': '/ja/dashboard/membership',
-        '/ja/': '/ja/dashboard/membership',
-        '/ko': '/ko/dashboard/membership',
-        '/ko/': '/ko/dashboard/membership',
-        '/zh-Hant': '/zh-Hant/dashboard/membership',
-        '/zh-Hant/': '/zh-Hant/dashboard/membership',
-      }[location.pathname]
 
       if (membershipPath) {
         const destination = new URL(location.href)
@@ -51,7 +51,10 @@ import { INVITE_CODE_PATTERN_SOURCE } from '../lib/referral'
       return
     }
 
-    if (hasReferralParam) return
+    if (hasReferralParam) {
+      if (membershipPath) document.documentElement.dataset.invalidInvite = 'true'
+      return
+    }
 
     try {
       const capturedAt = Number(localStorage.getItem(capturedAtKey))

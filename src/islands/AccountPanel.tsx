@@ -7,6 +7,7 @@ import type { Copy, Lang } from '../i18n'
 import { dashboardKeys } from '../lib/dashboardCache'
 import { useDashboardCacheReady } from './DashboardCache'
 import MembershipPanel from './MembershipPanel'
+import { ConfirmDialog } from './ui/ConfirmDialog'
 import '../styles/auth.css'
 
 interface Props {
@@ -14,6 +15,8 @@ interface Props {
   lang: Lang
   section: 'devices' | 'api-keys' | 'membership'
 }
+
+type Confirmation = { kind: 'key'; key: ApiKey } | { kind: 'device'; device: AccountDevice }
 
 const message = (error: unknown, fallback: string) => (error instanceof Error && error.message) || fallback
 
@@ -43,6 +46,7 @@ export default function AccountPanel({ copy, lang, section }: Props) {
   const [revoking, setRevoking] = useState<string | null>(null)
   const [deviceError, setDeviceError] = useState<string | null>(null)
   const [revokingDevice, setRevokingDevice] = useState<string | null>(null)
+  const [confirmation, setConfirmation] = useState<Confirmation | null>(null)
 
   const nameInput = useRef<HTMLInputElement>(null)
   const copyTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
@@ -87,8 +91,7 @@ export default function AccountPanel({ copy, lang, section }: Props) {
     }
   }
 
-  const onRevoke = async (key: ApiKey) => {
-    if (!confirm(account.keyRevokeConfirm)) return
+  const revokeKey = async (key: ApiKey) => {
     setRevoking(key.id)
     try {
       await mutateApiKeys(
@@ -110,8 +113,7 @@ export default function AccountPanel({ copy, lang, section }: Props) {
     }
   }
 
-  const onRevokeDevice = async (device: AccountDevice) => {
-    if (!confirm(account.deviceRevokeConfirm.replace('{name}', device.name))) return
+  const revokeDevice = async (device: AccountDevice) => {
     setRevokingDevice(device.id)
     try {
       await mutateDevices(
@@ -147,6 +149,27 @@ export default function AccountPanel({ copy, lang, section }: Props) {
 
   const apiKeysError = keyError || (apiKeysRequestError ? message(apiKeysRequestError, auth.genericError) : null)
   const devicesError = deviceError || (devicesRequestError ? message(devicesRequestError, auth.genericError) : null)
+  const confirmationTitle = confirmation?.kind === 'device' ? account.deviceRevoke : account.keyRevoke
+  const confirmationDescription =
+    confirmation?.kind === 'device' ? account.deviceRevokeConfirm.replace('{name}', confirmation.device.name) : account.keyRevokeConfirm
+  const confirmationDialog = (
+    <ConfirmDialog
+      open={confirmation !== null}
+      title={confirmationTitle}
+      description={confirmationDescription}
+      cancelLabel={account.confirmCancel}
+      confirmLabel={confirmationTitle}
+      onOpenChange={(open) => {
+        if (!open) setConfirmation(null)
+      }}
+      onConfirm={() => {
+        const target = confirmation
+        setConfirmation(null)
+        if (target?.kind === 'device') void revokeDevice(target.device)
+        if (target?.kind === 'key') void revokeKey(target.key)
+      }}
+    />
+  )
 
   if (section === 'devices') {
     return (
@@ -175,7 +198,7 @@ export default function AccountPanel({ copy, lang, section }: Props) {
                 <button
                   className="aa-btn aa-btn-small aa-btn-danger"
                   type="button"
-                  onClick={() => onRevokeDevice(device)}
+                  onClick={() => setConfirmation({ kind: 'device', device })}
                   disabled={revokingDevice === device.id}
                 >
                   {account.deviceRevoke}
@@ -185,6 +208,7 @@ export default function AccountPanel({ copy, lang, section }: Props) {
           </ul>
         )}
         {devices && devices.length === 0 && <p className="aa-muted">{account.devicesEmpty}</p>}
+        {confirmationDialog}
       </div>
     )
   }
@@ -249,9 +273,9 @@ export default function AccountPanel({ copy, lang, section }: Props) {
                 </span>
               </div>
               <button
-                className="aa-btn aa-btn-small"
+                className="aa-btn aa-btn-small aa-btn-danger"
                 type="button"
-                onClick={() => onRevoke(key)}
+                onClick={() => setConfirmation({ kind: 'key', key })}
                 disabled={key.id.startsWith('pending-') || revoking === key.id}
               >
                 {account.keyRevoke}
@@ -261,6 +285,7 @@ export default function AccountPanel({ copy, lang, section }: Props) {
         </ul>
       )}
       {apiKeys && apiKeys.length === 0 && <p className="aa-muted">{account.keysEmpty}</p>}
+      {confirmationDialog}
     </div>
   )
 }

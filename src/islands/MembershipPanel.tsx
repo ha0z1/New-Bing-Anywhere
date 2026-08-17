@@ -24,7 +24,6 @@ const SECOND = 1000
 const DAY_SECONDS = DAY / SECOND
 const COUNTDOWN_DECIMALS = 5
 const INVITE_BONUS_DAYS = 7
-const REFERRAL_TTL = 7 * DAY
 const REFERRAL_KEY = 'aa_ref'
 const REFERRAL_CAPTURED_AT_KEY = 'aa_ref_at'
 const DATE_LOCALES: Record<Lang, string> = {
@@ -82,17 +81,7 @@ const clearPendingReferral = (): void => {
 
 const pendingReferral = (): string => {
   const params = new URLSearchParams(location.search)
-  if (params.has('t') || params.has('ref')) return normalizeInviteCode(params.has('t') ? params.get('t') : params.get('ref'))
-
-  try {
-    const saved = normalizeInviteCode(localStorage.getItem(REFERRAL_KEY))
-    const capturedAt = Number(localStorage.getItem(REFERRAL_CAPTURED_AT_KEY))
-    if (saved && (!capturedAt || Date.now() - capturedAt <= REFERRAL_TTL)) return saved
-    if (saved || capturedAt) clearPendingReferral()
-  } catch {
-    // Storage denied: manual redemption remains available.
-  }
-  return ''
+  return params.has('t') || params.has('ref') ? normalizeInviteCode(params.has('t') ? params.get('t') : params.get('ref')) : ''
 }
 
 const maskReferralName = (value: string | null | undefined, fallback: string): string => {

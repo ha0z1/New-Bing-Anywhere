@@ -159,6 +159,55 @@ svg {
   left: 16px;
 }
 
+/* ── invalid referral ─────────────────────────────────────────────── */
+
+.referral-error {
+  color: var(--fg);
+  background: color-mix(in srgb, var(--danger) 12%, var(--bg-raised));
+  border-block: 1px solid color-mix(in srgb, var(--danger) 38%, transparent);
+}
+
+.referral-error-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  padding-block: 8px;
+}
+
+.referral-error-inner > svg {
+  flex: none;
+  color: var(--danger);
+}
+
+.referral-error-inner p {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.referral-error-inner button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  padding: 0;
+  color: var(--fg-dim);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.referral-error-inner button:hover {
+  color: var(--fg);
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+}
+
 /* ── links & buttons ───────────────────────────────────────────────── */
 
 .link-quiet {

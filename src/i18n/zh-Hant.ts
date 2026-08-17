@@ -209,7 +209,7 @@ export const zhHant: Copy = {
     body: '一行安裝，打開它給的連結——然後，把目光移開。',
   },
   footer: {
-    rights: '開源。跑在你自己的機器上。',
+    rights: '預設僅限本機。終端存取受憑證保護。',
     columns: [
       {
         title: '專案',
@@ -252,6 +252,7 @@ export const zhHant: Copy = {
     deviceLastSeen: '最近在線',
     deviceRevoke: '移除',
     deviceRevokeConfirm: '移除 {name}？該裝置上的 AI Anywhere 會立即鎖定。',
+    confirmCancel: '取消',
     keysTitle: 'API key',
     keysBody: '給腳本和 CI 用的長期憑證。用 x-api-key 請求標頭發送。撤銷即刻生效。',
     keysEmpty: '還沒有 key。',
@@ -270,6 +271,8 @@ export const zhHant: Copy = {
   },
   membership: {
     navTitle: '限時邀請活動',
+    invalidInviteLink: '這個邀請連結無效，請向邀請人索取新的連結。',
+    dismissInvalidInvite: '關閉',
     title: '限時邀請 3 位好友，解鎖永久會員',
     intro: '永久會員原為付費方案，目前限時免費開放。活動期間內成功邀請 3 位好友加入，即可免費升級為永久會員。',
     deadline: '活動截止：{deadline}',
