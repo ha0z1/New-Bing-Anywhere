@@ -164,7 +164,7 @@ export const zhHant: Copy = {
       { icon: 'power', label: '重新開機，任務還在' },
       { icon: 'nodes', label: '遠端主機，集中管理' },
       { icon: 'phone', label: '手機上也能操作' },
-      { icon: 'shield', label: '本機託管，不收集任何資料' },
+      { icon: 'shield', label: '終端內容不會上傳至帳號服務' },
     ],
   },
   extension: {
@@ -227,6 +227,13 @@ export const zhHant: Copy = {
       },
     ],
     langLabel: '語言',
+  },
+  analytics: {
+    label: 'Cookie 設定',
+    body: '是否允許使用 Cookie？接受後，我們會使用分析 Cookie 統計造訪與頁面使用情況。終端機內容、指令、帳號資料與邀請碼都不會送出',
+    accept: '接受',
+    reject: '拒絕',
+    settings: 'Cookie 設定',
   },
   // 帳號與裝置授權頁面的文案。
   auth: {

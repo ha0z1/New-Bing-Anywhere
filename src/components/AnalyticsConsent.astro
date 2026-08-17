@@ -1,0 +1,129 @@
+---
+interface Props {
+  copy: {
+    label: string
+    body: string
+    accept: string
+    reject: string
+  }
+}
+
+const { copy } = Astro.props
+---
+
+<aside class="analytics-consent" data-analytics-consent role="region" aria-label={copy.label} hidden>
+  <div class="wrap analytics-consent-inner">
+    <p>{copy.body}</p>
+    <div class="analytics-consent-actions">
+      <button type="button" class="reject" data-analytics-reject>{copy.reject}</button>
+      <button type="button" class="accept" data-analytics-accept>{copy.accept}</button>
+    </div>
+  </div>
+</aside>
+
+<script is:inline>
+  ;(() => {
+    const banner = document.querySelector('[data-analytics-consent]')
+    const analytics = window.__aaAnalytics
+    if (!banner || !analytics) return
+
+    const show = () => {
+      banner.hidden = false
+      banner.querySelector('[data-analytics-accept]')?.focus()
+    }
+    const hide = () => {
+      banner.hidden = true
+    }
+
+    banner.querySelector('[data-analytics-accept]')?.addEventListener('click', () => analytics.setChoice('granted'))
+    banner.querySelector('[data-analytics-reject]')?.addEventListener('click', () => analytics.setChoice('denied'))
+    document.querySelectorAll('[data-analytics-settings]').forEach((button) => button.addEventListener('click', show))
+    addEventListener('aa:analytics-consent', hide)
+
+    if (analytics.getChoice() === 'unknown') show()
+  })()
+</script>
+
+<style>
+  .analytics-consent {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 1100;
+    color: var(--fg);
+    background: rgb(13 15 13 / 0.96);
+    border-top: 1px solid var(--line-strong);
+    box-shadow: 0 -12px 32px rgb(0 0 0 / 0.28);
+    backdrop-filter: blur(12px);
+  }
+
+  .analytics-consent-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    min-height: 76px;
+    padding-block: 14px;
+  }
+
+  p {
+    max-width: calc(74ch * var(--measure-scale));
+    color: var(--fg-dim);
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+
+  .analytics-consent-actions {
+    display: flex;
+    flex: none;
+    gap: 8px;
+  }
+
+  button {
+    min-height: 38px;
+    padding: 7px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 7px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .reject {
+    color: var(--fg-dim);
+    background: var(--surface);
+  }
+
+  .reject:hover {
+    color: var(--fg);
+    background: var(--surface-2);
+  }
+
+  .accept {
+    color: var(--on-accent);
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .accept:hover {
+    background: color-mix(in srgb, var(--accent) 88%, white);
+  }
+
+  @media (max-width: 720px) {
+    .analytics-consent-inner {
+      align-items: stretch;
+      flex-direction: column;
+      gap: 12px;
+      padding-block: 14px 16px;
+    }
+
+    .analytics-consent-actions {
+      justify-content: flex-end;
+    }
+
+    button {
+      min-width: 104px;
+    }
+  }
+</style>

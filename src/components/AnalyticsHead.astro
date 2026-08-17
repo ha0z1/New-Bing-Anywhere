@@ -1,0 +1,130 @@
+---
+const measurementId = 'G-W9MTSPB761'
+---
+
+<script is:inline define:vars={{ measurementId }}>
+  ;(() => {
+    const consentKey = 'aa_analytics_consent'
+    const granted = 'granted'
+    const denied = 'denied'
+    const unknown = 'unknown'
+    const productionHosts = new Set(['tmux.online', 'www.tmux.online'])
+
+    window.dataLayer = window.dataLayer || []
+    window.gtag =
+      window.gtag ||
+      function () {
+        window.dataLayer.push(arguments)
+      }
+
+    window.gtag('consent', 'default', {
+      ad_storage: denied,
+      ad_user_data: denied,
+      ad_personalization: denied,
+      analytics_storage: denied,
+    })
+    window.gtag('set', 'ads_data_redaction', true)
+
+    let choice = unknown
+    let loading = false
+    let loaded = false
+    let lastPage = ''
+
+    try {
+      const stored = localStorage.getItem(consentKey)
+      if (stored === granted || stored === denied) choice = stored
+    } catch {
+      // Storage may be unavailable; the visitor can decide again on the next page.
+    }
+
+    const cleanLocation = () => `${location.origin}${location.pathname}`
+
+    const trackPage = () => {
+      if (!loaded || choice !== granted) return
+      const page = cleanLocation()
+      if (page === lastPage) return
+      lastPage = page
+      window.gtag('event', 'page_view', {
+        page_location: page,
+        page_path: location.pathname,
+        page_title: document.title,
+      })
+    }
+
+    const load = () => {
+      if (!productionHosts.has(location.hostname) || loading || loaded) return
+      loading = true
+
+      const script = document.createElement('script')
+      script.id = 'aa-google-analytics'
+      script.async = true
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`
+      script.onload = () => {
+        loading = false
+        loaded = true
+        window.gtag('js', new Date())
+        window.gtag('config', measurementId, { send_page_view: false })
+        trackPage()
+      }
+      script.onerror = () => {
+        loading = false
+        script.remove()
+      }
+      document.head.append(script)
+    }
+
+    const clearAnalyticsCookies = () => {
+      for (const part of document.cookie.split(';')) {
+        const name = part.split('=', 1)[0]?.trim()
+        if (!name?.startsWith('_ga')) continue
+        document.cookie = `${name}=;path=/;max-age=0;SameSite=Lax`
+        document.cookie = `${name}=;path=/;domain=.tmux.online;max-age=0;SameSite=Lax`
+      }
+    }
+
+    const applyChoice = (next, persist = true) => {
+      choice = next
+      if (persist) {
+        try {
+          localStorage.setItem(consentKey, next)
+        } catch {
+          // Consent still applies to this page when storage is unavailable.
+        }
+      }
+
+      window.gtag('consent', 'update', {
+        ad_storage: denied,
+        ad_user_data: denied,
+        ad_personalization: denied,
+        analytics_storage: next === granted ? granted : denied,
+      })
+
+      if (next === granted) load()
+      else clearAnalyticsCookies()
+
+      window.dispatchEvent(new CustomEvent('aa:analytics-consent', { detail: { choice: next } }))
+    }
+
+    window.__aaAnalytics = {
+      getChoice: () => choice,
+      setChoice: (next) => applyChoice(next === granted ? granted : denied),
+    }
+
+    for (const method of ['pushState', 'replaceState']) {
+      const original = history[method]
+      history[method] = function (...args) {
+        const result = original.apply(this, args)
+        setTimeout(trackPage, 0)
+        return result
+      }
+    }
+    addEventListener('popstate', () => setTimeout(trackPage, 0))
+    addEventListener('storage', (event) => {
+      if (event.key !== consentKey) return
+      const next = event.newValue === granted ? granted : event.newValue === denied ? denied : unknown
+      applyChoice(next, false)
+    })
+
+    if (choice === granted) applyChoice(granted, false)
+  })()
+</script>

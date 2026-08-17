@@ -163,7 +163,7 @@ export const ko: Copy = {
       { icon: 'power', label: '재부팅해도 작업은 계속' },
       { icon: 'nodes', label: '모든 원격 컴퓨터를 한곳에서' },
       { icon: 'phone', label: '스마트폰에서도 사용 가능' },
-      { icon: 'shield', label: '로컬에서만 실행, 데이터 수집 없음' },
+      { icon: 'shield', label: '터미널 내용은 계정 서비스로 전송되지 않음' },
     ],
   },
   extension: {
@@ -226,6 +226,13 @@ export const ko: Copy = {
       },
     ],
     langLabel: '언어',
+  },
+  analytics: {
+    label: '쿠키 설정',
+    body: '쿠키 사용을 허용할까요? 허용하면 분석 쿠키로 사이트 방문 및 이용 현황을 측정합니다. 터미널 내용, 명령어, 계정 정보, 초대 코드는 전송되지 않습니다',
+    accept: '허용',
+    reject: '거부',
+    settings: '쿠키 설정',
   },
   auth: {
     signInWithGitHub: 'GitHub로 계속',

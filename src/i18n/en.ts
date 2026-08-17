@@ -167,7 +167,7 @@ export const en = {
       { icon: 'power', label: 'Tasks survive a reboot' },
       { icon: 'nodes', label: 'Every remote machine in one place' },
       { icon: 'phone', label: 'Works from your phone' },
-      { icon: 'shield', label: 'Local-only — we collect nothing' },
+      { icon: 'shield', label: 'Terminal data never reaches the account service' },
     ],
   },
   extension: {
@@ -230,6 +230,13 @@ export const en = {
       },
     ],
     langLabel: 'Language',
+  },
+  analytics: {
+    label: 'Cookie preferences',
+    body: 'Allow cookies? If you accept, analytics cookies will help us measure visits and how the site is used. Terminal contents, commands, account details and invite codes are never sent',
+    accept: 'Accept',
+    reject: 'Decline',
+    settings: 'Cookie settings',
   },
   // Account and device authorisation copy for the two hydrated utility pages.
   auth: {

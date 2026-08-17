@@ -59,6 +59,7 @@ const external = (href: string) => href.startsWith('http')
   </div>
   <div class="wrap base">
     <span>&copy; {year} {c.brand.name}</span>
+    <button type="button" data-analytics-settings>{c.analytics.settings}</button>
   </div>
 </footer>
 
@@ -128,11 +129,27 @@ const external = (href: string) => href.startsWith('http')
 
   .base {
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    gap: 16px;
     padding-block: 18px;
     border-top: 1px solid var(--line);
     font-size: 12.5px;
     color: var(--fg-muted);
+  }
+
+  .base button {
+    padding: 0;
+    color: inherit;
+    background: none;
+    border: 0;
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.15s ease;
+  }
+
+  .base button:hover {
+    color: var(--fg);
   }
 
   @media (max-width: 720px) {
