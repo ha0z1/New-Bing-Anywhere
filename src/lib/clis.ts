@@ -40,7 +40,7 @@ export const CLI_MARKS: CliMark[] = [
   { id: 'codex', name: 'Codex', x: 27, y: 6, r: 9, s: 24 },
   { id: 'antigravity', name: 'Antigravity', x: 44, y: 15, r: -7, s: 22, from: 1020, off: true },
   { id: 'gemini', name: 'Gemini CLI', x: 39.5, y: 45, r: 6, s: 22, from: 1020, off: true },
-  { id: 'opencode', name: 'OpenCode', x: 5, y: 79, r: 11, s: 25, off: true },
+  { id: 'opencode', name: 'OpenCode', x: 5, y: 79, r: 11, s: 25 },
   { id: 'copilot', name: 'GitHub Copilot', x: 21, y: 87, r: -8, s: 28, off: true },
   { id: 'openclaw', name: 'OpenClaw', x: 63, y: 8, r: -9, s: 26, from: 1020, off: true },
   { id: 'pi', name: 'Pi', x: 47, y: 84, r: 12, s: 22, from: 1020 },
