@@ -639,6 +639,7 @@ const links = [{ label: c.nav.install, href: `${home}#install` }]
         location.href = accountMenu.dataset.dashboard
         return
       }
+      requestMembershipOnDemand()
       const open = !accountMenu.hasAttribute('data-open')
       accountMenu.toggleAttribute('data-open', open)
       acct.setAttribute('aria-expanded', String(open))
@@ -669,6 +670,8 @@ const links = [{ label: c.nav.install, href: `${home}#install` }]
     const glyph = acct.querySelector('svg')
     let avatarEl = null
     let currentUserId = null
+    let latestSessionRequest = null
+    let requestedMembershipUserId = null
 
     const store = {
       get: () => {
@@ -754,6 +757,7 @@ const links = [{ label: c.nav.install, href: `${home}#install` }]
     }
 
     const clearMembership = () => {
+      requestedMembershipUserId = null
       membershipStore.set(null)
       showMembershipBadge(false)
       delete window.__aaMembership
@@ -778,8 +782,30 @@ const links = [{ label: c.nav.install, href: `${home}#install` }]
         )
       }
 
-      requestState.promise.then((value) => currentUserId === userId && applyMembership(value, userId)).catch(() => {})
+      return requestState.promise.then((value) => {
+        if (currentUserId === userId) applyMembership(value, userId)
+      })
     }
+
+    function requestMembershipOnDemand() {
+      const sessionRequest = latestSessionRequest
+      if (!sessionRequest) return
+
+      sessionRequest.then((result) => {
+        if (latestSessionRequest !== sessionRequest || result.state !== 'in') return
+        const userId = result.session.user.id
+        if (currentUserId !== userId || requestedMembershipUserId === userId) return
+
+        requestedMembershipUserId = userId
+        void requestMembership(userId).catch(() => {
+          // A later hover may retry a failed request.
+          if (requestedMembershipUserId === userId) requestedMembershipUserId = null
+        })
+      })
+    }
+
+    accountMenu.addEventListener('pointerenter', requestMembershipOnDemand)
+    accountMenu.addEventListener('focusin', requestMembershipOnDemand)
 
     const showUser = (user) => {
       if (!popover || !accountName || !accountEmail) return
@@ -1014,7 +1040,10 @@ const links = [{ label: c.nav.install, href: `${home}#install` }]
       }
 
       const user = r.session.user
-      if (currentUserId && currentUserId !== user.id) delete window.__aaMembership
+      if (currentUserId && currentUserId !== user.id) {
+        requestedMembershipUserId = null
+        delete window.__aaMembership
+      }
       currentUserId = user.id
       sessionStore.set(r.session)
       setAuthState('in')
@@ -1027,7 +1056,6 @@ const links = [{ label: c.nav.install, href: `${home}#install` }]
         membershipStore.set(null)
         showMembershipBadge(false)
       }
-      requestMembership(user.id)
 
       if (!user.image) {
         store.set({ id: user.id, src: null, data: null, name: user.name, email: user.email })
@@ -1063,6 +1091,7 @@ const links = [{ label: c.nav.install, href: `${home}#install` }]
       const previousUserId = sessionStore.get()?.user?.id || store.get()?.id
       const fallback = sessionStore.get()
       const result = requestSession()
+      latestSessionRequest = result
 
       window.__aaSession = result.then((r) => {
         if (r.state === 'in') return r.session
