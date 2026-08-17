@@ -11,7 +11,7 @@ const { lang } = Astro.props
 const c = useCopy(lang)
 ---
 
-<Base lang={lang} path="/404" title={`${c.notFound.code} — ${c.brand.name}`} description={c.notFound.body}>
+<Base lang={lang} path="/404" title={`${c.notFound.code} — ${c.brand.name}`} description={c.notFound.body} noindex>
   <section class="oops">
     <div class="wrap">
       <p class="eyebrow">{c.notFound.code}</p>

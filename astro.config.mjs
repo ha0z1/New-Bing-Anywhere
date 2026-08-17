@@ -35,9 +35,8 @@ export default defineConfig({
         const path = new URL(page).pathname.replace(/\/$/, '')
         return !path.includes('/404') && !path.endsWith('.txt') && !/\/(account|device)$/.test(path) && !/\/dashboard(?:\/|$)/.test(path)
       },
-      changefreq: 'weekly',
-      priority: 1,
-      lastmod: new Date(),
+      // Do not manufacture `lastmod` from the build time. A deploy is not necessarily a
+      // content edit, and repeated false timestamps teach crawlers to ignore the signal.
     }),
     // Fold the landing page's stylesheets into the HTML so its first paint needs no second
     // round-trip. Home pages only — see the integration for why the utility pages stay external.

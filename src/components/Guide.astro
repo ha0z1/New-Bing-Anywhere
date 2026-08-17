@@ -1,0 +1,360 @@
+---
+import Base from '../layouts/Base.astro'
+import Icon from './Icon.astro'
+import { localizePath, useCopy, type Lang } from '../i18n'
+import { GUIDE_PATHS, guideEntries, useGuides, type GuideId } from '../i18n/guides'
+
+interface Props {
+  lang: Lang
+  id: GuideId
+}
+
+const { lang, id } = Astro.props
+const c = useCopy(lang)
+const guides = useGuides(lang)
+const page = guides.pages[id]
+const path = GUIDE_PATHS[id]
+const navigation = guideEntries.map(([guideId, guidePath]) => ({
+  id: guideId,
+  href: localizePath(guidePath, lang),
+  label: guides.pages[guideId].eyebrow,
+}))
+---
+
+<Base lang={lang} path={path} title={`${page.title} | tmux.online`} description={page.description} schema="page">
+  <div class="guide-shell wrap">
+    <aside class="guide-nav">
+      <p class="guide-nav-title">{guides.navTitle}</p>
+      <nav aria-label={guides.navTitle}>
+        {
+          navigation.map((item) => (
+            <a href={item.href} aria-current={item.id === id ? 'page' : undefined}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </aside>
+
+    <article>
+      <nav class="breadcrumbs" aria-label={guides.home}>
+        <a href={localizePath('/', lang)}>{guides.home}</a>
+        <span aria-hidden="true">/</span>
+        <span>{page.eyebrow}</span>
+      </nav>
+
+      <header class="guide-header">
+        <p class="eyebrow">{page.eyebrow}</p>
+        <h1>{page.title}</h1>
+        <p class="summary">{page.summary}</p>
+      </header>
+
+      <div class="guide-body">
+        {
+          page.sections.map((section, index) => (
+            <section>
+              <h2>{section.title}</h2>
+              {section.body.map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+              {section.bullets && (
+                <ul>
+                  {section.bullets.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              )}
+              {section.command && (
+                <div class="command">
+                  <code id={`guide-command-${index}`}>{section.command}</code>
+                  <button
+                    type="button"
+                    data-guide-copy={`guide-command-${index}`}
+                    aria-label={c.hero.copyAria}
+                    title={c.hero.copy}
+                    data-copied-label={c.hero.copied}
+                  >
+                    <span data-copy-default>
+                      <Icon name="copy" size={16} />
+                    </span>
+                    <span data-copy-done hidden>
+                      <Icon name="check" size={16} />
+                    </span>
+                  </button>
+                </div>
+              )}
+            </section>
+          ))
+        }
+      </div>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .guide-shell {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 760px);
+    justify-content: center;
+    gap: 72px;
+    padding-block: 72px 112px;
+  }
+
+  .guide-nav {
+    position: sticky;
+    top: 94px;
+    align-self: start;
+  }
+
+  .guide-nav-title {
+    margin-bottom: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+
+  .guide-nav nav {
+    display: grid;
+    border-left: 1px solid var(--line);
+  }
+
+  .guide-nav a {
+    padding: 7px 14px;
+    color: var(--fg-muted);
+    font-size: 13px;
+    line-height: 1.45;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .guide-nav a:hover {
+    color: var(--fg);
+  }
+
+  .guide-nav a[aria-current='page'] {
+    margin-left: -1px;
+    color: var(--fg);
+    border-left: 1px solid var(--accent);
+  }
+
+  article {
+    min-width: 0;
+  }
+
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--fg-muted);
+    font-size: 12px;
+  }
+
+  .breadcrumbs a:hover {
+    color: var(--fg);
+  }
+
+  .guide-header {
+    padding-block: 40px 64px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  h1 {
+    max-width: calc(19ch * var(--measure-scale));
+    margin-top: 16px;
+    font-size: 3rem;
+    letter-spacing: 0;
+    line-height: 1.08;
+  }
+
+  .summary {
+    max-width: calc(62ch * var(--measure-scale));
+    margin-top: 24px;
+    color: var(--fg-dim);
+    font-size: 1.08rem;
+    line-height: 1.72;
+  }
+
+  .guide-body section {
+    padding-block: 48px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .guide-body h2 {
+    margin-bottom: 20px;
+    font-size: 1.45rem;
+    letter-spacing: 0;
+    line-height: 1.25;
+  }
+
+  .guide-body p,
+  .guide-body li {
+    color: var(--fg-dim);
+    font-size: 1rem;
+    line-height: 1.78;
+  }
+
+  .guide-body p + p {
+    margin-top: 14px;
+  }
+
+  .guide-body ul {
+    display: grid;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .guide-body li {
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .guide-body li::before {
+    position: absolute;
+    top: 0.75em;
+    left: 2px;
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+    content: '';
+  }
+
+  .command {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    min-height: 52px;
+    margin-top: 24px;
+    padding-left: 16px;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+  }
+
+  .command code {
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    color: var(--fg);
+    font-size: 13px;
+    line-height: 52px;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+
+  .command code::-webkit-scrollbar {
+    display: none;
+  }
+
+  .command button {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 42px;
+    flex: none;
+    margin-right: 5px;
+    padding: 0;
+    color: var(--fg-muted);
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .command button:hover {
+    color: var(--fg);
+    background: var(--surface-2);
+  }
+
+  .command button[data-copied] {
+    color: var(--ok);
+  }
+
+  @media (max-width: 820px) {
+    .guide-shell {
+      grid-template-columns: minmax(0, 760px);
+      gap: 36px;
+      padding-block: 40px 80px;
+    }
+
+    .guide-nav {
+      position: static;
+      overflow-x: auto;
+    }
+
+    .guide-nav-title {
+      display: none;
+    }
+
+    .guide-nav nav {
+      display: flex;
+      width: max-content;
+      border-bottom: 1px solid var(--line);
+      border-left: 0;
+    }
+
+    .guide-nav a {
+      padding: 8px 12px 10px;
+      white-space: nowrap;
+    }
+
+    .guide-nav a[aria-current='page'] {
+      margin: 0 0 -1px;
+      border-bottom: 1px solid var(--accent);
+      border-left: 0;
+    }
+
+    .guide-header {
+      padding-block: 28px 48px;
+    }
+
+    h1 {
+      font-size: 2.25rem;
+    }
+  }
+</style>
+
+<script is:inline>
+  ;(() => {
+    const fallbackCopy = (value) => {
+      const textarea = document.createElement('textarea')
+      textarea.value = value
+      textarea.setAttribute('readonly', '')
+      textarea.style.cssText = 'position:fixed;top:-9999px'
+      document.body.appendChild(textarea)
+      textarea.select()
+      const copied = document.execCommand('copy')
+      textarea.remove()
+      return copied
+    }
+
+    document.addEventListener('click', async (event) => {
+      const button = event.target instanceof Element ? event.target.closest('[data-guide-copy]') : null
+      if (!button) return
+      const source = document.getElementById(button.getAttribute('data-guide-copy'))
+      if (!source) return
+      const value = source.textContent.trim()
+      let copied = false
+      try {
+        await navigator.clipboard.writeText(value)
+        copied = true
+      } catch {
+        copied = fallbackCopy(value)
+      }
+      if (!copied) return
+
+      button.dataset.copied = ''
+      button.title = button.dataset.copiedLabel
+      button.querySelector('[data-copy-default]').hidden = true
+      button.querySelector('[data-copy-done]').hidden = false
+      clearTimeout(button._copyTimer)
+      button._copyTimer = setTimeout(() => {
+        delete button.dataset.copied
+        button.querySelector('[data-copy-default]').hidden = false
+        button.querySelector('[data-copy-done]').hidden = true
+      }, 1600)
+    })
+  })()
+</script>

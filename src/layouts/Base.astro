@@ -25,9 +25,11 @@ interface Props {
    * particular carries the landing page's FAQ, which would be a lie anywhere else.
    */
   noindex?: boolean
+  /** Only the landing page contains the FAQ and installation steps used by its JSON-LD. */
+  schema?: 'home' | 'page'
 }
 
-const { lang, path = '/', title, description, showFooter = true, noindex = false } = Astro.props
+const { lang, path = '/', title, description, showFooter = true, noindex = false, schema = path === '/' ? 'home' : 'page' } = Astro.props
 const c = useCopy(lang)
 const site = Astro.site ?? new URL('https://tmux.online')
 const canonical = new URL(localizePath(path, lang), site)
@@ -95,7 +97,7 @@ const ogImage = new URL('/og.png', site)
     <meta property="og:image:type" content="image/png" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    {!noindex && <Schema lang={lang} canonical={canonical.href} />}
+    {!noindex && <Schema lang={lang} canonical={canonical.href} title={pageTitle} description={pageDescription} kind={schema} />}
     <LangCookie lang={lang} />
     <RefCapture />
 

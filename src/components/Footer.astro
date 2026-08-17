@@ -1,14 +1,20 @@
 ---
 import Logo from './Logo.astro'
 import { useCopy, localizePath, shippedLangs, languages, type Lang } from '../i18n'
+import { guideEntries, useGuides } from '../i18n/guides'
 
 interface Props {
   lang: Lang
 }
 const { lang } = Astro.props
 const c = useCopy(lang)
+const guides = useGuides(lang)
 const year = new Date().getFullYear()
 const external = (href: string) => href.startsWith('http')
+const guideLinks = guideEntries.map(([id, path]) => ({
+  label: guides.pages[id].eyebrow,
+  href: localizePath(path, lang),
+}))
 ---
 
 <footer>
@@ -39,6 +45,18 @@ const external = (href: string) => href.startsWith('http')
           </div>
         ))
       }
+      <div>
+        <p class="col-title">{guides.navTitle}</p>
+        <ul>
+          {
+            guideLinks.map((link) => (
+              <li>
+                <a href={link.href}>{link.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
       {
         shippedLangs.length > 1 && (
           <div>

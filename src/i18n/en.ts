@@ -4,8 +4,9 @@ import { INSTALL_URL, ISSUES_URL, NPM_URL, REPO_URL } from '../config'
 // satisfies `Copy` (see ./index.ts) — no component should ever hold literal prose.
 export const en = {
   meta: {
-    title: 'tmux.online — Your agents. Any browser. Anywhere',
-    description: 'One command brings every task that needs your attention into focus',
+    title: 'AI coding agents in your browser | tmux.online',
+    description:
+      'Monitor and control Claude Code, Codex, Gemini CLI, Aider, Copilot CLI and any tmux session from any browser. Terminal data stays on your machine',
     ogAlt: 'tmux.online workspace showing AI coding tasks that need attention',
   },
   brand: {
@@ -34,7 +35,7 @@ export const en = {
     installMethodLabel: 'Install method',
     eyebrow: 'The command line, as simple as a web page',
     title: 'Your agents. Any browser. Anywhere',
-    lede: 'One command brings every task that needs your attention into focus',
+    lede: 'Monitor Claude Code, Codex and every AI coding task running in tmux. Step in from any browser only when they need you',
     installLabel: 'macOS and Linux',
     copy: 'Copy',
     copied: 'Copied',

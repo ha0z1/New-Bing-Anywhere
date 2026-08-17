@@ -4,8 +4,9 @@ import type { Copy } from './index'
 // 繁體中文，使用臺灣標準用語（帳號、登入、伺服器、檔案、遠端、連線、設定、金鑰、工作階段）。
 export const zhHant: Copy = {
   meta: {
-    title: 'tmux.online — 你的 Agents，任何瀏覽器，隨處都能操作',
-    description: '只要一行指令，就能集中查看所有等待你處理的任務',
+    title: '在瀏覽器中操作 AI Agents | tmux.online',
+    description:
+      '透過任何瀏覽器查看並操作 Claude Code、Codex、Gemini CLI、Aider、Copilot CLI 與各種 tmux 工作階段。終端機資料只留在你的裝置上',
     ogAlt: 'tmux.online Agent CLI 工作區，顯示所有等待處理的任務',
   },
   brand: {
@@ -34,7 +35,7 @@ export const zhHant: Copy = {
     installMethodLabel: '安裝方式',
     eyebrow: '讓命令列像網頁一樣簡單',
     title: '你的 Agents，任何瀏覽器，隨處都能操作',
-    lede: '只要一行指令，就能集中查看所有等待你處理的任務',
+    lede: '集中查看在 tmux 中執行的 Claude Code、Codex 與所有 AI 程式開發任務，只有需要你介入時，再從任何瀏覽器接手',
     installLabel: 'macOS 與 Linux',
     copy: '複製',
     copied: '已複製',
