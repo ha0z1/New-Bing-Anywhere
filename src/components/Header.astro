@@ -609,7 +609,9 @@ const links = [{ label: c.nav.install, href: `${home}#install` }]
 
     // A referral visitor belongs on Membership after sign-in, not the default Devices page.
     // RefCapture runs in <head>, so this also works after the install flow opens a fresh tab.
-    let referralCode = new URLSearchParams(location.search).get('ref')?.trim().toUpperCase().slice(0, 32)
+    const referralParams = new URLSearchParams(location.search)
+    const rawReferral = referralParams.has('t') ? referralParams.get('t') : referralParams.get('ref')
+    let referralCode = rawReferral?.trim().toUpperCase().slice(0, 32)
     try {
       referralCode ||= localStorage.getItem('aa_ref') || ''
     } catch {}
