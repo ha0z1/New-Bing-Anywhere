@@ -54,7 +54,7 @@ wrangler.jsonc              Workers 靜態資源配置
 - **組件裏不寫任何文案字面量**，全部進 `src/i18n/*.ts`。加語言就是加一份數據文件，不是重寫頁面。SEO 的 JSON-LD、llms.txt 也都從這張表推導，改文案不會出現「頁面說 A、結構化數據說 B」。
 - **英文是缺省語言、不帶前綴**（`/`），其他語言帶前綴（`/zh-Hant`，末尾不帶斜槓，canonical / hreflang / sitemap 要指向同一個 URL），locale 代碼跟 app 保持一致（用 `zh-Hant` 不用 `zh-TW`）。語言切換器在只有一種語言時自動隱藏。
 - **hero 標語不翻譯**，它是品牌的一部分；那個 `<h1>` 上帶 `lang="en"`，好讓它在中文頁裏仍用拉丁字母的字距和行高。
-- **語言寫進根域 cookie `L`**（`L=zh-Hant`，`domain=.tmux.online`、`path=/`、一年、`SameSite=Lax`），供根 `/device` 兼容入口、裸 `/` 首頁與 tmux.online 下的其他服務讀取。在客戶端寫（`src/components/LangCookie.astro`），不從 Worker 發 `Set-Cookie`——帶 Set-Cookie 的響應在邊緣不可緩存。裸 `/` 會先按合法的非英文 `L` 跳到對應首頁，再寫入當前語言；語言連結則在導航前先同步更新 `L`，確保仍能主動切回 English。其餘頁面只由 URL 決定渲染語言；未知或缺失值一律回退英文。
+- **語言寫進根域 cookie `L`**（`L=zh-Hant`，`domain=.tmux.online`、`path=/`、一年、`SameSite=Lax`，不帶 `Secure` / `HttpOnly`），它只是非敏感偏好，供根 `/device` 兼容入口、裸 `/` 首頁與 tmux.online 下的所有服務讀取。在客戶端寫（`src/components/LangCookie.astro`），不從 Worker 發 `Set-Cookie`——帶 Set-Cookie 的響應在邊緣不可緩存。裸 `/` 會先按合法的非英文 `L` 跳到對應首頁，再寫入當前語言；語言連結則在導航前先同步更新 `L`，確保仍能主動切回 English。其餘頁面只由 URL 決定渲染語言；未知或缺失值一律回退英文。
 - **CJK 的排版覆蓋集中在 `global.css` 底部的 `:lang()` 塊**：拉丁字體的負字距和 1.08 行高對漢字是災難；`ch` 在中日韓字體裏是半個 em，所以所有 `ch` 寬度都乘 `--measure-scale`。新增非拉丁語言時先看這一塊。
 - **圖標一律內聯 SVG**（路徑表在 `src/lib/icons.ts`，24px 網格、1.5px 描邊；`.astro` 用 `Icon.astro`、島嶼用 `islands/Icon.tsx`，兩者讀同一張表），不用 emoji 代替圖標，不引圖標字體。
 - **只有 `/dashboard/*` 水合**。全部頁面都是構建時預渲染的 HTML，React 只接管這些有狀態的界面。`/account` 和 `/device` 只保留靜態兼容跳轉。營銷頁必須一個框架字節都不發——改完用 `grep -c astro-island dist/index.html`（應為 0）核對。

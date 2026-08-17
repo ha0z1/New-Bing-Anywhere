@@ -78,9 +78,9 @@ response headers, `robots.txt`, and sitemap filtering.
 | `/install.sh`            | Shell installer download            |
 
 Localized dashboard routes use the same language prefixes as the public pages. The `L`
-cookie records the active language so compatibility routes can select the correct location;
-the bare `/` home follows a saved non-English preference, and unknown values fall back to
-English.
+cookie is a non-sensitive, root-domain preference readable by tmux.online services. It records
+the active language so compatibility routes can select the correct location; the bare `/` home
+follows a saved non-English preference, and unknown values fall back to English.
 
 ## Project Structure
 
