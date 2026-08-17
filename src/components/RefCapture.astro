@@ -12,22 +12,45 @@
     const capturedAtKey = 'aa_ref_at'
     const maxAge = 7 * 24 * 60 * 60 * 1000
 
-    try {
-      const raw = new URLSearchParams(location.search).get('ref')
-      const code = raw?.trim().toUpperCase().slice(0, 32)
-      if (code) {
+    const params = new URLSearchParams(location.search)
+    const raw = params.has('t') ? params.get('t') : params.get('ref')
+    const code = raw?.trim().toUpperCase().slice(0, 32)
+    if (code) {
+      try {
         localStorage.setItem(key, code)
         localStorage.setItem(capturedAtKey, String(Date.now()))
-        return
+      } catch {
+        // The query parameter still reaches Membership when storage is unavailable.
       }
 
+      const membershipPath = {
+        '/': '/dashboard/membership',
+        '/ja': '/ja/dashboard/membership',
+        '/ja/': '/ja/dashboard/membership',
+        '/ko': '/ko/dashboard/membership',
+        '/ko/': '/ko/dashboard/membership',
+        '/zh-Hant': '/zh-Hant/dashboard/membership',
+        '/zh-Hant/': '/zh-Hant/dashboard/membership',
+      }[location.pathname]
+
+      if (membershipPath) {
+        const destination = new URL(location.href)
+        destination.pathname = membershipPath
+        destination.searchParams.delete('t')
+        destination.searchParams.set('ref', code)
+        location.replace(destination)
+      }
+      return
+    }
+
+    try {
       const capturedAt = Number(localStorage.getItem(capturedAtKey))
       if (capturedAt && Date.now() - capturedAt > maxAge) {
         localStorage.removeItem(key)
         localStorage.removeItem(capturedAtKey)
       }
     } catch {
-      // Storage may be unavailable; the query parameter still survives a same-page sign-in.
+      // Storage may be unavailable.
     }
   })()
 </script>

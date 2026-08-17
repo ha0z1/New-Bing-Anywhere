@@ -75,13 +75,15 @@ const clearPendingReferral = (): void => {
   }
 
   const url = new URL(location.href)
-  if (!url.searchParams.has('ref')) return
+  if (!url.searchParams.has('ref') && !url.searchParams.has('t')) return
   url.searchParams.delete('ref')
+  url.searchParams.delete('t')
   history.replaceState(history.state, '', url)
 }
 
 const pendingReferral = (): string => {
-  const direct = normalizeReferral(new URLSearchParams(location.search).get('ref'))
+  const params = new URLSearchParams(location.search)
+  const direct = normalizeReferral(params.has('t') ? params.get('t') : params.get('ref'))
   if (direct) return direct
 
   try {
@@ -256,7 +258,7 @@ export default function MembershipPanel({ copy, lang }: Props) {
 
   const onCopyInvite = async () => {
     if (!status) return
-    const value = inviteMode === 'link' ? `${SITE_URL}/?ref=${status.inviteCode}` : status.inviteCode
+    const value = inviteMode === 'link' ? `${SITE_URL}/?t=${status.inviteCode}` : status.inviteCode
     if (!(await copyText(value))) return
     setCopied(true)
     clearTimeout(copyTimer.current)
@@ -289,7 +291,7 @@ export default function MembershipPanel({ copy, lang }: Props) {
     )
   }
 
-  const inviteLink = `${SITE_URL}/?ref=${status.inviteCode}`
+  const inviteLink = `${SITE_URL}/?t=${status.inviteCode}`
   const inviteValue = inviteMode === 'link' ? inviteLink : status.inviteCode
   const inviteDescription = inviteMode === 'link' ? m.inviteBody : m.inviteCodeBody
   const inviteCopyLabel = inviteMode === 'link' ? m.inviteCopy : m.inviteCodeCopy
