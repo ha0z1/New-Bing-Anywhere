@@ -27,6 +27,20 @@
 /ko
   Cache-Control: public, max-age=1800, stale-while-revalidate=1800
 
+# Documentation uses the same browser cache window as the landing pages.
+# Explicit locale prefixes also cover future pages added under /docs.
+/docs/*
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+/zh-Hant/docs/*
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+/ja/docs/*
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+/ko/docs/*
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
 # Piped straight into sh — serve it as a shell-script download, and do not let it sit in a CDN cache
 # for long after it is updated. Crawlable (models may want to read it) but kept out of the
 # search index: a shell script is not a document.
