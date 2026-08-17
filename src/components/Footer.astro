@@ -1,0 +1,148 @@
+---
+import Logo from './Logo.astro'
+import { useCopy, localizePath, shippedLangs, languages, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = useCopy(lang)
+const year = new Date().getFullYear()
+const external = (href: string) => href.startsWith('http')
+---
+
+<footer>
+  <div class="wrap inner">
+    <div class="brand">
+      <a class="mark" href={localizePath('/', lang)}>
+        <Logo size={22} />
+        <span>{c.brand.name}</span>
+      </a>
+      <p class="tag">{c.brand.tagline}</p>
+      <p class="rights">{c.footer.rights}</p>
+    </div>
+
+    <div class="cols">
+      {
+        c.footer.columns.map((column) => (
+          <div>
+            <p class="col-title">{column.title}</p>
+            <ul>
+              {column.links.map((link) => (
+                <li>
+                  <a href={link.href} rel={external(link.href) ? 'noopener' : undefined}>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+      {
+        shippedLangs.length > 1 && (
+          <div>
+            <p class="col-title">{c.footer.langLabel}</p>
+            <ul>
+              {shippedLangs.map((l) => (
+                <li>
+                  <a href={localizePath('/', l)} aria-current={l === lang ? 'true' : undefined}>
+                    {languages[l]}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </div>
+  <div class="wrap base">
+    <span>&copy; {year} {c.brand.name}</span>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--line);
+    background: var(--bg-raised);
+  }
+
+  .inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 48px;
+    padding-block: 56px 40px;
+  }
+
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 15px;
+    font-weight: 560;
+  }
+
+  .tag {
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+
+  .rights {
+    margin-top: 18px;
+    max-width: calc(34ch * var(--measure-scale));
+    font-size: 13.5px;
+    color: var(--fg-muted);
+  }
+
+  .cols {
+    display: flex;
+    gap: clamp(32px, 6vw, 72px);
+  }
+
+  .col-title {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 14px;
+  }
+
+  .cols li + li {
+    margin-top: 9px;
+  }
+
+  .cols a {
+    font-size: 14px;
+    color: var(--fg-dim);
+    transition: color 0.15s ease;
+  }
+
+  .cols a:hover,
+  .cols a[aria-current] {
+    color: var(--fg);
+  }
+
+  .base {
+    display: flex;
+    justify-content: space-between;
+    padding-block: 18px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--fg-muted);
+  }
+
+  @media (max-width: 720px) {
+    .inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .cols {
+      flex-wrap: wrap;
+      gap: 32px 48px;
+    }
+  }
+</style>

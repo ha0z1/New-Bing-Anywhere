@@ -1,0 +1,36 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "tmux-online",
+  "compatibility_date": "2026-08-01",
+
+  // The Worker redirects www and privately serves dashboard HTML (see worker/index.js).
+  "main": "./worker/index.js",
+
+  // `pnpm deploy` builds Astro first. Bundle the resulting dashboard documents into the
+  // Worker so those responses bypass the automatic Workers Static Assets edge cache.
+  "rules": [{ "type": "Text", "globs": ["**/*.html"], "fallthrough": true }],
+
+  "assets": {
+    "directory": "./dist",
+    // `/zh-Hant` serves zh-Hant/index.html directly; `/zh-Hant/` 307s to the slashless
+    // form. The default `auto-trailing-slash` does the opposite for directories while
+    // still stripping `.html` from files, which left the site with two shapes at once
+    // (`/zh-Hant/` but `/zh-Hant/404`).
+    "html_handling": "drop-trailing-slash",
+    // Unknown paths get our styled 404 page rather than a bare Cloudflare error.
+    "not_found_handling": "404-page",
+    // Without this the asset server answers first and the Worker never sees a request for
+    // an existing path — so www.tmux.online/ would serve the page instead of redirecting.
+    "run_worker_first": true,
+    "binding": "ASSETS",
+  },
+
+  // `custom_domain: true` makes wrangler create the DNS record and the hostname binding on
+  // deploy, so the domain does not have to be wired up by hand in the dashboard.
+  "routes": [
+    { "pattern": "tmux.online", "custom_domain": true },
+    { "pattern": "www.tmux.online", "custom_domain": true },
+  ],
+
+  "observability": { "enabled": true },
+}

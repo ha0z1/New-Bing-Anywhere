@@ -1,0 +1,117 @@
+---
+import InstallCommand from './InstallCommand.astro'
+import { useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = useCopy(lang)
+---
+
+<section class="section steps" id="install">
+  <div class="wrap">
+    <div class="install-head">
+      <div>
+        <p class="eyebrow">{c.hero.installLabel}</p>
+        <h2>{c.steps.title}</h2>
+        <p class="lede">{c.hero.requirement}</p>
+      </div>
+      <InstallCommand lang={lang} id="install-command-section" />
+    </div>
+    <ol>
+      {
+        c.steps.items.map((step) => (
+          <li>
+            <span class="n">{step.n}</span>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .steps {
+    background: var(--bg-raised);
+  }
+
+  .install-head {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.8fr) minmax(420px, 1.2fr);
+    gap: clamp(40px, 7vw, 96px);
+    align-items: end;
+  }
+
+  h2 {
+    margin-top: 14px;
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.25rem);
+    max-width: calc(20ch * var(--measure-scale));
+  }
+
+  .lede {
+    max-width: calc(48ch * var(--measure-scale));
+    margin-top: 18px;
+    font-size: 0.9375rem;
+  }
+
+  ol {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 48px;
+    border-block: 1px solid var(--line);
+  }
+
+  li {
+    padding: 28px 30px 30px 0;
+  }
+
+  li:not(:first-child) {
+    padding-left: 26px;
+    border-left: 1px solid var(--line);
+  }
+
+  .n {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+
+  h3 {
+    margin-top: 14px;
+    font-size: 1.0625rem;
+    font-weight: 560;
+  }
+
+  p {
+    margin-top: 10px;
+    font-size: 14.5px;
+    line-height: 1.62;
+    color: var(--fg-muted);
+    max-width: calc(40ch * var(--measure-scale));
+  }
+
+  @media (max-width: 800px) {
+    .install-head {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    ol {
+      grid-template-columns: 1fr;
+    }
+    li,
+    li:not(:first-child) {
+      padding: 22px 0;
+      border-left: 0;
+    }
+
+    li + li {
+      border-top: 1px solid var(--line);
+    }
+  }
+</style>

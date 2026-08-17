@@ -1,0 +1,38 @@
+---
+/**
+ * Records the language of the page being viewed in a cookie on the registrable domain, so
+ * that other services under tmux.online can read the visitor's preference straight off the
+ * request instead of re-deriving it.
+ *
+ * Written from the client rather than as a `Set-Cookie` from worker/index.js on purpose: a
+ * response carrying Set-Cookie is not edge-cacheable, and paying for that on every HTML hit
+ * when only the root /device compatibility route reads the preference is a bad trade.
+ *
+ * The value is overwritten on every page view, so it always names the last language the
+ * visitor actually looked at — including when they arrive on a translated URL from a link
+ * rather than from the switcher.
+ */
+import { COOKIE_DOMAIN, LANG_COOKIE, LANG_COOKIE_MAX_AGE } from '../config'
+import type { Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+---
+
+<script is:inline define:vars={{ lang, name: LANG_COOKIE, domain: COOKIE_DOMAIN, maxAge: LANG_COOKIE_MAX_AGE }}>
+  ;(() => {
+    const host = location.hostname
+    const parts = [`${name}=${lang}`, 'path=/', `max-age=${maxAge}`, 'samesite=lax']
+
+    // Only scope the cookie to the registrable domain when we are actually on it —
+    // a Domain attribute naming a different host is rejected outright, which would
+    // silently drop the cookie on localhost and on preview deployments.
+    if (host === domain || host.endsWith(`.${domain}`)) parts.push(`domain=.${domain}`)
+    if (location.protocol === 'https:') parts.push('secure')
+
+    document.cookie = parts.join('; ')
+  })()
+</script>
