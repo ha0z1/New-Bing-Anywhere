@@ -1,0 +1,139 @@
+---
+import Icon from './Icon.astro'
+import Logo from './Logo.astro'
+import { LANG_COOKIE } from '../config'
+import { localizePath, shippedLangs, useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+  path: string
+  useLanguageCookie?: boolean
+}
+
+const { lang, path, useLanguageCookie = false } = Astro.props
+const c = useCopy(lang)
+const destination = localizePath(path, lang)
+const localizedDestinations = Object.fromEntries(shippedLangs.map((locale) => [locale, localizePath(path, locale)]))
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="refresh" content={`1;url=${destination}`} />
+    <meta name="theme-color" content="#070907" />
+    <title>{c.dashboard.redirecting}</title>
+  </head>
+  <body>
+    <main>
+      <Logo size={30} />
+      <p>{c.dashboard.redirecting}</p>
+      <a href={destination}>
+        <span>{c.dashboard.continue}</span>
+        <Icon name="arrowRight" size={15} />
+      </a>
+    </main>
+
+    <script is:inline define:vars={{ destination, localizedDestinations, useLanguageCookie, cookieName: LANG_COOKIE }}>
+      let target = destination
+
+      if (useLanguageCookie) {
+        const prefix = `${cookieName}=`
+        const entry = document.cookie
+          .split(';')
+          .map((part) => part.trim())
+          .find((part) => part.startsWith(prefix))
+
+        if (entry) {
+          const preferred = entry.slice(prefix.length)
+          target = localizedDestinations[preferred] || destination
+        }
+      }
+
+      const next = target + location.search + location.hash
+      document.querySelector('a').href = next
+      location.replace(next)
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: dark;
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      'Helvetica Neue',
+      'PingFang TC',
+      'Noto Sans TC',
+      Arial,
+      sans-serif;
+    background: #070907;
+    color: #e9ede9;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    min-height: 100svh;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    background: #070907;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 32px 24px;
+    text-align: center;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14px;
+    color: #a8b0a8;
+  }
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 8px 14px;
+    color: #e9ede9;
+    background: #1e211e;
+    border: 1px solid rgb(168 176 168 / 0.24);
+    border-radius: 7px;
+    font-size: 13px;
+    text-decoration: none;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease,
+      background 0.15s ease;
+  }
+
+  a:hover {
+    color: #fff;
+    background: #252925;
+    border-color: rgb(168 176 168 / 0.38);
+  }
+
+  a svg {
+    color: #19ba1f;
+  }
+
+  a:focus-visible {
+    outline: 2px solid #19ba1f;
+    outline-offset: 3px;
+  }
+</style>

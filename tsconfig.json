@@ -1,18 +1,12 @@
 {
-  "root": "src",
-  "extends": "./tsconfig-base.json",
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "worker"],
   "compilerOptions": {
-    "strict": true,
-    "outDir": "./dist",
-    "module": "CommonJS",
-    "target": "ESNext",
-    "declaration": true,
-    "declarationDir": "dist/types",
-    "types": ["zepto", "chrome"],
-    "paths": {
-      "@/*": ["./src/*"],
-      "@@/*": ["./src/universe/*"]
-    }
-  },
-  "include": ["src", "scripts"]
+    // Astro's base config points JSX at its own runtime; the .tsx islands need React's.
+    // .astro files are compiled by the Astro compiler rather than tsc, so this only
+    // affects the islands.
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  }
 }

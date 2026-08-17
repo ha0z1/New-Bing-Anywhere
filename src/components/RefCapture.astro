@@ -1,0 +1,33 @@
+---
+/**
+ * Keep an invite code across the install flow and GitHub OAuth. localStorage is intentional:
+ * `ai-anywhere login` may open a new tab, so sessionStorage would lose the referral between the
+ * shared landing page and the eventual account page. The membership island consumes it.
+ */
+---
+
+<script is:inline>
+  ;(() => {
+    const key = 'aa_ref'
+    const capturedAtKey = 'aa_ref_at'
+    const maxAge = 7 * 24 * 60 * 60 * 1000
+
+    try {
+      const raw = new URLSearchParams(location.search).get('ref')
+      const code = raw?.trim().toUpperCase().slice(0, 32)
+      if (code) {
+        localStorage.setItem(key, code)
+        localStorage.setItem(capturedAtKey, String(Date.now()))
+        return
+      }
+
+      const capturedAt = Number(localStorage.getItem(capturedAtKey))
+      if (capturedAt && Date.now() - capturedAt > maxAge) {
+        localStorage.removeItem(key)
+        localStorage.removeItem(capturedAtKey)
+      }
+    } catch {
+      // Storage may be unavailable; the query parameter still survives a same-page sign-in.
+    }
+  })()
+</script>

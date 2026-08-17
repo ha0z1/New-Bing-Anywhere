@@ -1,0 +1,544 @@
+/*
+ * Styles for the authenticated React surfaces under /dashboard.
+ *
+ * Global rather than scoped: Astro's `<style>` scoping works by stamping a data attribute
+ * onto the elements the .astro file itself emits, and a React island renders its own DOM,
+ * which never gets stamped. Imported from the islands so the CSS is only pulled onto the
+ * pages that hydrate them. `aa-` prefixed to keep it obvious these are not scoped.
+ */
+
+.aa-auth {
+  min-height: 60vh;
+}
+
+.aa-auth-narrow {
+  max-width: 560px;
+}
+
+.aa-auth h1,
+.dashboard-content h1 {
+  margin-top: 10px;
+  font-size: 30px;
+  letter-spacing: 0;
+}
+
+.aa-auth h2,
+.dashboard-content h2 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 18px;
+  letter-spacing: 0;
+}
+
+.aa-auth h2 svg,
+.dashboard-content h2 svg {
+  color: var(--accent);
+}
+
+.aa-capability > h1 {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 0;
+}
+
+.aa-capability > h1 svg {
+  flex: none;
+  color: var(--accent);
+}
+
+.aa-muted {
+  color: var(--fg-muted);
+}
+
+.aa-lede {
+  max-width: calc(56ch * var(--measure-scale));
+  margin-block: 12px 22px;
+  color: var(--fg-dim);
+}
+
+.aa-error {
+  margin-top: 14px;
+  font-size: 13.5px;
+  color: var(--danger);
+}
+
+/* ── buttons ───────────────────────────────────────────────────────── */
+
+.aa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding-inline: 16px;
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--fg-dim);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.aa-btn:hover:not(:disabled) {
+  color: var(--fg);
+  background: color-mix(in srgb, var(--surface-2) 70%, var(--fg) 6%);
+}
+
+.aa-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.aa-btn-primary {
+  color: var(--on-accent);
+  background: var(--accent);
+  border-color: transparent;
+}
+
+.aa-btn-primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 88%, #fff 12%);
+}
+
+.aa-btn-small {
+  height: 30px;
+  padding-inline: 10px;
+  font-size: 12.5px;
+}
+
+.aa-btn-danger {
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 40%, transparent);
+  background: color-mix(in srgb, var(--danger) 7%, var(--surface-2));
+}
+
+.aa-btn-danger:hover:not(:disabled) {
+  color: color-mix(in srgb, var(--danger) 78%, #fff 22%);
+  border-color: color-mix(in srgb, var(--danger) 64%, transparent);
+  background: color-mix(in srgb, var(--danger) 13%, var(--surface-2));
+}
+
+.aa-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+/* ── inputs ────────────────────────────────────────────────────────── */
+
+.aa-input {
+  height: 38px;
+  padding-inline: 12px;
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.aa-input::placeholder {
+  color: var(--fg-muted);
+}
+
+.aa-input:focus-visible {
+  border-color: var(--accent);
+  outline-offset: 1px;
+}
+
+/* ── api keys ──────────────────────────────────────────────────────── */
+
+.aa-keys,
+.aa-devices {
+  margin-top: 52px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+
+.aa-device-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aa-device-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  background: var(--fg-muted);
+  border-radius: 50%;
+}
+
+.aa-device-dot.is-online {
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.aa-key-form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.aa-key-form .aa-input {
+  flex: 1 1 220px;
+  max-width: 320px;
+}
+
+.aa-revealed {
+  margin-top: 20px;
+  padding: 16px;
+  background: var(--accent-soft);
+  border: 1px solid rgb(25 186 31 / 0.24);
+  border-radius: var(--radius);
+}
+
+.aa-revealed-title {
+  margin-bottom: 4px;
+  font-weight: 560;
+}
+
+.aa-revealed-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.aa-revealed-row code {
+  flex: 1 1 260px;
+  padding: 9px 11px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--fg);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  overflow-wrap: anywhere;
+}
+
+.aa-key-list {
+  margin-top: 24px;
+}
+
+.aa-key-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.aa-key-list li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.aa-key-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.aa-key-name {
+  font-size: 14px;
+}
+
+.aa-key-sub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-muted);
+  overflow-wrap: anywhere;
+}
+
+/* ── device flow ───────────────────────────────────────────────────── */
+
+.aa-code {
+  display: inline-block;
+  padding: 12px 20px;
+  font-family: var(--font-mono);
+  font-size: 26px;
+  letter-spacing: 0.22em;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+
+.aa-code-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.aa-code-form label {
+  flex-basis: 100%;
+  font-size: 13.5px;
+  color: var(--fg-dim);
+}
+
+.aa-code-input {
+  flex: 1 1 200px;
+  max-width: 240px;
+  height: 40px;
+  padding-inline: 14px;
+  font-size: 16px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.aa-code-input::placeholder {
+  letter-spacing: 0.1em;
+  text-transform: none;
+}
+
+.aa-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  color: var(--fg-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+
+.aa-mark-ok {
+  color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 12%, transparent);
+  border-color: color-mix(in srgb, var(--ok) 30%, transparent);
+}
+
+/* ── invite / membership ───────────────────────────────────────────── */
+
+.aa-campaign-deadline {
+  margin-top: -8px;
+  font-size: 13.5px;
+  font-weight: 560;
+  color: var(--attention);
+}
+
+.aa-campaign-progress {
+  margin-top: 32px;
+  padding-block: 24px;
+  border-block: 1px solid var(--line);
+}
+
+.aa-campaign-progress h2 {
+  margin-bottom: 16px;
+}
+
+.aa-progress-count {
+  font-size: 16px;
+  font-weight: 560;
+  color: var(--fg);
+}
+
+.aa-progress-remaining {
+  margin-top: 5px;
+  font-size: 13.5px;
+  color: var(--fg-dim);
+}
+
+.aa-tier {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.aa-tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px 5px 9px;
+  font-size: 13px;
+  font-weight: 560;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.aa-tier-badge svg {
+  color: var(--accent);
+}
+
+/* Permanent is the reward tier — fill it with the brand green, dark text (never white on green). */
+.aa-tier-permanent {
+  color: var(--on-accent);
+  background: var(--accent);
+  border-color: transparent;
+}
+
+.aa-tier-permanent svg {
+  color: var(--on-accent);
+}
+
+.aa-tier-status {
+  font-size: 13.5px;
+  color: var(--fg-dim);
+}
+
+.aa-trial-countdown {
+  white-space: nowrap;
+}
+
+.aa-trial-countdown-value {
+  display: inline-block;
+  width: 7ch;
+  color: var(--attention);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.aa-progress {
+  height: 6px;
+  margin-top: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.aa-progress > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.aa-invite-link {
+  margin-top: 22px;
+}
+
+.aa-invite-tabs {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 12px;
+  padding: 2px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+}
+
+.aa-invite-tabs button {
+  min-width: 92px;
+  height: 30px;
+  padding-inline: 12px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--fg-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.aa-invite-tabs button:hover {
+  color: var(--fg-dim);
+}
+
+.aa-invite-tabs button[aria-selected='true'] {
+  color: var(--fg);
+  background: var(--surface-2);
+}
+
+.aa-input-code {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.aa-input-code::placeholder {
+  letter-spacing: normal;
+}
+
+.aa-bind {
+  margin-top: 24px;
+}
+
+.aa-bind-title,
+.aa-revealed-title {
+  font-weight: 560;
+}
+
+.aa-bind .aa-key-form {
+  margin-top: 12px;
+}
+
+.aa-downline {
+  margin-top: 40px;
+}
+
+.aa-downline h2 {
+  margin-bottom: 6px;
+}
+
+.aa-downline-hint {
+  margin-bottom: 16px;
+  color: var(--fg-dim);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.aa-ref-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-block: 12px;
+  border-top: 1px solid var(--line);
+}
+
+.aa-ref-list li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.aa-downline-empty p + p {
+  max-width: calc(56ch * var(--measure-scale));
+  margin-top: 8px;
+  color: var(--fg-dim);
+}
+
+.aa-btn-more {
+  margin-top: 18px;
+}
+
+/* ── misc ──────────────────────────────────────────────────────────── */
+
+.aa-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .aa-auth h1,
+  .dashboard-content h1 {
+    font-size: 26px;
+  }
+
+  .aa-key-list li {
+    align-items: flex-start;
+  }
+
+  .aa-key-list .aa-btn-small {
+    flex: none;
+  }
+}

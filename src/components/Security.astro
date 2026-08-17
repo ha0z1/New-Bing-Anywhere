@@ -1,0 +1,80 @@
+---
+import Icon from './Icon.astro'
+import { useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = useCopy(lang)
+---
+
+<section class="section security">
+  <div class="wrap cols">
+    <div class="head">
+      <p class="eyebrow">{c.security.label}</p>
+      <h2>{c.security.title}</h2>
+      <p class="lede">{c.security.body}</p>
+    </div>
+    <ul>
+      {
+        c.security.points.map((point) => (
+          <li>
+            <Icon name="shield" size={17} />
+            <span>{point}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cols {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+    gap: clamp(36px, 6vw, 72px);
+  }
+
+  h2 {
+    margin-top: 14px;
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.25rem);
+    max-width: calc(16ch * var(--measure-scale));
+  }
+
+  .lede {
+    margin-top: 20px;
+    max-width: calc(46ch * var(--measure-scale));
+    font-size: 15.5px;
+  }
+
+  ul {
+    align-self: center;
+  }
+
+  li {
+    display: flex;
+    gap: 14px;
+    padding: 20px 0;
+    font-size: 14.5px;
+    line-height: 1.62;
+    color: var(--fg-dim);
+    border-top: 1px solid var(--line);
+  }
+
+  li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  li :global(svg) {
+    flex: none;
+    margin-top: 3px;
+    color: var(--accent);
+  }
+
+  @media (max-width: 860px) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

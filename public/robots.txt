@@ -1,0 +1,37 @@
+# Everything on tmux.online is public documentation for an open-source tool. Search
+# crawlers and answer engines are equally welcome; the agents below are named explicitly so
+# the intent survives any future change to their own defaults.
+
+User-agent: *
+Disallow: /dashboard
+Disallow: /zh-Hant/dashboard
+Disallow: /ja/dashboard
+Disallow: /ko/dashboard
+Allow: /
+
+# Answer engines, assistants and training crawlers.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: meta-externalagent
+User-agent: Amazonbot
+User-agent: Bytespider
+User-agent: CCBot
+User-agent: cohere-ai
+User-agent: DuckAssistBot
+User-agent: MistralAI-User
+User-agent: YouBot
+Disallow: /dashboard
+Disallow: /zh-Hant/dashboard
+Disallow: /ja/dashboard
+Disallow: /ko/dashboard
+Allow: /
+
+Sitemap: https://tmux.online/sitemap-index.xml

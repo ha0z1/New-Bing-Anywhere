@@ -1,86 +1,171 @@
-# New-Bing-Anywhere
+# tmux.online
 
-English | [简体中文](README.zh-CN.md) | [Русский](README.ru.md)
+The static marketing site for AI Anywhere, served at <https://tmux.online>. Astro, no
+framework runtime, **no JavaScript bundle** — the whole thing is HTML, one stylesheet per
+page, and a handful of small inline scripts.
 
-## Browsers support
+The site itself has no backend. The account and device-authorisation service runs at
+`api.tmux.online` (its repository is `../AA-Server`) and authorises each computer before the
+local service starts.
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://addons.mozilla.org/zh-CN/firefox/addon/new-bing-anywhere/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)<br/>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/brave/brave_48x48.png" alt="Brave" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)<br/>Brave | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)<br/>Opera | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/vivaldi/vivaldi_48x48.png" alt="Vivaldi" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)<br/>Vivaldi | [<img src="https://arc.net/favicon.png" alt="Arc" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)<br/>Arc | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/archive/360-secure/360-secure_48x48.png" alt="360 Secure" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)<br/>360 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/main/src/yandex/yandex_48x48.png" alt="360 Secure" width="24px" height="24px" />](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en)<br/>Yandex |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| latest | latest | latest | latest | latest | latest | latest | latest | latest |
+```bash
+pnpm install
+pnpm dev        # http://localhost:4321
+pnpm build      # → dist/
+pnpm preview    # serve dist/
+pnpm lint       # prettier --check . && astro check — must pass before committing
+pnpm format     # prettier --write .
+pnpm images     # regenerate public/og.png and the raster icons from src/assets
+```
 
-## Install
+## Layout
 
-- Chrome and other Chromium-based browsers:
-  - [Get the extension from the Chrome Web Store.](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi)
-- Firefox:
-  - [Get the add-on from Mozilla Add-On Site.](https://addons.mozilla.org/en-US/firefox/addon/new-bing-anywhere/) If it's not working, see [this issue](https://github.com/ha0z1/New-Bing-Anywhere/issues/33).
+```
+src/i18n/en.ts               every visible string, English
+src/i18n/zh-Hant.ts          the same object, 繁體中文
+src/i18n/index.ts            locale table, path helpers
+src/lib/llms.ts              llms.txt / llms-full.txt, generated from the copy tables
+src/lib/api.ts               typed account API client, imported by the islands
+src/lib/icons.ts             icon paths, shared by Icon.astro and islands/Icon.tsx
+src/components/Home.astro    the landing page, parameterised by locale
+src/components/Schema.astro  JSON-LD, also generated from the copy tables
+src/components/Dashboard.astro   /dashboard/* — shell and capability sidebar
+src/components/RouteRedirect.astro  query-preserving compatibility redirects
+src/islands/AccountPanel.tsx     React: session, devices, API keys, membership
+src/islands/DevicePanel.tsx      React: device-code approval
+src/styles/auth.css              global styles for the islands
+src/pages/index.astro        /          → Home lang="en"
+src/pages/dashboard/        /dashboard/* → account utilities   (noindex)
+src/pages/account.astro      /account   → compatibility redirect
+src/pages/device.astro       /device    → query-preserving compatibility redirect
+src/pages/zh-Hant/           /zh-Hant   → localized home and dashboard, 繁體中文
+public/install.sh            served at https://tmux.online/install.sh
+public/_headers              Cloudflare response headers (content-type, caching, robots)
+worker/index.js              the only server-side code: 301 www → apex
+wrangler.jsonc               Cloudflare Workers static-assets config
+```
 
-## Use New Bing Any Browser Any Area
+No component holds literal prose — copy lives in the `src/i18n/*.ts` tables, so a locale is
+a data file rather than a rewrite. The JSON-LD and the llms.txt files are derived from those
+same tables, which is what stops the page and its machine-readable mirrors from drifting
+apart.
 
-Using this extension, you can use New Bing in browsers other than Edge,
+## Islands
 
-For example, all browsers based on the Chromium core, such as Chrome / Edge / Brave, or Arc.
+Every page is prerendered to HTML at build time. React hydrates only the dashboard surfaces
+because those depend on a session and, for device approval, on `?user_code=`. The islands are
+passed their copy as props, so a page ships one locale, not all of them.
 
-An overseas IP is required if you are from mainland China or Russia.
+The marketing pages therefore carry **no framework at all**: no `<astro-island>`, no script
+tags, just HTML, CSS and three short inline scripts (copy button, header, language cookie).
+That is easy to lose by accident, so it is worth re-checking after any change:
 
-update 2023.7.6: Hong Kong IP doesn’t work either
+```bash
+grep -c astro-island dist/index.html          # must be 0
+grep -o '_astro/[^"]*\.js' dist/index.html    # must be empty
+```
 
-## Most people fix their problems with the following quick fixes:
+Two consequences worth knowing:
 
-- [Frequently Asked Questions 常见问题自查手册 (FAQ) #8](https://github.com/ha0z1/New-Bing-Anywhere/issues/8).
-- Change a Microsoft account.
-- Whitelist bing.com if you use an Adblocker or a VPN.
-- Opera Users, [Turn on "Allow access to search page results"](https://github.com/ha0z1/New-Bing-Anywhere/issues/58#issuecomment-1592207565)
-- Brave Users, you need to allow third-party cookies from '\*.google.xxx'. Brave has a bug,you have to disable and enable erery time on launch [https://github.com/ha0z1/New-Bing-Anywhere/issues/76#issuecomment-1628103920](https://github.com/ha0z1/New-Bing-Anywhere/issues/76#issuecomment-1628103920) or downgrade to [old version](https://github.com/brave/brave-browser/releases/tag/v1.50.114).
-- Firefox Users, you must use version 110 or up! Please update your browser.
-- Or sometimes just refresh a couple of times! Microsoft rushed their release, and it's still buggy.
+- **Island styles cannot be scoped.** Astro's `<style>` scoping stamps a data attribute onto
+  the elements the `.astro` file itself emits, and React renders its own DOM, which never
+  gets stamped. Island styles live in `src/styles/auth.css` and are imported from the
+  `.tsx`, so they are pulled onto the hydrating pages only.
+- **The header must not import `src/lib/api.ts`.** It renders on the landing page, and that
+  import would drag the island bundle — and React — onto it to decide one link's label. It
+  runs its own `fetch` and parks the promise on `window.__aaSession`, which `getSession()`
+  reuses so a dashboard page asks for the session once rather than twice.
 
-## Features
+## Adding a language
 
-- Use New Bing in all browsers, not just Edge.
-- Mainland China and Russia users' access to Bing is optimized.
-- Open the original window by clicking the Logo link on the Bing search page.
-- Bing and Google switch buttons.
-- New Bing Image Create support.
-- Search engine sidebar integration: It combines Bing's natural search and AI recommendations, meaning that a once search will utilize both Google and Bing, two excellent search engines. This extension aims to provide more efficient and useful search results than entertainment.
-- Multi-language support.
+English is the default and is served unprefixed (`/`). Everything else is served under its
+own prefix (`/zh-Hant`), matching the locale codes the app itself uses.
 
-## TODO
+1. `src/i18n/<lang>.ts` — export an object typed `Copy` (TypeScript lists anything missing).
+2. Register it in `copy` in `src/i18n/index.ts`, and add an Open Graph territory to
+   `ogLocales` there.
+3. Copy `src/pages/zh-Hant/` — an `index.astro`, a `404.astro` and the two `.txt` endpoints,
+   each four lines.
+4. If the script is not Latin, check the `:lang()` block at the bottom of
+   `src/styles/global.css`. Latin tracking and leading are wrong for Hanzi, and `ch`-based
+   measures hold half as many characters, which is what `--measure-scale` compensates for.
 
-- ChatGPT support
-- Arabic and other right-to-left language support
-- Multi-level caching strategy acceleration
+The language switcher in the header and footer, the `<link rel="alternate">` tags, the
+`og:locale:alternate` tags and the sitemap all read from `copy`, so they light up on their
+own. The switcher stays hidden while only one locale is shipped.
 
-## Support the Author
+The hero slogan is deliberately not translated and carries `lang="en"` so it keeps Latin
+typography inside a CJK page.
 
-Maintaining software is not easy. You can support the author in the following ways:
+### The `L` cookie
 
-<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/343190af-95ce-4615-affe-46100e6eb6c8" width=120 align="right">
-<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/b241ba84-a528-470f-8512-67eb26e9f18f" width=120 align="right">
-<img src="https://github.com/ha0z1/New-Bing-Anywhere/assets/4150641/8472f9bc-a5b5-4f3e-a676-f8cda33a8232" alt="TJw762hu2u4cT9PJbc1eqaqgyHQGe3FgRv" width=120 align="right">
+Every page view writes the locale it is showing to a cookie named `L` — `L=zh-Hant` — on
+the registrable domain (`domain=.tmux.online`, `path=/`, one year, `SameSite=Lax`,
+`Secure` over https). Anything else under tmux.online can therefore read the visitor's
+language straight off the request rather than re-deriving it from the URL or from
+`Accept-Language`.
 
-- Buy the author a coffee (you can add the author as a friend to get priority response to requests and acknowledgment in the credits list)
-- Give the software positive [ratings](https://chrome.google.com/webstore/detail/new-bing-anywhere-bing-ch/hceobhjokpdbogjkplmfjeomkeckkngi/reviews?hl=en) and stars on the app store
-- Review Github Notifications and help others answer issues in the [issue tracker](https://github.com/ha0z1/New-Bing-Anywhere/issues)
-- When reporting issues, provide as many details and reproducible steps as possible to help the author locate the problem instead of single line reports or duplicates
-- Share and recommend to friends
-- View sponsor ads (friendly reminder to consume rationally)
+Set from the client (`src/components/LangCookie.astro`), not as a `Set-Cookie` from the
+Worker: a response carrying `Set-Cookie` is not edge-cacheable. Off the real domain —
+localhost, `astro preview`, a Workers preview URL — the `Domain` attribute is omitted and
+the cookie is host-only, because a `Domain` naming a host you are not on is rejected
+outright.
 
-## Thank you to the following donors
+The root `/device` compatibility route is the one reader: it sends the device-code flow to
+the matching localized dashboard route. Unknown or missing values fall back to English.
+Every content and dashboard page still uses its URL as the rendering source of truth.
 
-> If you want to advertise, please leave a donation note or [contact me](https://github.com/ha0z1/New-Bing-Anywhere?tab=security-ov-file)
+## The account pages
 
-|                                         |          |            |
-| --------------------------------------- | -------- | ---------- |
-| \*法                                    | CNY 8.8  | 03/14/2024 |
-| A\*e                                    | CNY 20   | 02/27/2024 |
-| \*\* 张                                 | CNY 20   | 01/31/2024 |
-| \*\*霖                                  | CNY 0.01 | 01/24/2024 |
-| \*\*毛                                  | CNY 0.01 | 01/242024  |
-| [Vileicht](https://github.com/Vileicht) | CNY 50   | 01/03/2024 |
-| \*\*彤                                  | CNY 1.00 | 11/14/2023 |
-| \*\*欣                                  | CNY 10   | 10/31/2023 |
+`/dashboard/devices`, `/dashboard/api-keys`, `/dashboard/membership` and
+`/dashboard/device` are the only pages that talk to a server and hydrate. They call
+`api.tmux.online` with plain `fetch` from `src/lib/api.ts`. There is
+deliberately **no better-auth client library**: those endpoints are ordinary HTTP, and a
+typed 130-line module is easier to reason about than a dependency. The contract it
+implements is documented in `../AA-Server/docs/frontend-integration.md`.
 
-## Communication
+Dashboard pages are `noindex` in three places — the `noindex` prop on `Base` (which also
+drops the JSON-LD and hreflang alternates), an `X-Robots-Tag` in `public/_headers`, and the
+sitemap `filter` in `astro.config.mjs`. `/device` remains as a cookie-aware compatibility
+redirect to the localized `/dashboard/device` and preserves its one-time code query string.
 
-[![Telegram](https://user-images.githubusercontent.com/4150641/229351983-a6a455e8-7b5e-4f58-bf80-1f4949ae8276.jpg 'Telegram')](https://t.me/new_bing_anywhere)
+To point the pages at a local API during development:
+
+```bash
+PUBLIC_API_URL=http://localhost:51994 pnpm dev
+```
+
+## install.sh
+
+`public/install.sh` installs tmux when needed, verifies Node.js 22.5+, installs the latest
+`@ai-anywhere/cli` globally, and then runs `ai-anywhere up` in the foreground. The CLI opens
+the device sign-in flow when this computer is not authorised and continues startup after
+approval. `_headers` serves the script as `text/plain` with a 5-minute cache.
+
+## Deploying
+
+Cloudflare Workers static assets (not Pages). `wrangler.jsonc` declares `tmux.online` and
+`www.tmux.online` as custom domains, so the first successful deploy creates the DNS records
+and hostname bindings itself — the zone just has to exist in the account.
+
+`worker/index.js` sits in front of the assets purely to 301 `www` to the apex. A zone-level
+Redirect Rule would do the same without running code, but creating one needs zone write
+access that the wrangler OAuth token does not carry. Because of it, `run_worker_first` is
+on and every request costs a Worker invocation — if the site ever outgrows the free
+request allowance, replace the Worker with a Redirect Rule and drop `main`,
+`run_worker_first` and `binding` from `wrangler.jsonc`.
+
+Locally:
+
+```bash
+npx wrangler login     # one-time, opens a browser
+pnpm run deploy        # astro build && wrangler deploy
+```
+
+From CI: `.github/workflows/deploy.yml` deploys every push to `main`. It needs two
+repository secrets:
+
+| Secret                  | Where it comes from                                                                                                                                                                                  |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN`  | Dashboard → My Profile → API Tokens → Create Token, with **Workers Scripts: Edit**, **Workers Routes: Edit**, **Zone: Read**, **DNS: Edit** on the tmux.online zone, plus **Account Settings: Read** |
+| `CLOUDFLARE_ACCOUNT_ID` | Dashboard → Workers & Pages → Account ID                                                                                                                                                             |

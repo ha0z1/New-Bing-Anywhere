@@ -1,0 +1,12 @@
+---
+import Dashboard from './Dashboard.astro'
+import type { Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+---
+
+<Dashboard lang={lang} section="devices" />
