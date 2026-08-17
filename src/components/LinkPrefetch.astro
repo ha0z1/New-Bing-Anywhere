@@ -2,20 +2,79 @@
   ;(() => {
     if (navigator.connection?.saveData) return
 
+    const THROTTLE_MS = 150
     const prefetched = new Set()
-    function prefetch(anchor) {
+    // Keep every hover, but always move the newest candidate to the front of the throttled queue.
+    const pendingHrefs = []
+    const pendingSet = new Set()
+    let latestHoveredHref
+    let throttleTimer
+
+    function hrefFrom(anchor) {
       const url = new URL(anchor.href, location.href)
       url.hash = ''
       const href = url.href
-      if (url.origin !== location.origin || href === location.href.replace(/#.*$/, '') || prefetched.has(href)) return
+      if (url.origin !== location.origin || href === location.href.replace(/#.*$/, '')) return
+      return href
+    }
+
+    function prefetch(href, priority = 'low') {
+      if (href === location.href.replace(/#.*$/, '') || prefetched.has(href)) return
 
       prefetched.add(href)
       const link = document.createElement('link')
       link.rel = 'prefetch'
       link.as = 'document'
       link.href = href
-      link.fetchPriority = 'low'
+      link.fetchPriority = priority
       document.head.append(link)
+    }
+
+    function removePending(href) {
+      if (!pendingSet.delete(href)) return
+      const index = pendingHrefs.indexOf(href)
+      if (index !== -1) pendingHrefs.splice(index, 1)
+    }
+
+    function scheduleNext() {
+      if (throttleTimer !== undefined || pendingHrefs.length === 0) return
+      throttleTimer = window.setTimeout(flushNext, THROTTLE_MS)
+    }
+
+    function flushNext() {
+      throttleTimer = undefined
+      const href = pendingHrefs.shift()
+      if (!href) return
+
+      pendingSet.delete(href)
+      prefetch(href, href === latestHoveredHref ? 'high' : 'low')
+      scheduleNext()
+    }
+
+    function prioritizePrefetch(anchor) {
+      const href = hrefFrom(anchor)
+      latestHoveredHref = href
+      if (!href || prefetched.has(href)) return
+
+      removePending(href)
+      pendingHrefs.unshift(href)
+      pendingSet.add(href)
+      scheduleNext()
+    }
+
+    function prefetchFocused(anchor) {
+      const href = hrefFrom(anchor)
+      if (!href) return
+
+      latestHoveredHref = undefined
+      removePending(href)
+      if (throttleTimer !== undefined) {
+        window.clearTimeout(throttleTimer)
+        throttleTimer = undefined
+      }
+
+      prefetch(href, 'high')
+      scheduleNext()
     }
 
     function anchorFrom(target) {
@@ -26,7 +85,7 @@
       'pointerover',
       (event) => {
         const anchor = anchorFrom(event.target)
-        if (anchor) prefetch(anchor)
+        if (anchor && anchor !== anchorFrom(event.relatedTarget)) prioritizePrefetch(anchor)
       },
       { passive: true },
     )
@@ -35,7 +94,7 @@
       'focusin',
       (event) => {
         const anchor = anchorFrom(event.target)
-        if (anchor) prefetch(anchor)
+        if (anchor) prefetchFocused(anchor)
       },
       { passive: true },
     )
