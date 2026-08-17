@@ -20,7 +20,7 @@
     "@astrojs/sitemap": "^3.7.0",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
-    "astro": "^5.16.0",
+    "astro": "^7.1.1",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^0.14.1",
     "react": "^19.2.8",
