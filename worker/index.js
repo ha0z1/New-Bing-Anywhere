@@ -23,6 +23,7 @@ import dashboardMembershipZhHant from '../dist/zh-Hant/dashboard/membership.html
 // correction. Everything else goes to Workers Static Assets, which still applies _headers
 // and html_handling. `assets.run_worker_first` makes those boundaries apply to every request.
 const APEX = 'tmux.online'
+const HSTS_POLICY = 'max-age=63072000; includeSubDomains; preload'
 const DASHBOARD_HTML = new Map([
   ['/dashboard', dashboardIndexEn],
   ['/dashboard/api-keys', dashboardApiKeysEn],
@@ -53,7 +54,7 @@ const DASHBOARD_HEADERS = {
   'Content-Type': 'text/html; charset=utf-8',
   'Permissions-Policy': 'geolocation=(), microphone=(), camera=(), interest-cohort=()',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
-  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Strict-Transport-Security': HSTS_POLICY,
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'X-Robots-Tag': 'noindex, nofollow',
@@ -66,6 +67,7 @@ export default {
    */
   async fetch(request, env) {
     const url = new URL(request.url)
+    const isHttps = url.protocol === 'https:'
 
     const isApex = url.hostname === APEX
     const isWww = url.hostname === `www.${APEX}`
@@ -73,7 +75,9 @@ export default {
       url.protocol = 'https:'
       url.hostname = APEX
       // The HTTPS apex is the only canonical origin and this redirect should be cached.
-      return Response.redirect(url.toString(), 301)
+      const headers = { Location: url.toString() }
+      if (isHttps) headers['Strict-Transport-Security'] = HSTS_POLICY
+      return new Response(null, { status: 301, headers })
     }
 
     const dashboardHtml = DASHBOARD_HTML.get(url.pathname)
