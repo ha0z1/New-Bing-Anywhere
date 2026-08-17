@@ -618,6 +618,7 @@ const links = [
     const switchAccountButton = accountMenu.querySelector('[data-account-switch]')
     const signOutButton = accountMenu.querySelector('[data-account-sign-out]')
     const accountIdentity = accountMenu.querySelector('.account-identity')
+    const devicesDashboard = accountMenu.dataset.dashboard
 
     // A referral visitor belongs on Membership after sign-in, not the default Devices page.
     // RefCapture runs in <head>, so this also works after the install flow opens a fresh tab.
@@ -640,14 +641,8 @@ const links = [
     }
 
     acct.addEventListener('click', () => {
-      if (accountMenu.dataset.authState !== 'in') {
-        location.href = accountMenu.dataset.dashboard
-        return
-      }
-      requestMembershipOnDemand()
-      const open = !accountMenu.hasAttribute('data-open')
-      accountMenu.toggleAttribute('data-open', open)
-      acct.setAttribute('aria-expanded', String(open))
+      const destination = accountMenu.dataset.authState === 'in' ? devicesDashboard : accountMenu.dataset.dashboard
+      if (destination) location.href = destination
     })
 
     /*
