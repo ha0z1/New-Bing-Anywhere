@@ -42,7 +42,7 @@ export const ogLocales: Record<Lang, string> = {
 }
 
 // Only locales present here are actually shipped; the rest are declared intent.
-export const copy: Partial<Record<Lang, Copy>> = { en, 'zh-Hant': zhHant, ja, ko }
+export const copy: Partial<Record<Lang, Copy>> = { en, ja, ko, 'zh-Hant': zhHant }
 
 export const shippedLangs = Object.keys(copy) as Lang[]
 
