@@ -6,6 +6,8 @@ import Schema from '../components/Schema.astro'
 import LangCookie from '../components/LangCookie.astro'
 import RefCapture from '../components/RefCapture.astro'
 import ReferralErrorBanner from '../components/ReferralErrorBanner.astro'
+import AnalyticsHead from '../components/AnalyticsHead.astro'
+import AnalyticsConsent from '../components/AnalyticsConsent.astro'
 import { localizePath, shippedLangs, defaultLang, ogLocales, useCopy, type Lang } from '../i18n'
 
 interface Props {
@@ -39,6 +41,7 @@ const ogImage = new URL('/og.png', site)
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <AnalyticsHead />
 
     {
       /*
@@ -110,5 +113,6 @@ const ogImage = new URL('/og.png', site)
       <slot />
     </main>
     {showFooter && <Footer lang={lang} />}
+    <AnalyticsConsent copy={c.analytics} />
   </body>
 </html>

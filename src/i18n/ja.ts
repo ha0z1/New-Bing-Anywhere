@@ -163,7 +163,7 @@ export const ja: Copy = {
       { icon: 'power', label: '再起動してもタスクは継続' },
       { icon: 'nodes', label: 'リモートマシンを一か所で管理' },
       { icon: 'phone', label: 'スマートフォンでも使える' },
-      { icon: 'shield', label: 'ローカル完結。データ収集なし' },
+      { icon: 'shield', label: 'ターミナルの内容はアカウントサービスへ送信されません' },
     ],
   },
   extension: {
@@ -226,6 +226,13 @@ export const ja: Copy = {
       },
     ],
     langLabel: '言語',
+  },
+  analytics: {
+    label: 'Cookie の設定',
+    body: 'Cookie の使用を許可しますか？許可すると、アクセス解析 Cookie を使ってサイトへの訪問状況と利用状況を計測します。ターミナルの内容、コマンド、アカウント情報、招待コードは送信されません',
+    accept: '許可する',
+    reject: '拒否する',
+    settings: 'Cookie の設定',
   },
   auth: {
     signInWithGitHub: 'GitHub で続行',
