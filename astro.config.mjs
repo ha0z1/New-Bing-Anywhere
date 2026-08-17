@@ -52,6 +52,17 @@ export default defineConfig({
     // Last: minify the inline scripts the bundler leaves verbatim. Runs on the finished HTML.
     minifyInlineScripts(),
   ],
+  vite: {
+    build: {
+      /**
+       * Keep the hero's marks as files. Most of them are under Vite's 4 KiB inline threshold, so
+       * the default would fold them back into the document as data URIs — which is exactly the
+       * render-blocking markup moving them out of the HTML was meant to remove. Everything else
+       * keeps the default behaviour.
+       */
+      assetsInlineLimit: (filePath) => (filePath.includes('/src/marks/') ? false : undefined),
+    },
+  },
   build: {
     inlineStylesheets: 'auto',
     // `preserve` mirrors src/pages into dist, so `zh-Hant/404.astro` lands at

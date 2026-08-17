@@ -2,6 +2,14 @@
 import InstallCommand from './InstallCommand.astro'
 import Demo from './Demo.astro'
 import { CLI_MARKS } from '../lib/clis'
+
+/**
+ * Through the build pipeline, not `public/`, so each mark lands in `/_astro/` under a content
+ * hash and inherits the `immutable` header the rest of the fingerprinted assets get. Copied
+ * verbatim out of `public/` they kept their plain names, and an unhashed file cannot be cached
+ * forever — every visit spent a revalidation round trip on an icon that never changes.
+ */
+const MARK_URLS = import.meta.glob<string>('../marks/*.svg', { eager: true, query: '?url', import: 'default' })
 import { useCopy, type Lang } from '../i18n'
 
 interface Props {
@@ -20,7 +28,7 @@ const c = useCopy(lang)
         <img
           class:list={['mark', m.from && 'wide']}
           style={`--x:${m.x}%;--y:${m.y}%;--r:${m.r}deg;--d:${9 + i * 1.7}s;--delay:-${i * 1.3}s;--lift:${i % 2 ? -9 : 7}px`}
-          src={`/marks/${m.id}.svg`}
+          src={MARK_URLS[`../marks/${m.id}.svg`]}
           width={m.s}
           height={m.s}
           alt=""
