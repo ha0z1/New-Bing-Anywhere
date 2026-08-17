@@ -3,8 +3,9 @@ import type { Copy } from './index'
 
 export const ko: Copy = {
   meta: {
-    title: 'tmux.online — 내 Agent를 어떤 브라우저에서든. 어디서든',
-    description: '명령어 하나로 확인이 필요한 작업을 한곳에서 관리하세요',
+    title: '브라우저에서 AI 코딩 에이전트 제어 | tmux.online',
+    description:
+      'Claude Code, Codex, Gemini CLI, Aider, Copilot CLI의 tmux 세션을 어느 브라우저에서나 확인하고 제어하세요. 터미널 데이터는 내 기기를 벗어나지 않습니다',
     ogAlt: '확인이 필요한 AI 코딩 작업을 보여 주는 tmux.online 워크스페이스',
   },
   brand: {
@@ -33,7 +34,7 @@ export const ko: Copy = {
     installMethodLabel: '설치 방법',
     eyebrow: '명령줄을 웹 페이지처럼 간편하게',
     title: '내 Agent를 어떤 브라우저에서든. 어디서든',
-    lede: '명령어 하나로 확인이 필요한 작업을 한곳에서 관리하세요',
+    lede: 'tmux에서 실행 중인 Claude Code, Codex 및 모든 AI 코딩 작업을 한곳에서 확인하세요. 개입이 필요할 때만 어느 브라우저에서나 작업을 이어갈 수 있습니다',
     installLabel: 'macOS 및 Linux',
     copy: '복사',
     copied: '복사됨',

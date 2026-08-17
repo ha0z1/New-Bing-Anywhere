@@ -1,0 +1,23 @@
+---
+import Guide from '../components/Guide.astro'
+import { localizePath, shippedLangs, type Lang } from '../i18n'
+import { guideEntries, type GuideId } from '../i18n/guides'
+
+export function getStaticPaths() {
+  return shippedLangs.flatMap((lang) =>
+    guideEntries.map(([id, path]) => ({
+      params: { guide: localizePath(path, lang).slice(1) },
+      props: { lang, id },
+    })),
+  )
+}
+
+interface Props {
+  lang: Lang
+  id: GuideId
+}
+
+const { lang, id } = Astro.props
+---
+
+<Guide lang={lang} id={id} />

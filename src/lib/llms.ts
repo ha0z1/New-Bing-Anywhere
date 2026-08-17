@@ -1,4 +1,5 @@
 import { languages, localizePath, shippedLangs, useCopy, type Lang } from '../i18n'
+import { guideEntries, useGuides } from '../i18n/guides'
 import { API_URL, INSTALL_COMMAND, INSTALL_URL, ISSUES_URL, NPM_URL, REPO_URL, SITE_URL } from '../config'
 
 /**
@@ -20,7 +21,11 @@ const loc = (path: string, lang: Lang) => `${SITE_URL}${localizePath(path, lang)
 // changes language, and `Language:` says which.
 export const llmsIndex = (lang: Lang): string => {
   const c = useCopy(lang)
+  const guides = useGuides(lang)
   const others = shippedLangs.filter((l) => l !== lang)
+  const guideLinks = guideEntries
+    .map(([id, path]) => `- [${guides.pages[id].title}](${loc(path, lang)}): ${guides.pages[id].description}`)
+    .join('\n')
 
   return `# ${c.brand.name} — AI Anywhere
 
@@ -49,6 +54,7 @@ before the local service starts; terminal sessions, prompts and keystrokes stay 
 - [Home](${loc('/', lang)}): what it does, how to install it, and the FAQ
 - [install.sh](${abs(INSTALL_URL)}): the shell installer the site advertises
 - [Full site text](${loc('/llms-full.txt', lang)}): every section of the site as plain markdown
+${guideLinks}
 
 ## Other languages
 
@@ -64,6 +70,7 @@ ${others.map((l) => `- [${languages[l]} (${l})](${loc('/', l)}): the same page, 
 
 export const llmsFull = (lang: Lang): string => {
   const c = useCopy(lang)
+  const guides = useGuides(lang)
   const s = []
 
   s.push(`# ${c.brand.name} — ${c.hero.title}`)
@@ -87,6 +94,18 @@ export const llmsFull = (lang: Lang): string => {
 
   s.push(`## ${c.faq.title}`)
   for (const item of c.faq.items) s.push(`### ${item.q}\n\n${item.a}`)
+
+  for (const [id] of guideEntries) {
+    const guide = guides.pages[id]
+    s.push(`## ${guide.title}`)
+    s.push(guide.summary)
+    for (const section of guide.sections) {
+      s.push(`### ${section.title}`)
+      s.push(section.body.join('\n\n'))
+      if (section.bullets) s.push(section.bullets.map((item) => `- ${item}`).join('\n'))
+      if (section.command) s.push('```sh\n' + section.command + '\n```')
+    }
+  }
 
   s.push(`## ${c.cta.title}`)
   s.push(c.cta.body)

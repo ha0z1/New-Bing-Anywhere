@@ -7,89 +7,101 @@ import { INSTALL_URL, NPM_URL, REPO_URL, SITE_URL } from '../config'
 interface Props {
   lang: Lang
   canonical: string
+  title: string
+  description: string
+  kind: 'home' | 'page'
 }
 
-const { lang, canonical } = Astro.props
+const { lang, canonical, title, description, kind } = Astro.props
 const c = useCopy(lang)
 
-const graph = {
+const graph: Record<string, unknown>[] = [
+  {
+    '@type': 'Organization',
+    '@id': `${SITE_URL}/#organization`,
+    name: 'AI Anywhere',
+    url: SITE_URL,
+    logo: { '@type': 'ImageObject', url: `${SITE_URL}/apple-touch-icon.png`, width: 180, height: 180 },
+    sameAs: [REPO_URL, NPM_URL],
+  },
+  {
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    name: c.brand.name,
+    alternateName: 'AI Anywhere',
+    url: SITE_URL,
+    description: c.meta.description,
+    inLanguage: lang,
+    publisher: { '@id': `${SITE_URL}/#organization` },
+  },
+  {
+    '@type': 'SoftwareApplication',
+    '@id': `${SITE_URL}/#software`,
+    name: 'AI Anywhere',
+    alternateName: c.brand.name,
+    applicationCategory: 'DeveloperApplication',
+    applicationSubCategory: 'Terminal',
+    operatingSystem: 'macOS, Linux',
+    url: SITE_URL,
+    downloadUrl: `${SITE_URL}${INSTALL_URL}`,
+    installUrl: `${SITE_URL}${INSTALL_URL}`,
+    softwareRequirements: 'tmux; Node.js 22.5 or newer',
+    description: c.meta.description,
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    featureList: c.features.items.map((item) => item.title),
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    image: `${SITE_URL}/og.png`,
+  },
+  {
+    '@type': kind === 'home' ? ['WebPage', 'FAQPage'] : 'WebPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: title,
+    description,
+    inLanguage: lang,
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    about: { '@id': `${SITE_URL}/#software` },
+    primaryImageOfPage: { '@type': 'ImageObject', url: `${SITE_URL}/og.png`, width: 1200, height: 630 },
+    ...(kind === 'home'
+      ? {
+          mainEntity: c.faq.items.map((item) => ({
+            '@type': 'Question',
+            name: item.q,
+            acceptedAnswer: { '@type': 'Answer', text: item.a },
+          })),
+        }
+      : {}),
+  },
+]
+
+if (kind === 'home') {
+  graph.push({
+    '@type': 'HowTo',
+    '@id': `${SITE_URL}/#install`,
+    name: c.steps.title,
+    description: c.hero.requirement,
+    tool: [
+      { '@type': 'HowToTool', name: 'tmux' },
+      { '@type': 'HowToTool', name: 'Node.js 22.5 or newer' },
+    ],
+    step: c.steps.items.map((step, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: step.title,
+      text: step.body,
+    })),
+  })
+}
+
+const document = {
   '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${SITE_URL}/#organization`,
-      name: 'AI Anywhere',
-      url: SITE_URL,
-      logo: { '@type': 'ImageObject', url: `${SITE_URL}/apple-touch-icon.png`, width: 180, height: 180 },
-      sameAs: [REPO_URL, NPM_URL],
-    },
-    {
-      '@type': 'WebSite',
-      '@id': `${SITE_URL}/#website`,
-      name: c.brand.name,
-      alternateName: 'AI Anywhere',
-      url: SITE_URL,
-      description: c.meta.description,
-      inLanguage: lang,
-      publisher: { '@id': `${SITE_URL}/#organization` },
-    },
-    {
-      '@type': 'SoftwareApplication',
-      '@id': `${SITE_URL}/#software`,
-      name: 'AI Anywhere',
-      alternateName: c.brand.name,
-      applicationCategory: 'DeveloperApplication',
-      applicationSubCategory: 'Terminal',
-      operatingSystem: 'macOS, Linux',
-      url: SITE_URL,
-      downloadUrl: `${SITE_URL}${INSTALL_URL}`,
-      installUrl: `${SITE_URL}${INSTALL_URL}`,
-      softwareRequirements: 'tmux; Node.js 22.5 or newer',
-      description: c.meta.description,
-      isAccessibleForFree: true,
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-      featureList: c.features.items.map((item) => item.title),
-      publisher: { '@id': `${SITE_URL}/#organization` },
-      image: `${SITE_URL}/og.png`,
-    },
-    {
-      '@type': ['WebPage', 'FAQPage'],
-      '@id': `${canonical}#webpage`,
-      url: canonical,
-      name: c.meta.title,
-      description: c.meta.description,
-      inLanguage: lang,
-      isPartOf: { '@id': `${SITE_URL}/#website` },
-      about: { '@id': `${SITE_URL}/#software` },
-      primaryImageOfPage: { '@type': 'ImageObject', url: `${SITE_URL}/og.png`, width: 1200, height: 630 },
-      mainEntity: c.faq.items.map((item) => ({
-        '@type': 'Question',
-        name: item.q,
-        acceptedAnswer: { '@type': 'Answer', text: item.a },
-      })),
-    },
-    {
-      '@type': 'HowTo',
-      '@id': `${SITE_URL}/#install`,
-      name: c.steps.title,
-      description: c.hero.requirement,
-      tool: [
-        { '@type': 'HowToTool', name: 'tmux' },
-        { '@type': 'HowToTool', name: 'Node.js 22.5 or newer' },
-      ],
-      step: c.steps.items.map((step, i) => ({
-        '@type': 'HowToStep',
-        position: i + 1,
-        name: step.title,
-        text: step.body,
-      })),
-    },
-  ],
+  '@graph': graph,
 }
 
 // `</script>` inside a JSON string would close this block early; nothing in the copy has one
 // today, but the escape costs nothing and removes the whole class of problem.
-const json = JSON.stringify(graph).replace(/</g, '\\u003c')
+const json = JSON.stringify(document).replace(/</g, '\\u003c')
 ---
 
 <script type="application/ld+json" is:inline set:html={json} />

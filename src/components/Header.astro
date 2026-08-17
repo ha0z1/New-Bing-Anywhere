@@ -2,6 +2,7 @@
 import Logo from './Logo.astro'
 import Icon from './Icon.astro'
 import { useCopy, localizePath, shippedLangs, languageMenu, type Lang } from '../i18n'
+import { GUIDE_PATHS, useGuides } from '../i18n/guides'
 import { API_URL, GITHUB_STARS_FALLBACK, REPO_SLUG, REPO_URL } from '../config'
 import { INVITE_CODE_PATTERN_SOURCE } from '../lib/referral'
 import { formatStars } from '../lib/stars'
@@ -12,12 +13,16 @@ interface Props {
 }
 const { lang, path = '/' } = Astro.props
 const c = useCopy(lang)
+const guides = useGuides(lang)
 const home = localizePath('/', lang)
 const dashboard = localizePath('/dashboard/devices', lang)
 const membership = localizePath('/dashboard/membership', lang)
 const starsText = formatStars(GITHUB_STARS_FALLBACK)
 // Prefixed with the home path because this header also renders away from the landing page.
-const links = [{ label: c.nav.install, href: `${home}#install` }]
+const links = [
+  { label: c.nav.install, href: `${home}#install` },
+  { label: guides.navTitle, href: localizePath(GUIDE_PATHS.install, lang) },
+]
 ---
 
 <header class="site-header" id="site-header">

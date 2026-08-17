@@ -3,8 +3,9 @@ import type { Copy } from './index'
 
 export const ja: Copy = {
   meta: {
-    title: 'tmux.online — あなたの Agent を、どのブラウザからでも。どこにいても',
-    description: 'コマンドひとつで、対応が必要なタスクをまとめて確認できます',
+    title: 'ブラウザで AI コーディングエージェントを操作 | tmux.online',
+    description:
+      'Claude Code、Codex、Gemini CLI、Aider、Copilot CLI の tmux セッションを、どのブラウザからでも確認・操作できます。ターミナルのデータはマシンの外に送信されません',
     ogAlt: '対応が必要な AI コーディングタスクを表示する tmux.online のワークスペース',
   },
   brand: {
@@ -33,7 +34,7 @@ export const ja: Copy = {
     installMethodLabel: 'インストール方法',
     eyebrow: 'コマンドラインを、Web ページのように手軽に',
     title: 'あなたの Agent を、どのブラウザからでも。どこにいても',
-    lede: 'コマンドひとつで、対応が必要なタスクをまとめて確認できます',
+    lede: 'tmux で動く Claude Code、Codex、その他の AI コーディングタスクをまとめて確認。対応が必要なときだけ、どのブラウザからでも作業に戻れます',
     installLabel: 'macOS / Linux',
     copy: 'コピー',
     copied: 'コピーしました',
