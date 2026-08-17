@@ -1,0 +1,4 @@
+Contact: https://github.com/AI-Anywhere/AI-Anywhere/security/advisories/new
+Expires: 2027-08-01T00:00:00Z
+Canonical: https://tmux.online/.well-known/security.txt
+Preferred-Languages: en, zh-Hans, zh-Hant
