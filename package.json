@@ -1,82 +1,37 @@
 {
-  "name": "new-bing-anywhere",
-  "version": "2.7.2",
+  "name": "aa-www",
+  "type": "module",
   "private": true,
-  "description": "New Bing isn't just for Edge anymore. Anywhere you want",
-  "homepage": "https://github.com/ha0z1/New-Bing-Anywhere",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ha0z1/New-Bing-Anywhere"
-  },
-  "license": "GPLv3",
-  "author": "haozi",
+  "packageManager": "pnpm@11.17.0",
+  "description": "tmux.online — static marketing site",
   "scripts": {
-    "build": "rm -rf dist && mkdir -p dist && pnpm run lint && pnpm run build:bundle",
-    "build:bundle": "NODE_ENV=production vite-node scripts/build.ts -- build",
-    "copy": "rm -rf dist && cp -r public dist",
-    "copy:soruce": "rsync -vhra . dist/source --include='**.gitignore' --exclude='/.git' --exclude='dist'  --filter=':- .gitignore' --delete-after",
-    "copy:watch": "pnpm run copy -- --watch",
-    "dev": "pnpm run lint && pnpm run '/^dev:.*/'",
-    "dev:app": "pnpm --filter app run dev",
-    "dev:bundle": "vite-node scripts/build.ts -- dev",
-    "lint": "pnpm run prettier && pnpm run lint:eslint && pnpm run lint:stylus",
-    "lint:eslint": "eslint --ext .js,.ts ./src --fix --cache",
-    "lint:stylus": "stylus-supremacy format ./src/**/*.styl  --options ./stylus-supremacy.json --replace",
-    "prepare": "husky install && pnpm run build",
-    "prettier": "prettier --cache --write .",
-    "prettier:watch": "onchange \"**/*\" -- prettier --cache --write --ignore-unknown --ignore-path .prettierignore {{changed}} > /dev/null 2>&1",
-    "test": "pnpm run lint"
-  },
-  "dependencies": {
-    "jquery": "3.7.1",
-    "uuid": "^9.0.0"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "images": "node scripts/gen-images.mjs",
+    "lint": "prettier --check . && astro check",
+    "format": "prettier --write .",
+    "deploy": "astro build && wrangler deploy"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.244",
-    "@types/fs-extra": "^11.0.1",
-    "@types/jquery": "^3.5.17",
-    "@types/node": "^20.5.7",
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
-    "@typescript-eslint/parser": "^6.5.0",
-    "copy-and-watch": "^0.1.6",
-    "esbuild": "^0.19.2",
-    "esbuild-plugin-svgr": "^2.1.0",
-    "esbuild-style-plugin": "^1.6.2",
-    "eslint": "^8.48.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "eslint-plugin-react": "^7.33.2",
-    "fs-extra": "^11.1.1",
-    "husky": "^8.0.3",
-    "md5-file": "^5.0.0",
-    "onchange": "^7.1.0",
-    "prettier": "^3.0.2",
-    "sort-package-json": "^2.5.1",
-    "stylus": "^0.59.0",
-    "stylus-supremacy": "^2.17.5",
-    "typescript": "^5.2.2",
-    "vite-node": "^0.34.3"
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/react": "^6.0.2",
+    "@astrojs/sitemap": "^3.7.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "astro": "^5.16.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "sharp": "^0.34.5",
+    "terser": "^5.49.2",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.45.0"
   },
-  "engines": {
-    "node": "^20.6.1",
-    "pnpm": "^8.8.0"
-  },
-  "extension-i18n": {
-    "en": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
-      "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country."
-    },
-    "zh_CN": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
-      "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country. 随时随地，有求必应。"
-    },
-    "zh_TW": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
-      "extensionDescription": "New Bing Chat can be used in any browser, with any search engine, and in any country. 隨時隨地，有求必應"
-    },
-    "ru": {
-      "extensionName": "New Bing Anywhere (Bing Chat GPT-4)",
-      "extensionDescription": "Чат New Bing может использоваться в любом браузере, с любым поисковым движком и в любой стране."
-    }
-  },
-  "extensionName": "New Bing Anywhere (Bing Chat GPT-4)"
+  "dependencies": {
+    "react-router-dom": "^7.18.2",
+    "swr": "^2.5.1"
+  }
 }

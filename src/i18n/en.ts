@@ -1,0 +1,349 @@
+import { INSTALL_URL, ISSUES_URL, NPM_URL, REPO_URL } from '../config'
+
+// Every visible string on the site lives here. A new locale is a sibling file that
+// satisfies `Copy` (see ./index.ts) — no component should ever hold literal prose.
+export const en = {
+  meta: {
+    title: 'tmux.online — Your agents. Any browser. Anywhere.',
+    description: 'One command brings every task that needs your attention into focus.',
+    ogAlt: 'tmux.online workspace showing AI coding tasks that need attention',
+  },
+  brand: {
+    name: 'tmux.online',
+    tagline: 'by AI Anywhere',
+  },
+  nav: {
+    primaryLabel: 'Primary navigation',
+    install: 'Install',
+    features: 'Features',
+    faq: 'FAQ',
+    github: 'GitHub',
+    signIn: 'Sign in',
+    account: 'Account',
+    skipToContent: 'Skip to content',
+  },
+  dashboard: {
+    label: 'Dashboard',
+    navLabel: 'Account management',
+    open: 'Open dashboard',
+    redirecting: 'Opening dashboard…',
+    continue: 'Continue',
+    titleSuffix: ' — tmux.online',
+  },
+  hero: {
+    installMethodLabel: 'Install method',
+    eyebrow: 'The command line, as simple as a web page.',
+    title: 'Your agents. Any browser. Anywhere.',
+    lede: 'One command brings every task that needs your attention into focus.',
+    installLabel: 'macOS and Linux',
+    copy: 'Copy',
+    copied: 'Copied',
+    copyAria: 'Copy the install command',
+    scriptLink: 'Read the script first',
+    requirement: 'Requires tmux and Node.js 22.5+.',
+  },
+  demo: {
+    caption: 'One workspace for local and remote machines — every task and tab in view.',
+    tabs: ['tmux.online', 'localhost:51984'],
+    url: '127.0.0.1:51984',
+    railTitle: 'Machines & tasks',
+    groups: [
+      {
+        name: 'This machine',
+        items: [
+          { name: 'api-server', detail: 'main · 3 panes', state: 'waiting' },
+          { name: 'web', detail: 'feat/i18n', state: 'busy' },
+          { name: 'notes', detail: 'main', state: 'idle' },
+        ],
+      },
+      {
+        name: 'caniforia',
+        items: [
+          { name: 'deploy', detail: 'main · 2 panes', state: 'idle' },
+          { name: 'logs', detail: 'tail -f', state: 'busy' },
+        ],
+      },
+    ],
+    paneTabs: ['claude', 'server', 'git'],
+    stateLabels: { waiting: 'Waiting for you', busy: 'Working', idle: '' },
+    terminal: [
+      { kind: 'prompt', text: 'claude' },
+      { kind: 'dim', text: '  ⏵ reading src/lib/layout.ts' },
+      { kind: 'dim', text: '  ⏵ reading src/state/useAttention.ts' },
+      { kind: 'plain', text: 'The drag target is computed from the pane tree, not the tmux' },
+      { kind: 'plain', text: 'layout, so splitting the view never sends a tmux command.' },
+      { kind: 'blank', text: '' },
+      { kind: 'attention', text: '  Apply this change to layout.ts?' },
+      { kind: 'plain', text: '  1. Yes   2. Yes, and don’t ask again   3. No' },
+      { kind: 'cursor', text: '  ❯ ' },
+    ],
+  },
+  steps: {
+    title: 'Up and running in three steps',
+    items: [
+      {
+        n: '01',
+        title: 'Run the installer',
+        body: 'It installs tmux if needed, downloads AI Anywhere from npm, and configures launchd or systemd to restart it after a reboot.',
+      },
+      {
+        n: '02',
+        title: 'Open the link it prints',
+        body: 'It waits for the server, then prints a localhost URL containing a token. Open the URL in any browser on that machine.',
+      },
+      {
+        n: '03',
+        title: 'Carry on where you left off',
+        body: 'Your existing windows appear on the left — nothing is restarted, reattached or moved.',
+      },
+    ],
+  },
+  features: {
+    title: 'It runs on its own and gets your attention when needed',
+    items: [
+      {
+        icon: 'terminal',
+        title: 'Open your existing tmux sessions',
+        body: 'Your live sessions open in the browser exactly as they are — nothing is migrated, copied or restarted. Pick up right where you left off.',
+      },
+      {
+        icon: 'nodes',
+        title: 'Every machine on one rail',
+        body: 'See this machine and every server you connect to over SSH on a single rail. Each host keeps its own tasks, all within reach.',
+      },
+      {
+        icon: 'signal',
+        title: 'Know when a task needs you',
+        body: 'As soon as a CLI pauses to ask something, its task lights up. Work on anything else until then — no watching required.',
+      },
+      {
+        icon: 'checklist',
+        title: 'Track every subagent separately',
+        body: 'When a CLI fans out into subagents, each becomes a separate tracked task. You can see what every branch is doing and which ones are waiting instead of a single opaque "Working…" status.',
+      },
+      {
+        icon: 'history',
+        title: 'Disconnect, keep running',
+        body: 'Close the tab or drop the SSH connection; the work keeps running inside tmux. Reconnect whenever you like and pick up exactly where you left off.',
+      },
+      {
+        icon: 'power',
+        title: 'Survives a reboot',
+        body: 'After a reboot, your workspace returns on its own — the same tasks and tabs, with no manual rebuilding.',
+      },
+      {
+        icon: 'shield',
+        title: 'Nothing leaves your machine',
+        body: 'Your entire workspace runs on hardware you control. Output, keystrokes, files and keys are never uploaded.',
+      },
+      {
+        icon: 'image',
+        title: '75% fewer image tokens',
+        body: 'Screenshots are optimised before they reach the model, reducing image-token usage by 75% without any extra work.',
+      },
+      {
+        icon: 'phone',
+        title: 'On your phone, too',
+        body: 'The same workspace opens on your phone, so you can check a task, answer a prompt or work on a remote server away from your desk.',
+      },
+    ],
+  },
+  // Punchy selling-point numbers, no mechanism — the "how" lives in the app, not the pitch.
+  // `to` drives the count-up; a null `to` is a qualitative tile that shows an icon instead.
+  stats: {
+    eyebrow: 'By the numbers',
+    items: [
+      { to: 75, unit: '%', icon: null, label: 'fewer image tokens' },
+      { to: 70, unit: '%', icon: null, label: 'smaller image uploads' },
+      { to: null, unit: '', icon: 'shield', label: 'never asks for your files' },
+    ],
+  },
+  // Benefit-led selling points, no mechanics. Icon + a single terse line each.
+  sells: {
+    eyebrow: 'And these',
+    items: [
+      { icon: 'history', label: 'Your sessions are never lost' },
+      { icon: 'signal', label: 'It pings you when a task needs you' },
+      { icon: 'power', label: 'Tasks survive a reboot' },
+      { icon: 'nodes', label: 'Every remote machine in one place' },
+      { icon: 'phone', label: 'Works from your phone' },
+      { icon: 'shield', label: 'Local-only — we collect nothing' },
+    ],
+  },
+  extension: {
+    label: 'Chrome extension',
+    title: 'Or keep it in the sidebar',
+    body: 'The same workspace runs in a Chrome side panel beside whatever you are reading. It also adds an element picker: click any part of a page to send its URL, CSS selector and HTML fragment straight to your CLI, turning "this bit here" into something an AI can act on.',
+    cta: 'See the extension',
+  },
+  security: {
+    label: 'Where it runs',
+    title: 'On your machine and nowhere else',
+    body: 'tmux.online provides account and device authorisation for AI Anywhere. Terminal sessions, CLI processes, keystrokes and local keys stay on hardware you control.',
+    points: [
+      'The server listens only on 127.0.0.1; your messages never leave your machine.',
+      'Every connection is checked against its Origin, which a web page cannot forge, so unrelated tabs cannot access the server.',
+      'Remote connections use your own SSH config. There is no terminal relay or telemetry.',
+    ],
+  },
+  faq: {
+    title: 'Questions',
+    items: [
+      {
+        q: 'Will it change my tmux setup?',
+        a: 'It writes nothing to your config. The default tmux session is AA. Any windows resized by the app return to automatic sizing when you close the page.',
+      },
+      {
+        q: 'What do I need first?',
+        a: 'tmux and Node.js 22.5 or newer.',
+      },
+      {
+        q: 'Does it work on a remote server?',
+        a: 'Install tmux on the remote server. That is all.',
+      },
+      {
+        q: 'Do I have to install the extension?',
+        a: 'No. The server hosts the web app at 127.0.0.1:51984. The extension adds the side panel and element picker.',
+      },
+    ],
+  },
+  cta: {
+    title: 'Let the terminal keep running — so you can stop watching it.',
+    body: 'One line to install, one link to open. Then look away.',
+  },
+  footer: {
+    rights: 'Open source. Run it on your own machines.',
+    columns: [
+      {
+        title: 'Project',
+        links: [
+          { label: 'GitHub', href: REPO_URL },
+          { label: 'Issues', href: ISSUES_URL },
+        ],
+      },
+      {
+        title: 'Install',
+        links: [
+          { label: 'install.sh', href: INSTALL_URL },
+          { label: '@ai-anywhere/cli', href: NPM_URL },
+        ],
+      },
+    ],
+    langLabel: 'Language',
+  },
+  // Account and device authorisation copy for the two hydrated utility pages.
+  auth: {
+    signInWithGitHub: 'Continue with GitHub',
+    switchAccount: 'Use another GitHub account',
+    signOut: 'Sign out',
+    loading: 'Checking…',
+    genericError: 'Something went wrong. Try again in a moment.',
+    networkError: 'Could not reach the account service.',
+  },
+  account: {
+    metaTitle: 'Account — tmux.online',
+    metaDescription: 'Manage your tmux.online account, signed-in devices and API keys.',
+    label: 'Account',
+    signedOutTitle: 'Sign in to tmux.online',
+    signedOutBody: 'Sign in to authorise devices, revoke their access remotely and manage API keys.',
+    signedInAs: 'Signed in as',
+    devicesTitle: 'Devices',
+    devicesBody:
+      'View every device authorised to run AI Anywhere. Removing a device locks its local interfaces without stopping its tmux tasks.',
+    devicesEmpty: 'No signed-in devices.',
+    deviceOnline: 'Online',
+    deviceOffline: 'Offline',
+    deviceLastSeen: 'Last seen',
+    deviceRevoke: 'Remove',
+    deviceRevokeConfirm: 'Remove {name}? AI Anywhere on that device will be locked immediately.',
+    keysTitle: 'API keys',
+    keysBody:
+      'Long-lived credentials for scripts and CI. Use one in the x-api-key request header. Revoking a key takes effect immediately.',
+    keysEmpty: 'No keys yet.',
+    keyNameLabel: 'Name',
+    keyNamePlaceholder: 'ci-deploy',
+    keyCreate: 'Create key',
+    keyCreating: 'Creating…',
+    keyCreatedTitle: 'Copy this key now',
+    keyCreatedBody: 'Only its hash is stored, and the key will never be shown again. If you lose it, revoke the key and create another.',
+    keyCopy: 'Copy',
+    keyCopied: 'Copied',
+    keyRevoke: 'Revoke',
+    keyRevokeConfirm: 'Revoke this key? Anything using it stops working immediately.',
+    keyCreatedAt: 'Created',
+    keyNameRequired: 'Give the key a name so you can tell it apart later.',
+  },
+  // The invite / referral growth loop, shown under the API keys on the account page. Everything
+  // here is optional too — the trial and the tiers only gate the account service, never the CLI
+  // running on your own machines. Template variables are filled in by the panel.
+  membership: {
+    navTitle: 'Limited-time invite',
+    title: 'Invite 3 friends for lifetime membership',
+    intro: 'Lifetime membership normally requires payment. For a limited time, invite 3 friends who join and unlock it for free.',
+    deadline: 'Offer ends {deadline}',
+    progressTitle: 'Invite progress',
+    progressCount: '{points} / {threshold} friends joined',
+    progressRemaining: '{n} more to unlock lifetime membership',
+    progressComplete: 'Lifetime membership unlocked',
+    tierTrial: 'Trial',
+    tierPermanent: 'Lifetime member',
+    trialLeft: '{n} days left in your trial',
+    trialEnded: 'Your trial has ended',
+    permanentBody: 'You now have lifetime access.',
+    premiumBadge: 'Premium member',
+    inviteModeLabel: 'Invite format',
+    inviteLinkTab: 'Invite link',
+    inviteCodeTab: 'Invite code',
+    inviteBody: 'Friends who sign up through this link before the offer ends count toward your invite progress.',
+    inviteCodeBody:
+      'Friends can bind this code on the membership page after signing up. Once bound, they count toward your invite progress.',
+    inviteCopy: 'Copy invite link',
+    inviteCodeCopy: 'Copy invite code',
+    inviteCopied: 'Copied',
+    bindTitle: 'Bind an invite code',
+    bindBody: 'Bind a friend’s invite code to add 7 days to your trial. You can bind a code only once.',
+    bindPlaceholder: 'INVITE CODE',
+    bind: 'Bind',
+    binding: 'Binding…',
+    bindErrors: {
+      invalid_code: 'That code is not valid. Check it and try again.',
+      already_redeemed: 'You have already bound an invite code.',
+      self_invite: 'You cannot bind your own invite code.',
+      cycle: 'You cannot bind a code from someone you invited.',
+    },
+    downlineTitle: 'Friends who joined',
+    downlineRevenueHint: "When friends you invited spend on the platform, you'll earn a share of the revenue.",
+    downlineEmpty: 'No one has joined yet.',
+    downlineEmptyCta: 'Share your link before the offer ends. Invite 3 friends to unlock lifetime membership.',
+    downlineJoined: 'Joined',
+    downlineAnon: 'Someone',
+    downlineMore: 'Load more',
+    downlineLoading: 'Loading…',
+  },
+  device: {
+    metaTitle: 'Authorise a device — tmux.online',
+    metaDescription: 'Approve or deny a request to sign a device in to your tmux.online account.',
+    label: 'Device',
+    title: 'Authorise a device',
+    body: 'A device is requesting access to your account. Check that the code below matches the one it printed, then approve the request.',
+    codeLabel: 'Code from the device',
+    codePlaceholder: 'ABCD-1234',
+    continue: 'Continue',
+    approve: 'Approve',
+    deny: 'Deny',
+    working: 'Working…',
+    approvedTitle: 'Device approved',
+    approvedBody: 'The device is authorised. Redirecting to your devices in 3 seconds.',
+    deniedTitle: 'Device denied',
+    deniedBody: 'Nothing was authorised. You can close this tab.',
+    invalidCode: 'That code is not valid. Check it against the one the device printed.',
+    expiredCode: 'That code has expired. Ask the device for a new one.',
+    missingCode: 'Enter the code the device printed.',
+  },
+  notFound: {
+    code: '404',
+    title: 'No pane here',
+    body: 'That address does not exist on this site.',
+    cta: 'Back to the start',
+  },
+}

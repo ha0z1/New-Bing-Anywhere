@@ -1,0 +1,1107 @@
+---
+import Logo from './Logo.astro'
+import Icon from './Icon.astro'
+import { useCopy, localizePath, shippedLangs, languageMenu, type Lang } from '../i18n'
+import { API_URL, GITHUB_STARS_FALLBACK, REPO_SLUG, REPO_URL } from '../config'
+import { formatStars } from '../lib/stars'
+
+interface Props {
+  lang: Lang
+  path?: string
+}
+const { lang, path = '/' } = Astro.props
+const c = useCopy(lang)
+const home = localizePath('/', lang)
+const dashboard = localizePath('/dashboard/devices', lang)
+const membership = localizePath('/dashboard/membership', lang)
+const starsText = formatStars(GITHUB_STARS_FALLBACK)
+// Prefixed with the home path because this header also renders away from the landing page.
+const links = [{ label: c.nav.install, href: `${home}#install` }]
+---
+
+<header class="site-header" id="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={home}>
+      <Logo size={24} />
+      <span class="brand-name">{c.brand.name}</span>
+      <span class="brand-tag">{c.brand.tagline}</span>
+    </a>
+
+    <nav class="nav" aria-label={c.nav.primaryLabel}>
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+
+    <div class="tail">
+      {/* Star count baked in from the fallback, then refreshed by the script below. */}
+      <a class="gh" href={REPO_URL} rel="noopener" aria-label={`${c.nav.github} · ${starsText} stars`}>
+        <Icon name="github" size={19} />
+        <span class="gh-stars">
+          <Icon name="star" size={13} class="gh-star" />
+          <span data-gh-stars>{starsText}</span>
+        </span>
+      </a>
+
+      {
+        shippedLangs.length > 1 && (
+          // <details> rather than a JS-built menu: it opens, closes and takes keyboard
+          // focus on its own, so the script below only has to add the two behaviours the
+          // element does not provide — closing on outside click and on Escape.
+          <details class="lang" data-lang-menu>
+            <summary aria-label={c.footer.langLabel} title={c.footer.langLabel}>
+              <Icon name="globe" size={18} />
+              <Icon name="chevronDown" size={13} class="caret" />
+            </summary>
+            <ul>
+              {languageMenu
+                .filter((item) => shippedLangs.includes(item.lang))
+                .map((item) => (
+                  <li>
+                    <a
+                      href={localizePath(path, item.lang)}
+                      hreflang={item.lang}
+                      lang={item.lang}
+                      aria-current={item.lang === lang ? 'true' : undefined}
+                    >
+                      <span>{item.label}</span>
+                      {item.lang === lang && <Icon name="check" size={14} />}
+                    </a>
+                  </li>
+                ))}
+            </ul>
+          </details>
+        )
+      }
+
+      <div class="account-menu" data-account-menu data-dashboard={dashboard} data-membership={membership}>
+        <button
+          class="acct"
+          type="button"
+          data-account
+          aria-label={c.nav.signIn}
+          aria-haspopup="dialog"
+          aria-controls="account-popover"
+          aria-expanded="false"
+          data-label-out={c.nav.signIn}
+          data-label-in={c.nav.account}
+        >
+          <Icon name="user" size={17} />
+        </button>
+
+        <div class="account-popover" id="account-popover" role="dialog" aria-label={c.nav.account} data-account-popover hidden>
+          <a class="account-identity" href={dashboard}>
+            <span class="account-kicker">{c.account.signedInAs}</span>
+            <strong data-account-name>{c.nav.account}</strong>
+            <span class="account-email" data-account-email hidden></span>
+            <span class="account-membership-badge" data-account-membership hidden>
+              <Icon name="crown" size={13} />
+              <span>{c.membership.premiumBadge}</span>
+            </span>
+            <span class="account-open">
+              {c.dashboard.open}
+              <Icon name="arrowRight" size={14} />
+            </span>
+          </a>
+          <button class="account-action account-switch" type="button" data-account-switch>
+            <Icon name="users" size={16} />
+            <span>{c.auth.switchAccount}</span>
+          </button>
+          <button class="account-action account-sign-out" type="button" data-account-sign-out>
+            <Icon name="logOut" size={16} />
+            <span>{c.auth.signOut}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .site-header[data-scrolled] {
+    border-bottom-color: var(--line);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    height: 62px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    flex: none;
+  }
+
+  .brand :global(svg) {
+    align-self: center;
+  }
+
+  .brand-name {
+    font-size: 15px;
+    font-weight: 560;
+    letter-spacing: 0;
+  }
+
+  .brand-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .nav {
+    display: flex;
+    gap: 24px;
+    margin-left: auto;
+    font-size: 14px;
+    color: var(--fg-dim);
+  }
+
+  .nav a {
+    transition: color 0.15s ease;
+  }
+
+  .nav a:hover {
+    color: var(--fg);
+  }
+
+  .tail {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-left: 8px;
+  }
+
+  .lang {
+    position: relative;
+  }
+
+  .lang summary {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 30px;
+    padding-inline: 7px;
+    border-radius: 8px;
+    color: var(--fg-muted);
+    cursor: pointer;
+    list-style: none;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
+  }
+
+  .lang summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang summary:hover,
+  .lang[open] summary {
+    color: var(--fg);
+    background: var(--surface-2);
+  }
+
+  .lang summary .caret {
+    opacity: 0.7;
+    transition: transform 0.18s ease;
+  }
+
+  .lang[open] summary .caret {
+    transform: rotate(180deg);
+  }
+
+  .lang ul {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 156px;
+    padding: 5px;
+    background: var(--surface-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    box-shadow: 0 18px 44px -18px rgb(0 0 0 / 0.85);
+    animation: drop 0.14s ease;
+  }
+
+  @keyframes drop {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+
+  .lang li a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 13.5px;
+    color: var(--fg-dim);
+    white-space: nowrap;
+    transition:
+      color 0.12s ease,
+      background 0.12s ease;
+  }
+
+  .lang li a:hover {
+    color: var(--fg);
+    background: color-mix(in srgb, var(--surface-2) 60%, var(--fg) 8%);
+  }
+
+  .lang li a[aria-current] {
+    color: var(--fg);
+  }
+
+  .lang li a[aria-current] :global(svg) {
+    color: var(--accent);
+  }
+
+  .gh {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--fg-muted);
+    transition: color 0.15s ease;
+  }
+
+  .gh:hover {
+    color: var(--fg);
+  }
+
+  .gh-stars {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg-dim);
+  }
+
+  .gh:hover .gh-stars {
+    color: var(--fg);
+  }
+
+  .gh-star {
+    color: var(--attention);
+  }
+
+  @media (max-width: 380px) {
+    /* On the narrowest phones the count is the first thing to go; the icon still links out. */
+    .gh-stars {
+      display: none;
+    }
+  }
+
+  .account-menu {
+    position: relative;
+    display: flex;
+  }
+
+  .acct {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--fg-dim);
+    background: transparent;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    overflow: hidden;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .acct:hover {
+    color: var(--fg);
+    background: var(--surface-2);
+    border-color: var(--line-strong);
+  }
+
+  .account-menu[data-auth-state='in'] .acct {
+    color: var(--fg);
+    border-color: var(--line-strong);
+  }
+
+  .account-popover {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 9px);
+    width: min(280px, calc(100vw - 32px));
+    padding: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    box-shadow: 0 18px 44px -18px rgb(0 0 0 / 0.9);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition:
+      opacity 0.14s ease,
+      visibility 0.14s ease,
+      transform 0.14s ease;
+  }
+
+  .account-popover::before {
+    content: '';
+    position: absolute;
+    inset: -10px 0 auto;
+    height: 10px;
+  }
+
+  .account-menu[data-open] .account-popover,
+  .account-menu[data-auth-state='in']:hover .account-popover {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .account-identity {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 11px 12px 12px;
+    border-radius: 6px;
+    transition: background 0.12s ease;
+  }
+
+  .account-identity:hover {
+    background: color-mix(in srgb, var(--surface-2) 62%, var(--fg) 7%);
+  }
+
+  .account-kicker {
+    margin-bottom: 4px;
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+
+  .account-identity strong {
+    max-width: 100%;
+    font-size: 15px;
+    font-weight: 560;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .account-email {
+    max-width: 100%;
+    margin-top: 2px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--fg-muted);
+    overflow-wrap: anywhere;
+  }
+
+  .account-membership-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    padding: 3px 7px;
+    border: 1px solid color-mix(in srgb, var(--accent) 42%, transparent);
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 560;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 9%, transparent);
+  }
+
+  .account-membership-badge[hidden] {
+    display: none;
+  }
+
+  .account-open {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 11px;
+    font-size: 12.5px;
+    color: var(--fg-dim);
+  }
+
+  .account-open :global(svg) {
+    color: var(--accent);
+  }
+
+  .account-action {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 38px;
+    margin-top: 4px;
+    padding: 7px 12px;
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    color: var(--fg-dim);
+    background: transparent;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+      color 0.12s ease,
+      background 0.12s ease;
+  }
+
+  .account-switch {
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+  }
+
+  .account-switch:hover:not(:disabled) {
+    color: var(--fg);
+    background: var(--surface);
+  }
+
+  .account-sign-out {
+    margin-top: 0;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .account-sign-out:hover:not(:disabled) {
+    color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 8%, transparent);
+  }
+
+  .account-action:disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+
+  /*
+    `:global` because the avatar is created by the script below; a scoped rule would not
+    match a runtime-inserted element, and an unsized <img> renders at its intrinsic size
+    (the GitHub avatar is 460px — it once shoved the whole header off the page). Fills the
+    circle so there is no border ring around the photo.
+  */
+  :global(.acct-avatar) {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 720px) {
+    .brand-tag,
+    .nav {
+      display: none;
+    }
+    .tail {
+      margin-left: auto;
+    }
+  }
+</style>
+
+<script is:inline define:vars={{ api: API_URL, repoSlug: REPO_SLUG }}>
+  ;(() => {
+    const header = document.getElementById('site-header')
+    if (!header) return
+    const sync = () => header.toggleAttribute('data-scrolled', window.scrollY > 8)
+    sync()
+    addEventListener('scroll', sync, { passive: true })
+
+    // ── GitHub stars ─────────────────────────────────────────────────────────
+    // The build baked in a fallback count so a number is already on screen. On top of that we
+    // keep the last fetched count in localStorage and only hit GitHub again once it is older
+    // than 5 hours — so a visitor clicking through several pages fetches at most once, and the
+    // stored number (closer to live than the baked-in fallback) paints immediately meanwhile.
+    // The committed width is reserved by the fallback, so a refresh to a nearby value never
+    // reflows the bar. Fetches run from the visitor's own IP (their 60/hr GitHub budget, not
+    // the shared CI one).
+    const starsEl = document.querySelector('[data-gh-stars]')
+    if (starsEl) {
+      const STARS_KEY = 'aa_stars'
+      const STARS_TTL = 5 * 60 * 60 * 1000 // 5 hours
+      const format = (n) => {
+        if (n < 1000) return String(n)
+        const k = n / 1000
+        return k.toFixed(k < 10 ? 1 : 0).replace(/\.0$/, '') + 'k'
+      }
+      const readCache = () => {
+        try {
+          return JSON.parse(localStorage.getItem(STARS_KEY)) || null
+        } catch {
+          return null
+        }
+      }
+      const cached = readCache()
+      if (cached && typeof cached.n === 'number') starsEl.textContent = format(cached.n)
+
+      const fresh = cached && typeof cached.t === 'number' && Date.now() - cached.t < STARS_TTL
+      if (!fresh) {
+        fetch('https://api.github.com/repos/' + repoSlug, { headers: { accept: 'application/vnd.github+json' } })
+          .then((response) => (response.ok ? response.json() : null))
+          .then((data) => {
+            const n = data && data.stargazers_count
+            if (typeof n !== 'number') return
+            starsEl.textContent = format(n)
+            try {
+              localStorage.setItem(STARS_KEY, JSON.stringify({ n, t: Date.now() }))
+            } catch {}
+          })
+          .catch(() => {}) // rate-limited or offline: the cached / baked-in number stays
+      }
+    }
+
+    const menus = () => document.querySelectorAll('details[data-lang-menu][open]')
+    const accountMenu = document.querySelector('[data-account-menu]')
+
+    const closeAccountMenu = () => {
+      if (!accountMenu) return
+      accountMenu.removeAttribute('data-open')
+      accountMenu.querySelector('[data-account]')?.setAttribute('aria-expanded', 'false')
+    }
+
+    document.addEventListener('click', (event) => {
+      for (const menu of menus()) if (!menu.contains(event.target)) menu.open = false
+      if (accountMenu && !accountMenu.contains(event.target)) closeAccountMenu()
+    })
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return
+      for (const menu of menus()) {
+        menu.open = false
+        menu.querySelector('summary').focus()
+      }
+      closeAccountMenu()
+    })
+
+    /*
+      Resolve the account entry.
+
+      This header renders on the landing page too, so it deliberately does its own fetch
+      rather than importing src/lib/api.ts: an import here would make the marketing pages
+      pull in the island bundle, and with it React, to decide the label on one link.
+    */
+    const acct = document.querySelector('[data-account]')
+    if (!acct || !accountMenu) return
+    const popover = accountMenu.querySelector('[data-account-popover]')
+    const accountName = accountMenu.querySelector('[data-account-name]')
+    const accountEmail = accountMenu.querySelector('[data-account-email]')
+    const membershipBadge = accountMenu.querySelector('[data-account-membership]')
+    const switchAccountButton = accountMenu.querySelector('[data-account-switch]')
+    const signOutButton = accountMenu.querySelector('[data-account-sign-out]')
+    const accountIdentity = accountMenu.querySelector('.account-identity')
+
+    // A referral visitor belongs on Membership after sign-in, not the default Devices page.
+    // RefCapture runs in <head>, so this also works after the install flow opens a fresh tab.
+    let referralCode = new URLSearchParams(location.search).get('ref')?.trim().toUpperCase().slice(0, 32)
+    try {
+      referralCode ||= localStorage.getItem('aa_ref') || ''
+    } catch {}
+    if (referralCode && accountMenu.dataset.membership) {
+      const destination = `${accountMenu.dataset.membership}?ref=${encodeURIComponent(referralCode)}`
+      accountMenu.dataset.dashboard = destination
+      if (accountIdentity) accountIdentity.href = destination
+    }
+
+    acct.addEventListener('click', () => {
+      if (accountMenu.dataset.authState !== 'in') {
+        location.href = accountMenu.dataset.dashboard
+        return
+      }
+      const open = !accountMenu.hasAttribute('data-open')
+      accountMenu.toggleAttribute('data-open', open)
+      acct.setAttribute('aria-expanded', String(open))
+    })
+
+    /*
+      Avatar, glyph, and a localStorage cache of the last-seen avatar.
+
+      The session answer is async, so a returning signed-in visitor would otherwise stare at
+      the default glyph until it lands, then watch it swap to their photo — a blink on every
+      navigation. We paint the cached avatar synchronously and reconcile once the truth
+      arrives; if they have since signed out, the photo shows briefly then reverts to the
+      glyph, which is the acceptable direction to be wrong in.
+
+      The cache is `{ src, data }`: `src` is the avatar URL from the session, `data` is that
+      image inlined as a base64 data URL. We prefer `data` — it paints with no network and
+      survives offline. Only avatars on avatars.githubusercontent.com are inlined (they send
+      `Access-Control-Allow-Origin: *`, so the bytes are actually readable); anything else
+      caches the URL alone. The visible avatar is swapped only after the base64 is in hand,
+      so a refresh never shows a half-loaded image.
+    */
+    const AVATAR_KEY = 'aa_avatar'
+    const MEMBERSHIP_KEY = 'aa_membership'
+    const SESSION_KEY = 'aa_session'
+    const AUTH_SYNC_KEY = 'aa_auth_sync'
+    const AUTH_PENDING_KEY = 'aa_auth_pending'
+    const GH_AVATAR_HOST = 'avatars.githubusercontent.com'
+    const glyph = acct.querySelector('svg')
+    let avatarEl = null
+    let currentUserId = null
+
+    const store = {
+      get: () => {
+        try {
+          return JSON.parse(localStorage.getItem(AVATAR_KEY)) || null
+        } catch {
+          return null
+        }
+      },
+      set: (value) => {
+        try {
+          value ? localStorage.setItem(AVATAR_KEY, JSON.stringify(value)) : localStorage.removeItem(AVATAR_KEY)
+        } catch {}
+      },
+    }
+
+    const hasPendingAuth = () => {
+      try {
+        return sessionStorage.getItem(AUTH_PENDING_KEY) === '1'
+      } catch {
+        return false
+      }
+    }
+
+    const setPendingAuth = (pending) => {
+      try {
+        pending ? sessionStorage.setItem(AUTH_PENDING_KEY, '1') : sessionStorage.removeItem(AUTH_PENDING_KEY)
+      } catch {}
+    }
+
+    // localStorage writes notify every other same-origin tab. The random suffix guarantees
+    // a storage event even when two auth changes happen in the same millisecond.
+    const publishAuthChange = () => {
+      try {
+        localStorage.setItem(AUTH_SYNC_KEY, `${Date.now()}:${Math.random()}`)
+      } catch {}
+    }
+
+    const sessionStore = {
+      get: () => {
+        try {
+          const session = JSON.parse(sessionStorage.getItem(SESSION_KEY))
+          return session?.user?.id ? session : null
+        } catch {
+          return null
+        }
+      },
+      set: (value) => {
+        try {
+          const user = value?.user
+          const session = user?.id ? { user: { id: user.id, name: user.name, email: user.email, image: user.image } } : null
+          session ? sessionStorage.setItem(SESSION_KEY, JSON.stringify(session)) : sessionStorage.removeItem(SESSION_KEY)
+        } catch {}
+      },
+    }
+
+    const membershipStore = {
+      get: () => {
+        try {
+          const value = JSON.parse(localStorage.getItem(MEMBERSHIP_KEY))
+          return value?.userId && typeof value.tier === 'string' ? value : null
+        } catch {
+          return null
+        }
+      },
+      set: (value) => {
+        try {
+          value
+            ? localStorage.setItem(MEMBERSHIP_KEY, JSON.stringify({ ...value, updatedAt: Date.now() }))
+            : localStorage.removeItem(MEMBERSHIP_KEY)
+        } catch {}
+      },
+    }
+
+    const showMembershipBadge = (show) => {
+      if (membershipBadge) membershipBadge.hidden = !show
+    }
+
+    const applyMembership = (value, userId = currentUserId) => {
+      if (!userId || !value || typeof value.tier !== 'string') return
+      membershipStore.set({ userId, tier: value.tier })
+      showMembershipBadge(value.tier === 'permanent')
+    }
+
+    const clearMembership = () => {
+      membershipStore.set(null)
+      showMembershipBadge(false)
+      delete window.__aaMembership
+    }
+
+    const requestMembership = (userId) => {
+      let requestState = window.__aaMembership
+      if (!requestState || requestState.expiresAt <= Date.now()) {
+        const pending = fetch(api + '/membership', { credentials: 'include' }).then((response) => {
+          if (!response.ok) throw new Error('membership request failed')
+          return response.json()
+        })
+        requestState = { promise: pending, expiresAt: Number.POSITIVE_INFINITY }
+        window.__aaMembership = requestState
+        pending.then(
+          () => {
+            if (window.__aaMembership === requestState) requestState.expiresAt = Date.now() + 2_000
+          },
+          () => {
+            if (window.__aaMembership === requestState) delete window.__aaMembership
+          },
+        )
+      }
+
+      requestState.promise.then((value) => currentUserId === userId && applyMembership(value, userId)).catch(() => {})
+    }
+
+    const showUser = (user) => {
+      if (!popover || !accountName || !accountEmail) return
+      const name = user?.name || user?.email || acct.dataset.labelIn
+      accountName.textContent = name
+      const email = user?.email && user.email !== name ? user.email : ''
+      accountEmail.textContent = email
+      accountEmail.hidden = !email
+      popover.hidden = false
+    }
+
+    const setAuthState = (state) => {
+      accountMenu.dataset.authState = state
+      acct.dataset.authState = state
+      acct.setAttribute('aria-label', state === 'in' ? acct.dataset.labelIn : acct.dataset.labelOut)
+      if (state === 'out') {
+        closeAccountMenu()
+        if (popover) popover.hidden = true
+      }
+    }
+
+    const showGlyph = () => {
+      if (!avatarEl) return
+      avatarEl.replaceWith(glyph)
+      avatarEl = null
+    }
+
+    const showAvatar = (src) => {
+      if (!src) return showGlyph()
+      if (avatarEl && avatarEl.src === src) return // already showing it — no reload, no blink
+      const img = document.createElement('img')
+      img.className = 'acct-avatar'
+      // Intrinsic size as well as the CSS rule: the image can decode before the stylesheet
+      // is applied, and an unsized avatar is a full-width one.
+      img.width = 30
+      img.height = 30
+      img.alt = ''
+      img.decoding = 'async'
+      img.referrerPolicy = 'no-referrer'
+      img.onerror = () => {
+        // A superseded image may fail after a newer avatar has replaced it.
+        if (avatarEl === img) showGlyph()
+      }
+      img.src = src
+      ;(avatarEl || glyph).replaceWith(img)
+      avatarEl = img
+    }
+
+    // Fetch a GitHub avatar and return it as a base64 data URL, or null if it is not an
+    // inlineable GitHub avatar or the fetch fails. `s=80` keeps the 30px (@2x) image small.
+    const inlineAvatar = async (src) => {
+      try {
+        const url = new URL(src)
+        if (url.hostname !== GH_AVATAR_HOST) return null
+        url.searchParams.set('s', '80')
+        const response = await fetch(url.toString(), { cache: 'force-cache' })
+        if (!response.ok) return null
+        const blob = await response.blob()
+        if (!blob.type.startsWith('image/')) return null
+        return await new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result)
+          reader.onerror = reject
+          reader.readAsDataURL(blob)
+        })
+      } catch {
+        return null
+      }
+    }
+
+    // Optimistic paint from cache, before any network. A cached avatar means "was signed in
+    // last time", so mirror the signed-in chrome too. Prefer the inlined base64.
+    const cached = store.get()
+    const cachedSession = sessionStore.get()
+    currentUserId = cachedSession?.user?.id || cached?.id || null
+    const cachedMembership = membershipStore.get()
+    if (cachedMembership?.userId === currentUserId) showMembershipBadge(cachedMembership.tier === 'permanent')
+    if (cached) {
+      setAuthState('in')
+      showUser(cached)
+      showAvatar(cached.data || cached.src)
+    } else if (cachedSession) {
+      setAuthState('in')
+      showUser(cachedSession.user)
+    }
+
+    const setAccountActionsDisabled = (disabled) => {
+      if (switchAccountButton) switchAccountButton.disabled = disabled
+      if (signOutButton) signOutButton.disabled = disabled
+    }
+
+    const signOutBrowser = () =>
+      fetch(api + '/api/auth/sign-out', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'content-type': 'application/json' },
+        body: '{}',
+      })
+
+    const clearDashboardCache = () =>
+      new Promise((resolve) => {
+        if (!('indexedDB' in window)) return resolve()
+
+        const request = indexedDB.open('aa-dashboard-swr', 1)
+        request.onupgradeneeded = () => {
+          const store = request.result.createObjectStore('entries', { keyPath: 'id' })
+          store.createIndex('userId', 'userId')
+        }
+        request.onsuccess = () => {
+          const database = request.result
+          const transaction = database.transaction('entries', 'readwrite')
+          transaction.objectStore('entries').clear()
+          transaction.oncomplete = () => {
+            database.close()
+            resolve()
+          }
+          transaction.onerror = () => {
+            database.close()
+            resolve()
+          }
+          transaction.onabort = transaction.onerror
+        }
+        request.onerror = () => resolve()
+        request.onblocked = () => resolve()
+      })
+
+    switchAccountButton?.addEventListener('click', async () => {
+      setAccountActionsDisabled(true)
+      try {
+        const signOutResponse = await signOutBrowser()
+        if (!signOutResponse.ok) throw new Error('sign-out failed')
+        store.set(null)
+        sessionStore.set(null)
+        clearMembership()
+        currentUserId = null
+        setPendingAuth(true)
+        publishAuthChange()
+        await clearDashboardCache()
+
+        const signInResponse = await fetch(api + '/api/auth/sign-in/social', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ provider: 'github', callbackURL: location.href, disableRedirect: true }),
+        })
+        if (!signInResponse.ok) throw new Error('sign-in failed')
+
+        const result = await signInResponse.json()
+        const authorizationURL = new URL(result?.url || '')
+        if (authorizationURL.origin !== 'https://github.com' || authorizationURL.pathname !== '/login/oauth/authorize') {
+          throw new Error('unexpected authorization URL')
+        }
+        // GitHub supports this per request; the ordinary sign-in flow remains unchanged.
+        authorizationURL.searchParams.set('prompt', 'select_account')
+        location.href = authorizationURL.href
+      } catch {
+        // The first request may already have signed out. Reload to render the authoritative state.
+        location.reload()
+      }
+    })
+
+    signOutButton?.addEventListener('click', async () => {
+      setAccountActionsDisabled(true)
+      try {
+        const response = await signOutBrowser()
+        if (response.ok) {
+          store.set(null)
+          sessionStore.set(null)
+          clearMembership()
+          currentUserId = null
+          setPendingAuth(false)
+          publishAuthChange()
+          await clearDashboardCache()
+        }
+      } catch {
+        // Reload below and let the session endpoint show the authoritative state.
+      } finally {
+        location.reload()
+      }
+    })
+
+    /*
+      Only check the session when there is a reason to. The marketing pages otherwise fire a
+      credentialed cross-origin request to api.tmux.online on every visit — pointless for the
+      logged-out visitor it usually is, and, behind a proxy that maps that host into a
+      private IP range, enough to make the browser raise a "this site wants to access your
+      local network" prompt. So: fetch on the account/device pages (where the answer is the
+      point), or when a cached avatar says this person has signed in before. A first-time
+      landing-page visit therefore keeps account API traffic lazy until it is relevant.
+
+      Parked on window so src/lib/api.ts (the account/device islands) awaits the same request
+      instead of issuing a second one.
+    */
+    const onAuthPage = /\/(dashboard|account|device)(\/|$)/.test(location.pathname)
+
+    /*
+      Resolve the session as one of three outcomes — signed in, definitely signed out, or
+      could-not-tell. The last one is the point: a rate-limited (429), 5xx, or offline answer
+      is NOT proof of being signed out. Collapsing it into "signed out" used to clear the
+      avatar cache and flip the header to the glyph; once cleared, marketing pages stop
+      re-checking (they only fetch when a cached avatar says "signed in before"), so a single
+      transient blip stranded a signed-in visitor looking logged out until they opened
+      /dashboard. Behind a proxy that maps api.tmux.online into a private range those blips are
+      routine, which reads as "the login keeps expiring". So only a real 200 answer touches
+      state; a failure leaves the optimistic paint and the cache exactly as they were, and the
+      next navigation retries.
+
+      Parked on window as a plain Promise<Session|null> so src/lib/api.ts awaits the same
+      request; a could-not-tell result maps to null there, the safe default for the account page.
+    */
+    const requestSession = () =>
+      fetch(api + '/api/auth/get-session', { credentials: 'include' })
+        .then((response) => {
+          if (!response.ok) return { state: 'error' } // 429 / 5xx: not a signed-out signal
+          return response.json().then((session) => (session && session.user ? { state: 'in', session } : { state: 'out' }))
+        })
+        .catch(() => ({ state: 'error' })) // offline / blocked: also indeterminate
+
+    const reconcileSession = async (r, previousUserId, broadcast, version) => {
+      if (r.state === 'error') return // keep the optimistic avatar and cache; the next load retries
+      setPendingAuth(false)
+
+      if (r.state === 'out') {
+        setAuthState('out')
+        store.set(null)
+        sessionStore.set(null)
+        clearMembership()
+        currentUserId = null
+        void clearDashboardCache()
+        showGlyph() // revert the optimistic avatar, if any
+        return
+      }
+
+      const user = r.session.user
+      if (currentUserId && currentUserId !== user.id) delete window.__aaMembership
+      currentUserId = user.id
+      sessionStore.set(r.session)
+      setAuthState('in')
+      showUser(user)
+      if (broadcast && previousUserId !== user.id) publishAuthChange()
+
+      const cachedMembership = membershipStore.get()
+      if (cachedMembership?.userId === user.id) showMembershipBadge(cachedMembership.tier === 'permanent')
+      else {
+        membershipStore.set(null)
+        showMembershipBadge(false)
+      }
+      requestMembership(user.id)
+
+      if (!user.image) {
+        store.set({ id: user.id, src: null, data: null, name: user.name, email: user.email })
+        showGlyph()
+        return
+      }
+
+      // Same avatar as cached and already inlined → nothing to fetch, nothing to swap.
+      const currentAvatar = store.get()
+      if (currentAvatar?.id === user.id && currentAvatar.src === user.image && currentAvatar.data) {
+        store.set({ ...currentAvatar, name: user.name, email: user.email })
+        showAvatar(currentAvatar.data)
+        return
+      }
+
+      // Replace a previous account immediately. The base64 conversion can finish later,
+      // especially in a background tab where browser scheduling is deliberately throttled.
+      store.set({ id: user.id, src: user.image, data: null, name: user.name, email: user.email })
+      showAvatar(user.image)
+
+      // Refresh the base64 in the background so subsequent navigations still paint offline.
+      const data = await inlineAvatar(user.image)
+      // A newer cross-tab session may have completed while the old avatar was downloading.
+      // Never let that stale async tail overwrite the new account's shared cache or DOM.
+      if (version !== sessionRequestVersion) return
+      store.set({ id: user.id, src: user.image, data, name: user.name, email: user.email })
+      showAvatar(data || user.image)
+    }
+
+    let sessionRequestVersion = 0
+    const startSessionRequest = (broadcast = false) => {
+      const version = ++sessionRequestVersion
+      const previousUserId = sessionStore.get()?.user?.id || store.get()?.id
+      const fallback = sessionStore.get()
+      const result = requestSession()
+
+      window.__aaSession = result.then((r) => {
+        if (r.state === 'in') return r.session
+        if (r.state === 'out') return null
+        return fallback
+      })
+
+      result.then((r) => {
+        // An auth event can supersede an older request; never let the stale answer win.
+        if (version === sessionRequestVersion) void reconcileSession(r, previousUserId, broadcast, version)
+      })
+      return result
+    }
+
+    addEventListener('storage', (event) => {
+      if (event.key === AUTH_SYNC_KEY) {
+        startSessionRequest()
+        return
+      }
+      if (event.key === MEMBERSHIP_KEY) {
+        try {
+          const membership = JSON.parse(event.newValue)
+          if (membership?.userId === currentUserId) showMembershipBadge(membership.tier === 'permanent')
+          else if (!membership) showMembershipBadge(false)
+        } catch {}
+        return
+      }
+      if (event.key !== AVATAR_KEY) return
+
+      try {
+        const nextAvatar = JSON.parse(event.newValue)
+        if (nextAvatar?.id) {
+          currentUserId = nextAvatar.id
+          setAuthState('in')
+          showUser(nextAvatar)
+          showAvatar(nextAvatar.data || nextAvatar.src)
+          const cachedMembership = membershipStore.get()
+          showMembershipBadge(cachedMembership?.userId === currentUserId && cachedMembership.tier === 'permanent')
+        } else {
+          currentUserId = null
+          setAuthState('out')
+          showGlyph()
+          showMembershipBadge(false)
+        }
+      } catch {
+        // Another tab can only write this cache through the guarded serializer above.
+      }
+    })
+
+    addEventListener('aa:membership-change', (event) => applyMembership(event.detail))
+
+    // A switch started from the marketing page returns there with no avatar/session cache.
+    // The per-tab pending marker is the reason to perform the otherwise-lazy session check.
+    if (!cached && !cachedSession && !onAuthPage && !hasPendingAuth()) return
+    startSessionRequest(true)
+  })()
+</script>

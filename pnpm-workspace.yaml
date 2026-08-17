@@ -1,2 +1,8 @@
-packages:
-  - 'src/app'
+# pnpm blocks dependency build scripts unless they are approved here. Leaving any of these
+# unset fails `pnpm install --frozen-lockfile` in CI with ERR_PNPM_IGNORED_BUILDS. All three
+# are native packages that need their own binary: esbuild backs Vite/Astro, sharp is the image
+# pipeline (pnpm images), workerd is wrangler's runtime for deploy.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true

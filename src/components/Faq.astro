@@ -1,0 +1,94 @@
+---
+import Icon from './Icon.astro'
+import { useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = useCopy(lang)
+---
+
+<section class="section faq" id="faq">
+  <div class="wrap cols">
+    <h2>{c.faq.title}</h2>
+    <div class="list">
+      {
+        c.faq.items.map((item) => (
+          <details name="faq">
+            <summary>
+              <span>{item.q}</span>
+              <Icon name="plus" size={16} />
+            </summary>
+            <p>{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .cols {
+    display: grid;
+    grid-template-columns: minmax(0, 0.5fr) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 64px);
+  }
+
+  h2 {
+    font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.25rem);
+  }
+
+  details {
+    border-top: 1px solid var(--line);
+  }
+
+  details:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 0;
+    font-size: 15.5px;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    list-style: none;
+    transition: color 0.15s ease;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary:hover {
+    color: var(--fg);
+  }
+
+  summary :global(svg) {
+    flex: none;
+    color: var(--fg-muted);
+    transition: transform 0.2s ease;
+  }
+
+  details[open] summary :global(svg) {
+    transform: rotate(45deg);
+  }
+
+  details p {
+    padding-bottom: 22px;
+    max-width: calc(62ch * var(--measure-scale));
+    font-size: 14.5px;
+    line-height: 1.68;
+    color: var(--fg-muted);
+  }
+
+  @media (max-width: 760px) {
+    .cols {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

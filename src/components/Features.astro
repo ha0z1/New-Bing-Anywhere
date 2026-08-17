@@ -1,0 +1,126 @@
+---
+import Icon from './Icon.astro'
+import { useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = useCopy(lang)
+---
+
+<section class="section features" id="features">
+  <div class="wrap layout">
+    <div class="head">
+      <h2>{c.features.title}</h2>
+    </div>
+    <div class="grid">
+      {
+        c.features.items.map((item) => (
+          <article>
+            <span class="mark">
+              <Icon name={item.icon as any} size={18} />
+            </span>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .features {
+    background: var(--bg-raised);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.55fr) minmax(0, 1.45fr);
+    gap: clamp(40px, 8vw, 112px);
+    align-items: start;
+  }
+
+  .head {
+    position: sticky;
+    top: 102px;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 1.4rem + 2.1vw, 3rem);
+    max-width: calc(8ch * var(--measure-scale));
+  }
+
+  .grid {
+    border-top: 1px solid var(--line-strong);
+  }
+
+  article {
+    display: grid;
+    grid-template-columns: 36px minmax(180px, 0.72fr) minmax(0, 1fr);
+    gap: clamp(18px, 3vw, 36px);
+    align-items: start;
+    padding-block: 28px 32px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mark {
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid rgb(25 186 31 / 0.16);
+  }
+
+  h3 {
+    font-size: 1.0625rem;
+    font-weight: 560;
+    max-width: calc(22ch * var(--measure-scale));
+  }
+
+  p {
+    font-size: 14.5px;
+    line-height: 1.66;
+    color: var(--fg-muted);
+    max-width: calc(46ch * var(--measure-scale));
+  }
+
+  @media (max-width: 860px) {
+    .layout {
+      grid-template-columns: 1fr;
+      gap: 38px;
+    }
+
+    .head {
+      position: static;
+    }
+
+    h2 {
+      max-width: none;
+    }
+
+    article {
+      grid-template-columns: 36px minmax(0, 1fr);
+    }
+
+    article p {
+      grid-column: 2;
+    }
+  }
+
+  @media (max-width: 520px) {
+    article {
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 16px;
+      padding-block: 24px 28px;
+    }
+
+    article p {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

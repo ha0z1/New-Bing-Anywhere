@@ -1,0 +1,39 @@
+---
+import InstallCommand from './InstallCommand.astro'
+import { useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = useCopy(lang)
+---
+
+<section class="section cta">
+  <div class="wrap inner">
+    <h2>{c.cta.title}</h2>
+    <p>{c.cta.body}</p>
+    <InstallCommand lang={lang} id="install-command-footer" />
+  </div>
+</section>
+
+<style>
+  .inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
+    letter-spacing: -0.035em;
+  }
+
+  p {
+    margin-top: 16px;
+    margin-bottom: 32px;
+    color: var(--fg-muted);
+    font-size: 15.5px;
+  }
+</style>

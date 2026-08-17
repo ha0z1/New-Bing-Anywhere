@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#19ba1f" stop-opacity="0.22"/>
+      <stop offset="55%" stop-color="#19ba1f" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="grid" width="64" height="32" patternUnits="userSpaceOnUse">
+      <path d="M64 0V32M0 32H64" fill="none" stroke="#a8b0a8" stroke-opacity="0.09" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#070907"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- brand -->
+  <g transform="translate(80 74)">
+    <rect width="44" height="44" rx="11.7" fill="#19ba1f"/>
+    <path d="M13.2 14.3 21.5 22l-8.3 7.7M25.3 29.7h6.3" fill="none" stroke="#070907" stroke-width="4.3" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="60" y="30" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="25" font-weight="600" fill="#e9ede9" letter-spacing="-0.4">tmux.online</text>
+    <text x="215" y="30" font-family="Menlo, DejaVu Sans Mono, monospace" font-size="17" fill="#7d857d">by AI Anywhere</text>
+  </g>
+
+  <!-- headline -->
+  <text x="80" y="316" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="94" font-weight="600" fill="#e9ede9" letter-spacing="-4">Make Browser</text>
+  <text x="80" y="414" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="94" font-weight="600" fill="#e9ede9" letter-spacing="-4">Great Again</text>
+
+  <text x="80" y="470" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="26" fill="#a8b0a8">Your real tmux session, in a browser tab.</text>
+
+  <!-- command -->
+  <g transform="translate(80 520)">
+    <rect width="700" height="58" rx="10" fill="#141614" stroke="#a8b0a8" stroke-opacity="0.22"/>
+    <text x="24" y="37" font-family="Menlo, DejaVu Sans Mono, monospace" font-size="21" fill="#19ba1f">$</text>
+    <text x="48" y="37" font-family="Menlo, DejaVu Sans Mono, monospace" font-size="21" fill="#e9ede9">curl -fsSL https://tmux.online/install.sh | sh</text>
+  </g>
+</svg>

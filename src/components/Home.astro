@@ -1,0 +1,26 @@
+---
+// The whole landing page, parameterised by locale. A new language is a one-line page that
+// renders this with a different `lang` — see src/i18n/index.ts.
+import Base from '../layouts/Base.astro'
+import Hero from './Hero.astro'
+import Features from './Features.astro'
+import Security from './Security.astro'
+import Steps from './Steps.astro'
+import Faq from './Faq.astro'
+import Cta from './Cta.astro'
+import { type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+---
+
+<Base lang={lang} path="/">
+  <Hero lang={lang} />
+  <Features lang={lang} />
+  <Security lang={lang} />
+  <Steps lang={lang} />
+  <Faq lang={lang} />
+  <Cta lang={lang} />
+</Base>

@@ -1,0 +1,150 @@
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# The marketing HTML documents. First 30 min: served straight from cache, no network at all.
+# Next 30 min: still served instantly from cache, but the browser revalidates in the background
+# so the *next* open shows the fresh copy. A stale copy is thus served for at most
+# max-age + stale-while-revalidate = 3600s, so a deploy reaches every visitor within the hour.
+# (SWR only starts after max-age, and only in browsers that implement it — Safari/Firefox just
+# revalidate once the 30 min is up; either way nothing older than an hour is ever shown.) Set
+# per-route rather than via a `/*` default on purpose: Cloudflare's _headers *concatenates*
+# every matching rule's Cache-Control (it does not let the most specific win), so a catch-all
+# would append a second max-age onto the immutable /_astro/* assets and onto the no-store
+# account pages. Each language home is one line.
+/
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+/zh-Hant
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+/ja
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+/ko
+  Cache-Control: public, max-age=1800, stale-while-revalidate=1800
+
+# Piped straight into sh — serve it as a shell-script download, and do not let it sit in a CDN cache
+# for long after it is updated. Crawlable (models may want to read it) but kept out of the
+# search index: a shell script is not a document.
+/install.sh
+  Content-Type: text/x-shellscript; charset=utf-8
+  Content-Disposition: attachment; filename="install.sh"
+  Cache-Control: public, max-age=300, must-revalidate
+  X-Robots-Tag: noindex
+
+# Dashboard HTML is a static CSR shell. Keep it in the current browser for 10 minutes, but
+# never in a shared cache: `private` covers intermediaries generally and the Cloudflare-only
+# directive explicitly disables its CDN cache without changing the browser TTL. The device
+# route carries a one-time code in its query string, so all dashboard pages also stay noindex.
+#
+# Compatibility paths are listed once bare and once behind a wildcard so translated paths
+# (/zh-Hant/account …) are covered too.
+/account
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/device
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/*/account
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/*/device
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/dashboard
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/dashboard/*
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/zh-Hant/dashboard
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/zh-Hant/dashboard/*
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/ja/dashboard
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/ja/dashboard/*
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/ko/dashboard
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+/ko/dashboard/*
+  Cache-Control: private, max-age=600, must-revalidate
+  Cloudflare-CDN-Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
+
+# Machine-readable mirrors of the page. Same reasoning: fetchable, not a search result.
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+  X-Robots-Tag: noindex
+
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+  X-Robots-Tag: noindex
+
+/*/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+  X-Robots-Tag: noindex
+
+/*/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=3600
+  X-Robots-Tag: noindex
+
+/manifest.webmanifest
+  Content-Type: application/manifest+json; charset=utf-8
+  Cache-Control: public, max-age=86400
+
+# Unfingerprinted but rarely changed; a day is short enough to fix a bad social card.
+/og.png
+  Cache-Control: public, max-age=86400
+
+# Icons referenced by fixed, unfingerprinted names (the <link> tags and the manifest). Same
+# reasoning as og.png: cache a day so a swapped icon still propagates quickly.
+/favicon.svg
+  Cache-Control: public, max-age=86400
+
+/favicon.ico
+  Cache-Control: public, max-age=86400
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=86400
+
+/icon-192.png
+  Cache-Control: public, max-age=86400
+
+/icon-512.png
+  Cache-Control: public, max-age=86400
+
+# Astro fingerprints these filenames, so they can be cached forever.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -1,0 +1,7 @@
+---
+// Cloudflare's `not_found_handling: "404-page"` serves the nearest 404.html walking up the
+// path, so this one answers for everything under /zh-Hant/.
+import NotFound from '../../components/NotFound.astro'
+---
+
+<NotFound lang="zh-Hant" />

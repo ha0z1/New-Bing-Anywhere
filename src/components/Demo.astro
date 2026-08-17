@@ -1,0 +1,424 @@
+---
+import Icon from './Icon.astro'
+import { useCopy, type Lang } from '../i18n'
+
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = useCopy(lang)
+const d = c.demo
+
+function stateLabel(state: string): string {
+  return d.stateLabels[state as keyof typeof d.stateLabels]
+}
+---
+
+<figure class="demo">
+  <div class="frame">
+    <div class="chrome">
+      <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="url">{d.url}</span>
+    </div>
+
+    <div class="app" aria-hidden="true">
+      <aside class="rail">
+        <div class="rail-head">
+          <span>{d.railTitle}</span>
+          <Icon name="plus" size={14} />
+        </div>
+        {
+          d.groups.map((group) => (
+            <div class="group">
+              <p class="group-name">{group.name}</p>
+              <ul>
+                {group.items.map((item, i) => (
+                  <li class:list={['task', item.state, { active: group === d.groups[0] && i === 0 }]}>
+                    <span class:list={['dot', item.state]} />
+                    <span class="task-text">
+                      <span class="task-name">{item.name}</span>
+                      <span class="task-meta">
+                        <span class="task-detail">{item.detail}</span>
+                        <span class:list={['task-state', item.state]}>{stateLabel(item.state)}</span>
+                      </span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </aside>
+
+      <div class="pane">
+        <div class="tabs">
+          {d.paneTabs.map((tab, i) => <span class:list={['tab', { active: i === 0 }]}>{tab}</span>)}
+          <span class="tab add"><Icon name="plus" size={13} /></span>
+        </div>
+        <div class="screen">
+          {
+            d.terminal.map((line) =>
+              line.kind === 'blank' ? (
+                <p class="ln">&nbsp;</p>
+              ) : line.kind === 'prompt' ? (
+                <p class="ln">
+                  <span class="sigil">❯</span> {line.text}
+                </p>
+              ) : line.kind === 'cursor' ? (
+                <p class="ln">
+                  {line.text}
+                  <span class="caret" />
+                </p>
+              ) : (
+                <p class:list={['ln', line.kind]}>{line.text}</p>
+              ),
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="caption">{d.caption}</figcaption>
+</figure>
+
+<style>
+  .demo {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .frame {
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    overflow: hidden;
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.04) inset,
+      0 50px 100px -44px rgb(0 0 0 / 0.95);
+  }
+
+  .chrome {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 40px;
+    padding-inline: 14px;
+    background: var(--bg-raised);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .dots {
+    display: flex;
+    gap: 7px;
+  }
+
+  .dots i {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--line-strong);
+  }
+
+  .url {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--fg-muted);
+    padding: 3px 12px;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .app {
+    display: flex;
+    min-height: 388px;
+  }
+
+  /* ── rail ── */
+  .rail {
+    flex: none;
+    width: 190px;
+    padding: 14px 10px;
+    background: var(--bg-raised);
+    border-right: 1px solid var(--line);
+  }
+
+  .rail-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px 12px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+
+  .group + .group {
+    margin-top: 16px;
+  }
+
+  .group-name {
+    padding: 0 8px 6px;
+    font-size: 11px;
+    color: var(--fg-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .task {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 8px;
+    border-radius: 7px;
+    font-size: 13px;
+  }
+
+  .task.active {
+    background: var(--surface-2);
+  }
+
+  .task.waiting {
+    background: color-mix(in srgb, var(--attention) 7%, var(--surface-2));
+  }
+
+  .task-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    min-width: 0;
+  }
+
+  .task-name {
+    color: var(--fg);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .task-meta {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .task-detail {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--fg-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .task-state {
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    line-height: 1.2;
+  }
+
+  .task-state:empty {
+    display: none;
+  }
+
+  .task-state.waiting {
+    color: var(--attention);
+  }
+
+  .task-state.busy {
+    color: var(--accent);
+  }
+
+  .dot {
+    flex: none;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--line-strong);
+  }
+
+  .dot.waiting {
+    background: var(--attention);
+    box-shadow: 0 0 0 3px rgb(245 181 68 / 0.16);
+  }
+
+  .dot.busy {
+    background: var(--accent);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    50% {
+      opacity: 0.3;
+    }
+  }
+
+  /* ── pane ── */
+  .pane {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tabs {
+    display: flex;
+    align-items: stretch;
+    height: 36px;
+    border-bottom: 1px solid var(--line);
+    padding-inline: 8px;
+  }
+
+  .tab {
+    display: inline-flex;
+    align-items: center;
+    padding-inline: 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--fg-muted);
+    border-bottom: 1.5px solid transparent;
+    margin-bottom: -1px;
+  }
+
+  .tab.active {
+    color: var(--fg);
+    border-bottom-color: var(--accent);
+  }
+
+  .tab.add {
+    padding-inline: 10px;
+  }
+
+  .screen {
+    flex: 1 1 auto;
+    padding: 18px 20px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.72;
+    overflow: hidden;
+    /* Lines are `white-space: pre`, so a narrow viewport cuts them off. Fading the last
+       inch reads as a truncated terminal line rather than as a broken layout. */
+    mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+  }
+
+  .ln {
+    white-space: pre;
+    color: var(--fg-dim);
+    /* Restated so the CJK paragraph leading in global.css cannot reach into what is
+       pretending to be a terminal grid. */
+    line-height: 1.72;
+  }
+
+  .ln.dim {
+    color: var(--fg-muted);
+  }
+
+  .ln.accent {
+    color: var(--fg);
+  }
+
+  .ln.attention {
+    color: var(--attention);
+  }
+
+  .sigil {
+    color: var(--ok);
+  }
+
+  .caret {
+    display: inline-block;
+    width: 7px;
+    height: 15px;
+    vertical-align: -3px;
+    background: var(--accent);
+    animation: blink 1.1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .caption {
+    margin-top: 14px;
+    margin-left: auto;
+    font-size: 13.5px;
+    color: var(--fg-muted);
+    max-width: calc(62ch * var(--measure-scale));
+    text-align: right;
+  }
+
+  @media (max-width: 760px) {
+    .rail {
+      width: 150px;
+      padding: 12px 6px;
+    }
+
+    .app {
+      min-height: 290px;
+    }
+
+    .screen {
+      font-size: 11.5px;
+      padding: 14px;
+    }
+
+    .caption {
+      margin-left: 0;
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .chrome {
+      height: 36px;
+      padding-inline: 10px;
+    }
+
+    .dots {
+      gap: 5px;
+    }
+
+    .dots i {
+      width: 7px;
+      height: 7px;
+    }
+
+    .url {
+      padding-inline: 8px;
+      font-size: 10px;
+    }
+
+    .rail {
+      width: 126px;
+    }
+
+    .rail-head {
+      padding-inline: 6px;
+    }
+
+    .task {
+      gap: 6px;
+      padding-inline: 6px;
+    }
+
+    .task-detail,
+    .task-state.busy {
+      display: none;
+    }
+
+    .tabs {
+      padding-inline: 4px;
+    }
+
+    .tab {
+      padding-inline: 9px;
+    }
+  }
+</style>

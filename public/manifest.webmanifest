@@ -1,0 +1,20 @@
+{
+  "name": "tmux.online — AI Anywhere",
+  "short_name": "tmux.online",
+  "description": "Run your tmux sessions in a browser. Tasks and tabs stay in sync, and every machine you connect to over SSH joins the same workspace.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
+  "display": "browser",
+  "background_color": "#070907",
+  "theme_color": "#070907",
+  "categories": ["developer", "productivity", "utilities"],
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

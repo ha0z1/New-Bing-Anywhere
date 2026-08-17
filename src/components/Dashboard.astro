@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro'
+import DashboardApp from '../islands/DashboardApp'
+import { useCopy, type Lang } from '../i18n'
+
+export type DashboardSection = 'devices' | 'api-keys' | 'membership' | 'device'
+
+interface Props {
+  lang: Lang
+  section: DashboardSection
+}
+
+const { lang, section } = Astro.props
+const c = useCopy(lang)
+const routes = {
+  devices: '/dashboard/devices',
+  'api-keys': '/dashboard/api-keys',
+  membership: '/dashboard/membership',
+  device: '/dashboard/device',
+} as const
+const titles = {
+  devices: c.account.devicesTitle,
+  'api-keys': c.account.keysTitle,
+  membership: c.membership.title,
+  device: c.device.title,
+} as const
+---
+
+<Base
+  lang={lang}
+  path={routes[section]}
+  title={`${titles[section]}${c.dashboard.titleSuffix}`}
+  description={section === 'device' ? c.device.metaDescription : c.account.metaDescription}
+  showFooter={false}
+  noindex
+>
+  <DashboardApp
+    client:only="react"
+    lang={lang}
+    copy={{ auth: c.auth, account: c.account, membership: c.membership, device: c.device, dashboard: c.dashboard }}
+  />
+</Base>
