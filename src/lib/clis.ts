@@ -1,10 +1,11 @@
 /**
  * The CLIs and models this works with, scattered through the hero as their own marks.
  *
- * The artwork is NOT here. Each mark is a file in `public/marks/`, fetched lazily and cached for
- * every later page — inlining fifteen of them cost ~31 KiB of render-blocking HTML on the one
- * document that has to paint fastest, and one of them (Hermes) is an illustration whose path alone
- * is 19 KiB while it draws at 26 pixels. They render as `<img>` so the browser owns the
+ * The artwork is NOT here. Each mark is a file in `src/marks/`, pulled in by the hero as a URL so
+ * the build fingerprints it and the edge caches it forever. They must stay files: every one of
+ * them is under Vite's inline threshold, so the default would fold them back into the document as
+ * data URIs — render-blocking bytes on the one page that has to paint fastest. `assetsInlineLimit`
+ * in astro.config.mjs opts this directory out. They render as `<img>` so the browser owns the
  * scheduling: off the critical path, decoded asynchronously, at the lowest fetch priority, and far
  * too small to be taken for the LCP element.
  *
@@ -18,7 +19,7 @@
  */
 
 export interface CliMark {
-  /** file stem in public/marks */
+  /** file stem in src/marks */
   id: string
   name: string
   x: number
