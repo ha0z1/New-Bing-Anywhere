@@ -1,4 +1,5 @@
 #!/bin/sh
+# DO NOT EDIT — generated from the core repo (install.sh). Changes here are overwritten on every CLI release.
 # AI Anywhere installer — gets this machine ready and installs the CLI:
 #   1. tmux          (installed via the system package manager if absent)
 #   2. Node.js 22.5+ (installed as the latest LTS if you already use fnm or nvm; otherwise the
@@ -212,7 +213,7 @@ PKG='@ai-anywhere/cli'
 # The latest published version, updated on every release (scripts/publish-cli.sh in the core repo
 # enforces that this matches the package.json being published). Pinning makes the script
 # reproducible and lets a re-run skip npm entirely when nothing changed.
-CLI_VERSION='0.0.4'
+CLI_VERSION='0.0.6'
 PTY_PKG='@homebridge/node-pty-prebuilt-multiarch'
 CLI_BIN=''
 
