@@ -1,12 +1,15 @@
 name: Deploy
 
+# Deploys on a release tag: `git tag v1.0.0 && git push origin v1.0.0`.
+# workflow_dispatch stays for manual redeploys and for the core repo's release pipeline,
+# which pushes a synced install.sh to main and then triggers this workflow.
 on:
   push:
-    branches: [main]
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
   workflow_dispatch:
 
 concurrency:
-  group: deploy-${{ github.ref }}
+  group: deploy
   cancel-in-progress: true
 
 jobs:
