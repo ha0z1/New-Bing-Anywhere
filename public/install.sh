@@ -213,7 +213,7 @@ PKG='@ai-anywhere/cli'
 # The latest published version, updated on every release (scripts/publish-cli.sh in the core repo
 # enforces that this matches the package.json being published). Pinning makes the script
 # reproducible and lets a re-run skip npm entirely when nothing changed.
-CLI_VERSION='0.0.8'
+CLI_VERSION='0.0.9'
 PTY_PKG='@homebridge/node-pty-prebuilt-multiarch'
 CLI_BIN=''
 
