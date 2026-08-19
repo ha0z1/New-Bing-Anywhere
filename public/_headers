@@ -70,6 +70,16 @@
   Cache-Control: public, max-age=300, must-revalidate
   X-Robots-Tag: noindex
 
+# What the installed CLI asks to find out whether it is out of date. Written by the same release
+# job as install.sh, so the version it reports is the version that one-liner installs. Same short
+# cache for the same reason — a release should reach an already-running server within minutes.
+# No Content-Disposition: this one is fetched by a program, not downloaded by a person.
+/install.meta
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=300, must-revalidate
+  Access-Control-Allow-Origin: *
+  X-Robots-Tag: noindex
+
 # Dashboard HTML is a static CSR shell. Keep it in the current browser for 10 minutes, but
 # never in a shared cache: `private` covers intermediaries generally and the Cloudflare-only
 # directive explicitly disables its CDN cache without changing the browser TTL. The device
