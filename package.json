@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "check": "astro check",
     "images": "node scripts/gen-images.mjs",
-    "lint": "prettier --check . && astro check",
+    "check:english": "node scripts/check-english.mjs",
+    "lint": "node scripts/check-english.mjs && prettier --check . && astro check",
     "format": "prettier --write .",
     "deploy": "astro build && wrangler deploy"
   },

@@ -1,0 +1,9 @@
+#!/bin/sh
+# Last gate before anything leaves the machine: the source tree stays English outside src/i18n/.
+#
+# Enable in a fresh clone with:
+#   git config core.hooksPath .githooks
+#
+# `node` directly rather than `pnpm run` — a hook runs on every push and should not pay for a
+# package-manager startup. Bypass with `--no-verify` if you must; the same check runs in pnpm lint.
+exec node scripts/check-english.mjs
