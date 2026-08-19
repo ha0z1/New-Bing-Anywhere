@@ -12,10 +12,12 @@ has no backend; accounts and device authorisation live at `api.tmux.online` (rep
   issue/PR. Deploy credentials live only in the local `wrangler login` state or in GitHub
   repository secrets. `.gitignore` stops the files, not a paste into a source file — read your own
   `git diff` before committing.
-- **English everywhere except `src/i18n/`.** Code, comments, docs, config. Translations are data in
-  the copy tables, never prose scattered through the tree. Enforced by `scripts/check-english.mjs`,
-  which runs inside `pnpm lint` and again as a pre-push hook — enable it once per clone with
-  `git config core.hooksPath .githooks`.
+- **Printable ASCII everywhere except `src/i18n/`.** Code, comments, docs, config. Translations are
+  data in the copy tables, never prose scattered through the tree. Enforced by
+  `scripts/check-ascii.mjs` as an allowlist: printable ASCII plus a short list of typographic and
+  box-drawing characters, each entered by hand with a reason. When it rejects something legitimate,
+  add that one code point to `ALLOWED`. It runs inside `pnpm lint` and again as a pre-push hook —
+  enable the hook once per clone with `git config core.hooksPath .githooks`.
 - **`pnpm lint` must pass** before a change counts as done.
 
 ## Commands
