@@ -1,4 +1,4 @@
-# AI Anywhere 4.x
+# AI Anywhere
 
 **Your agents. Any browser. Anywhere.**
 
