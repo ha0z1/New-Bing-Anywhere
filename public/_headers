@@ -61,11 +61,17 @@
 /*/codex-browser
   Cache-Control: public, max-age=1800, stale-while-revalidate=1800
 
-# Piped straight into sh — serve it as a shell-script download, and do not let it sit in a CDN cache
-# for long after it is updated. Crawlable (models may want to read it) but kept out of the
-# search index: a shell script is not a document.
+# Piped straight into sh, and do not let it sit in a CDN cache for long after it is updated.
+# Crawlable (models may want to read it) but kept out of the search index: a shell script is not
+# a document.
+#
+# text/plain, NOT text/x-shellscript, and that is about SIZE. Cloudflare compresses by content
+# type, and its list is the standard set — an x- type is not on it, so 12.5 KB of shell went over
+# the wire uncompressed on every install. As text/plain the same file is zstd/gzip'd to ~4.6 KB.
+# The download behaviour is unaffected: it comes from Content-Disposition, which browsers honour
+# whatever the type says, and `curl | sh` reads neither header.
 /install.sh
-  Content-Type: text/x-shellscript; charset=utf-8
+  Content-Type: text/plain; charset=utf-8
   Content-Disposition: attachment; filename="install.sh"
   Cache-Control: public, max-age=300, must-revalidate
   X-Robots-Tag: noindex
