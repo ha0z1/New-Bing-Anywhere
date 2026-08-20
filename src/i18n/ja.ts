@@ -212,7 +212,7 @@ export const ja: Copy = {
     eyebrow: 'リリースノート',
     title: '更新履歴',
     description: 'AI Anywhere の各リリースの変更点 — バージョン、日付、内容',
-    intro: 'CLI ブリッジ、ブラウザ拡張機能、Web ダッシュボードの全リリースを新しい順に掲載しています（リリースノートは英語のみ）',
+    intro: 'CLI ブリッジ、ブラウザ拡張機能、Web ダッシュボードの全リリースを新しい順に掲載しています',
     home: 'ホーム',
     versionPrefix: 'v',
   },

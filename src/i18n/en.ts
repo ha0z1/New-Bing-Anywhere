@@ -212,7 +212,7 @@ export const en = {
     title: 'Let the terminal keep running — so you can stop watching it',
     body: 'One line to install, one link to open. Then look away',
   },
-  // Chrome around the release notes; the notes themselves are English-only data (src/lib/changelog.ts).
+  // Chrome around the release notes; the notes themselves live in ./changelog.ts, English baseline.
   changelog: {
     eyebrow: 'Release notes',
     title: 'Changelog',

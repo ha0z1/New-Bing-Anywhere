@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro'
 import { localizePath, useCopy, type Lang } from '../i18n'
-import { releases } from '../lib/changelog'
+import { changesFor, releases } from '../i18n/changelog'
 
 interface Props {
   lang: Lang
@@ -9,7 +9,8 @@ interface Props {
 
 const { lang } = Astro.props
 const c = useCopy(lang)
-const fmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })
+const fmt = new Intl.DateTimeFormat(lang, { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })
+const entries = releases.map((release) => ({ release, ...changesFor(release, lang) }))
 ---
 
 <Base lang={lang} path="/changelog" title={`${c.changelog.title} | tmux.online`} description={c.changelog.description} schema="page">
@@ -26,10 +27,10 @@ const fmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', 
       <p class="summary">{c.changelog.intro}</p>
     </header>
 
-    {/* The notes themselves are English-only data; see src/lib/changelog.ts for why. */}
-    <div class="releases" lang="en">
+    {/* English is the baseline; an untranslated release renders it, marked lang="en". */}
+    <div class="releases">
       {
-        releases.map((release) => (
+        entries.map(({ release, items, translated }) => (
           <article id={`v${release.version}`}>
             <header>
               <h2>
@@ -40,8 +41,8 @@ const fmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', 
               </h2>
               <time datetime={release.date}>{fmt.format(new Date(`${release.date}T00:00:00Z`))}</time>
             </header>
-            <ul>
-              {release.changes.map((change) => (
+            <ul lang={translated ? undefined : 'en'}>
+              {items.map((change) => (
                 <li>{change}</li>
               ))}
             </ul>

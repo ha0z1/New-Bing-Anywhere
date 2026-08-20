@@ -212,7 +212,7 @@ export const ko: Copy = {
     eyebrow: '릴리스 노트',
     title: '변경 내역',
     description: 'AI Anywhere 각 릴리스의 변경 사항 — 버전, 날짜, 내용',
-    intro: 'CLI 브리지, 브라우저 확장 프로그램, 웹 대시보드의 모든 릴리스를 최신순으로 정리했습니다(릴리스 노트는 영어로만 제공)',
+    intro: 'CLI 브리지, 브라우저 확장 프로그램, 웹 대시보드의 모든 릴리스를 최신순으로 정리했습니다',
     home: '홈',
     versionPrefix: 'v',
   },

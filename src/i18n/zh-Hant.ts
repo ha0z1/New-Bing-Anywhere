@@ -213,7 +213,7 @@ export const zhHant: Copy = {
     eyebrow: '版本紀錄',
     title: '更新日誌',
     description: 'AI Anywhere 每個版本的變更 — 版本、日期與內容',
-    intro: 'CLI 橋接、瀏覽器擴充功能與 Web 儀表板的所有版本，由新到舊（發布說明僅提供英文）',
+    intro: 'CLI 橋接、瀏覽器擴充功能與 Web 儀表板的所有版本，由新到舊',
     home: '首頁',
     versionPrefix: 'v',
   },
