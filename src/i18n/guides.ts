@@ -221,6 +221,18 @@ const en: GuideCollection = {
           ],
           command: 'ai-anywhere up',
         },
+        {
+          title: 'Upgrade to the latest version',
+          body: [
+            'When a newer version is published, ai-anywhere up offers to install it - at most once a day. Accept and it upgrades in place, then asks you to start it again',
+            'To upgrade by hand at any time, run the installer again. It replaces the CLI and keeps your data, running tmux sessions and device authorisation',
+          ],
+          bullets: [
+            'tmux keeps your sessions through the upgrade; the service finds them again on the next start',
+            'What changed in each version is listed at tmux.online/changelog',
+          ],
+          command: 'curl -fsSL https://tmux.online/install.sh | sh',
+        },
       ],
     },
   },
@@ -411,6 +423,18 @@ const ja: GuideCollection = {
           ],
           command: 'ai-anywhere up',
         },
+        {
+          title: '最新バージョンへのアップグレード',
+          body: [
+            '新しいバージョンが公開されると、ai-anywhere up がインストールを提案します（1 日 1 回まで）。承諾するとその場でアップグレードされ、再起動を求められます',
+            'いつでも手動でアップグレードするには、インストーラーをもう一度実行します。CLI は置き換わり、データ、実行中の tmux セッション、端末認証はそのまま保たれます',
+          ],
+          bullets: [
+            'セッションは tmux が保持したままアップグレードを跨ぎ、次の起動時にサービスが再度拾います',
+            '各バージョンの変更点は tmux.online/changelog に掲載されています',
+          ],
+          command: 'curl -fsSL https://tmux.online/install.sh | sh',
+        },
       ],
     },
   },
@@ -588,6 +612,18 @@ const ko: GuideCollection = {
           ],
           command: 'ai-anywhere up',
         },
+        {
+          title: '최신 버전으로 업그레이드',
+          body: [
+            '새 버전이 게시되면 ai-anywhere up이 설치를 제안합니다(하루 한 번까지). 수락하면 그 자리에서 업그레이드되고, 다시 시작하라는 안내가 나옵니다',
+            '언제든 수동으로 업그레이드하려면 설치 스크립트를 다시 실행하세요. CLI만 교체되며 데이터, 실행 중인 tmux 세션, 기기 인증은 그대로 유지됩니다',
+          ],
+          bullets: [
+            '세션은 tmux가 계속 보관하므로 업그레이드를 거쳐도 살아있고, 다음 시작 때 서비스가 다시 찾습니다',
+            '버전별 변경 사항은 tmux.online/changelog에서 볼 수 있습니다',
+          ],
+          command: 'curl -fsSL https://tmux.online/install.sh | sh',
+        },
       ],
     },
   },
@@ -735,6 +771,15 @@ const zhHant: GuideCollection = {
           title: '之後再次啟動',
           body: ['macOS 會使用 launchd，Linux 則使用 systemd 使用者單元。你也可以直接啟動；網頁介面預設位於 127.0.0.1:51984'],
           command: 'ai-anywhere up',
+        },
+        {
+          title: '升級到最新版本',
+          body: [
+            '新版本發布後，ai-anywhere up 會主動提議安裝（一天最多詢問一次）。同意後就地升級，再依提示重新啟動即可',
+            '想隨時手動升級，重跑一次安裝腳本即可。只會替換 CLI，你的資料、執行中的 tmux 工作階段與裝置授權都會保留',
+          ],
+          bullets: ['工作階段由 tmux 持有，升級過程不受影響，服務下次啟動時會重新接上', '每個版本的變更請見 tmux.online/changelog'],
+          command: 'curl -fsSL https://tmux.online/install.sh | sh',
         },
       ],
     },
