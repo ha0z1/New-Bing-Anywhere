@@ -4,4 +4,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tmux.online/sitemap-index.xml
+Sitemap: https://tmux.online/sitemap.xml

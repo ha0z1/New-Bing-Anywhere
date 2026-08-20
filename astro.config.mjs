@@ -6,6 +6,7 @@ import minifyInlineScripts from './scripts/minify-inline.mjs'
 import inlineHomeCss from './scripts/inline-home-css.mjs'
 import prefetchPageAssets from './scripts/prefetch-page-assets.mjs'
 import sitemapRootSlash from './scripts/sitemap-root-slash.mjs'
+import sitemapCanonicalName from './scripts/sitemap-canonical-name.mjs'
 
 const SITE = 'https://tmux.online'
 
@@ -49,6 +50,8 @@ export default defineConfig({
     prefetchPageAssets(),
     // Undo the one URL @astrojs/sitemap's trailing-slash rule gets wrong: the root.
     sitemapRootSlash(SITE),
+    // Then publish the entry file as /sitemap.xml — the name everything guesses.
+    sitemapCanonicalName(),
     // Last: minify the inline scripts the bundler leaves verbatim. Runs on the finished HTML.
     minifyInlineScripts(),
   ],
