@@ -80,6 +80,12 @@ export default {
       return new Response(null, { status: 301, headers })
     }
 
+    // The sitemap's real name is @astrojs/sitemap's sitemap-index.xml, and robots.txt says so —
+    // but enough tools blind-guess /sitemap.xml that answering the guess is cheaper than 404ing it.
+    if (url.pathname === '/sitemap.xml') {
+      return new Response(null, { status: 301, headers: { Location: `https://${APEX}/sitemap-index.xml` } })
+    }
+
     const dashboardHtml = DASHBOARD_HTML.get(url.pathname)
     if (dashboardHtml !== undefined && (request.method === 'GET' || request.method === 'HEAD')) {
       // The HTML is only a CSR shell; account data remains entirely client-fetched.
