@@ -36,7 +36,11 @@ const guideLinks = guideEntries.map(([id, path]) => ({
             <ul>
               {column.links.map((link) => (
                 <li>
-                  <a href={link.href} rel={external(link.href) ? 'noopener' : undefined}>
+                  {/* internal links carry locale-free paths in the copy tables; localise here */}
+                  <a
+                    href={external(link.href) ? link.href : localizePath(link.href, lang)}
+                    rel={external(link.href) ? 'noopener' : undefined}
+                  >
                     {link.label}
                   </a>
                 </li>

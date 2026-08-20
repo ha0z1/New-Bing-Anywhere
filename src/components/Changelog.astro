@@ -1,0 +1,130 @@
+---
+import Base from '../layouts/Base.astro'
+import { localizePath, useCopy, type Lang } from '../i18n'
+import { releases } from '../lib/changelog'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const c = useCopy(lang)
+const fmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' })
+---
+
+<Base lang={lang} path="/changelog" title={`${c.changelog.title} | tmux.online`} description={c.changelog.description} schema="page">
+  <div class="changelog wrap">
+    <nav class="breadcrumbs" aria-label={c.changelog.home}>
+      <a href={localizePath('/', lang)}>{c.changelog.home}</a>
+      <span aria-hidden="true">/</span>
+      <span>{c.changelog.title}</span>
+    </nav>
+
+    <header>
+      <p class="eyebrow">{c.changelog.eyebrow}</p>
+      <h1 lang="en">{c.changelog.title}</h1>
+      <p class="summary">{c.changelog.intro}</p>
+    </header>
+
+    {/* The notes themselves are English-only data; see src/lib/changelog.ts for why. */}
+    <div class="releases" lang="en">
+      {
+        releases.map((release) => (
+          <article id={`v${release.version}`}>
+            <header>
+              <h2>
+                <a href={`#v${release.version}`}>
+                  {c.changelog.versionPrefix}
+                  {release.version}
+                </a>
+              </h2>
+              <time datetime={release.date}>{fmt.format(new Date(`${release.date}T00:00:00Z`))}</time>
+            </header>
+            <ul>
+              {release.changes.map((change) => (
+                <li>{change}</li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</Base>
+
+<style>
+  .changelog {
+    padding: 3.5rem 0 5rem;
+    max-width: 46rem;
+  }
+  .breadcrumbs {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--fg-dim);
+    margin-bottom: 2rem;
+  }
+  .breadcrumbs a {
+    color: var(--fg-dim);
+    text-decoration: none;
+  }
+  .breadcrumbs a:hover {
+    color: var(--fg);
+  }
+  .eyebrow {
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 0.6rem;
+  }
+  h1 {
+    margin: 0 0 0.75rem;
+    font-size: clamp(2rem, 5vw, 2.6rem);
+  }
+  .summary {
+    color: var(--fg-dim);
+    margin: 0 0 3rem;
+    max-width: 40rem;
+  }
+  .releases article {
+    border-top: 1px solid var(--line);
+    padding: 1.75rem 0 1.5rem;
+  }
+  .releases article > header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-bottom: 0.9rem;
+  }
+  .releases h2 {
+    margin: 0;
+    font-size: 1.15rem;
+  }
+  .releases h2 a {
+    color: var(--fg);
+    text-decoration: none;
+  }
+  .releases h2 a:hover {
+    color: var(--accent);
+  }
+  .releases time {
+    color: var(--fg-dim);
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .releases ul {
+    margin: 0;
+    padding-left: 1.2rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .releases li {
+    color: var(--fg-dim);
+    line-height: 1.55;
+  }
+  .releases li::marker {
+    color: var(--accent);
+  }
+</style>

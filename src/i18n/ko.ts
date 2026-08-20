@@ -208,6 +208,14 @@ export const ko: Copy = {
     title: '터미널은 계속 실행하고, 화면을 지켜보는 일은 그만',
     body: '한 줄로 설치하고 표시된 링크만 여세요. 이제 다른 일에 집중해도 됩니다',
   },
+  changelog: {
+    eyebrow: '릴리스 노트',
+    title: '변경 내역',
+    description: 'AI Anywhere 각 릴리스의 변경 사항 — 버전, 날짜, 내용',
+    intro: 'CLI 브리지, 브라우저 확장 프로그램, 웹 대시보드의 모든 릴리스를 최신순으로 정리했습니다(릴리스 노트는 영어로만 제공)',
+    home: '홈',
+    versionPrefix: 'v',
+  },
   footer: {
     rights: '기본적으로 로컬에서만 실행됩니다. 터미널 접근은 인증 정보로 보호됩니다',
     columns: [
@@ -216,6 +224,7 @@ export const ko: Copy = {
         links: [
           { label: 'GitHub', href: REPO_URL },
           { label: 'Issues', href: ISSUES_URL },
+          { label: '변경 내역', href: '/changelog' },
         ],
       },
       {

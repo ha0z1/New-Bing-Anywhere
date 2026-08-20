@@ -212,6 +212,15 @@ export const en = {
     title: 'Let the terminal keep running — so you can stop watching it',
     body: 'One line to install, one link to open. Then look away',
   },
+  // Chrome around the release notes; the notes themselves are English-only data (src/lib/changelog.ts).
+  changelog: {
+    eyebrow: 'Release notes',
+    title: 'Changelog',
+    description: 'What changed in each release of AI Anywhere — versions, dates and the changes that shipped',
+    intro: 'Every release of the CLI bridge, the browser extension and the web dashboard, newest first',
+    home: 'Home',
+    versionPrefix: 'v',
+  },
   footer: {
     rights: 'Local-only by default. Terminal access is credential-protected',
     columns: [
@@ -220,6 +229,7 @@ export const en = {
         links: [
           { label: 'GitHub', href: REPO_URL },
           { label: 'Issues', href: ISSUES_URL },
+          { label: 'Changelog', href: '/changelog' },
         ],
       },
       {

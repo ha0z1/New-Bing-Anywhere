@@ -209,6 +209,14 @@ export const zhHant: Copy = {
     title: '讓終端機繼續跑，讓你少盯著它',
     body: '一行安裝，打開它給的連結——然後，把目光移開',
   },
+  changelog: {
+    eyebrow: '版本紀錄',
+    title: '更新日誌',
+    description: 'AI Anywhere 每個版本的變更 — 版本、日期與內容',
+    intro: 'CLI 橋接、瀏覽器擴充功能與 Web 儀表板的所有版本，由新到舊（發布說明僅提供英文）',
+    home: '首頁',
+    versionPrefix: 'v',
+  },
   footer: {
     rights: '預設僅限本機。終端存取受憑證保護',
     columns: [
@@ -217,6 +225,7 @@ export const zhHant: Copy = {
         links: [
           { label: 'GitHub', href: REPO_URL },
           { label: 'Issues', href: ISSUES_URL },
+          { label: '更新日誌', href: '/changelog' },
         ],
       },
       {

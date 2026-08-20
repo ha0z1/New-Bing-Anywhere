@@ -208,6 +208,14 @@ export const ja: Copy = {
     title: 'ターミナルは動かしたまま。画面を見張るのは終わりに',
     body: '1 行でインストールして、表示されたリンクを開くだけ。あとは別のことをしていて大丈夫です',
   },
+  changelog: {
+    eyebrow: 'リリースノート',
+    title: '更新履歴',
+    description: 'AI Anywhere の各リリースの変更点 — バージョン、日付、内容',
+    intro: 'CLI ブリッジ、ブラウザ拡張機能、Web ダッシュボードの全リリースを新しい順に掲載しています（リリースノートは英語のみ）',
+    home: 'ホーム',
+    versionPrefix: 'v',
+  },
   footer: {
     rights: 'デフォルトではローカル限定。ターミナルへのアクセスは認証情報で保護されます',
     columns: [
@@ -216,6 +224,7 @@ export const ja: Copy = {
         links: [
           { label: 'GitHub', href: REPO_URL },
           { label: 'Issues', href: ISSUES_URL },
+          { label: '更新履歴', href: '/changelog' },
         ],
       },
       {
