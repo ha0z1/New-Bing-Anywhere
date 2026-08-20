@@ -120,6 +120,8 @@ const entries = releases.map((release) => ({ release, ...changesFor(release, lan
     padding-left: 1.2rem;
     display: grid;
     gap: 0.5rem;
+    /* global.css resets list-style; the bullets are wanted here */
+    list-style: disc;
   }
   .releases li {
     color: var(--fg-dim);
