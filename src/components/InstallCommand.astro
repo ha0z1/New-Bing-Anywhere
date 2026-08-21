@@ -6,14 +6,16 @@ import { INSTALL_COMMANDS } from '../config'
 interface Props {
   lang: Lang
   id: string
+  primary?: boolean
 }
-const { lang, id } = Astro.props
+const { lang, id, primary = false } = Astro.props
 const c = useCopy(lang)
+const buttonLabel = primary ? c.hero.copyAria : c.hero.copy
 // curl first — the default tab (see src/config.ts).
 const commands = INSTALL_COMMANDS
 ---
 
-<div class="install-cmd" data-install>
+<div class:list={['install-cmd', primary && 'install-primary']} data-install>
   <div class="cmd-tabs" role="tablist" aria-label={c.hero.installMethodLabel}>
     {
       commands.map((cmd, i) => (
@@ -38,7 +40,7 @@ const commands = INSTALL_COMMANDS
       type="button"
       class="copy"
       data-copy-for={id}
-      data-label={c.hero.copy}
+      data-label={buttonLabel}
       data-label-done={c.hero.copied}
       aria-label={c.hero.copyAria}
     >
@@ -48,7 +50,7 @@ const commands = INSTALL_COMMANDS
       <span class="ico done" data-copy-icon-done>
         <Icon name="check" size={15} />
       </span>
-      <span class="txt" data-copy-text>{c.hero.copy}</span>
+      <span class="txt" data-copy-text>{buttonLabel}</span>
     </button>
   </div>
 </div>
@@ -159,8 +161,24 @@ const commands = INSTALL_COMMANDS
     background: color-mix(in srgb, var(--surface-2) 70%, var(--fg) 6%);
   }
 
+  .install-cmd.install-primary .copy {
+    color: var(--on-accent);
+    background: var(--accent);
+    border-color: var(--accent);
+    font-weight: 560;
+  }
+
+  .install-cmd.install-primary .copy:hover {
+    color: var(--on-accent);
+    background: color-mix(in srgb, var(--accent) 88%, white);
+  }
+
   .copy[data-done] {
     color: var(--ok);
+  }
+
+  .install-cmd.install-primary .copy[data-done] {
+    color: var(--on-accent);
   }
 
   .ico {
@@ -181,8 +199,18 @@ const commands = INSTALL_COMMANDS
     .copy .txt {
       display: none;
     }
+
+    .install-cmd.install-primary .copy .txt {
+      display: inline;
+    }
+
     .copy {
       padding-inline: 10px;
+    }
+
+    .install-cmd.install-primary .copy {
+      gap: 5px;
+      padding-inline: 8px;
     }
   }
 </style>

@@ -42,6 +42,14 @@ export const ja: Copy = {
     scriptLink: '先にスクリプトを確認',
     requirement: 'tmux と Node.js 22.5 以降が必要です',
   },
+  download: {
+    label: 'デスクトップアプリ',
+    mac: 'macOS',
+    windows: 'Windows',
+    soon: '準備中',
+    soonTitle: 'まだダウンロードできません',
+    note: 'デスクトップ版は開発中です。公開までは上のインストールコマンドをご利用ください。アプリはどのブラウザーでも動きます',
+  },
   demo: {
     caption: 'ローカルもリモートもひとつのワークスペースに。すべてのタスクとタブを見渡せます',
     tabs: ['tmux.online', 'localhost:51984'],

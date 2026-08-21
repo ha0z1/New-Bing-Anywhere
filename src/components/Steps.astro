@@ -1,5 +1,6 @@
 ---
 import InstallCommand from './InstallCommand.astro'
+import DesktopDownload from './DesktopDownload.astro'
 import { useCopy, type Lang } from '../i18n'
 
 interface Props {
@@ -17,7 +18,11 @@ const c = useCopy(lang)
         <h2>{c.steps.title}</h2>
         <p class="lede">{c.hero.requirement}</p>
       </div>
-      <InstallCommand lang={lang} id="install-command-section" />
+      {/* the anchor the header's Install link lands on: whatever ways in exist, they belong here */}
+      <div class="ways">
+        <InstallCommand lang={lang} id="install-command-section" primary />
+        <DesktopDownload lang={lang} />
+      </div>
     </div>
     <ol>
       {
@@ -36,6 +41,10 @@ const c = useCopy(lang)
 <style>
   .steps {
     background: var(--bg-raised);
+  }
+
+  .ways {
+    min-width: 0;
   }
 
   .install-head {
@@ -96,6 +105,10 @@ const c = useCopy(lang)
   }
 
   @media (max-width: 800px) {
+    .ways {
+      min-width: 0;
+    }
+
     .install-head {
       grid-template-columns: 1fr;
       gap: 30px;

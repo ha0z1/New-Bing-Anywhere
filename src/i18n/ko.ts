@@ -42,6 +42,14 @@ export const ko: Copy = {
     scriptLink: '스크립트 먼저 확인하기',
     requirement: 'tmux와 Node.js 22.5 이상이 필요합니다',
   },
+  download: {
+    label: '데스크톱 앱',
+    mac: 'macOS',
+    windows: 'Windows',
+    soon: '준비 중',
+    soonTitle: '아직 내려받을 수 없습니다',
+    note: '데스크톱 빌드는 개발 중입니다. 공개 전까지는 위의 설치 명령을 사용하세요. 앱은 어떤 브라우저에서도 실행됩니다',
+  },
   demo: {
     caption: '로컬과 원격 환경을 하나의 워크스페이스에서. 모든 작업과 탭을 한눈에 확인하세요',
     tabs: ['tmux.online', 'localhost:51984'],

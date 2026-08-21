@@ -43,6 +43,14 @@ export const zhHant: Copy = {
     scriptLink: '先看看腳本內容',
     requirement: '需要 tmux 和 Node.js 22.5+',
   },
+  download: {
+    label: '桌面應用程式',
+    mac: 'macOS',
+    windows: 'Windows',
+    soon: '開發中',
+    soonTitle: '尚未提供下載',
+    note: '桌面版正在開發中。在推出之前，請使用上方的安裝指令；應用程式可在任何瀏覽器中執行',
+  },
   demo: {
     caption: '本機與遠端伺服器同處一個工作區，任務與 pane 一覽無遺',
     tabs: ['tmux.online', 'localhost:51984'],

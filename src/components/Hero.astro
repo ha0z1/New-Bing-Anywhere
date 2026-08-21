@@ -1,5 +1,6 @@
 ---
 import InstallCommand from './InstallCommand.astro'
+import DesktopDownload from './DesktopDownload.astro'
 import Demo from './Demo.astro'
 import { CLI_MARKS } from '../lib/clis'
 
@@ -48,6 +49,8 @@ const c = useCopy(lang)
       <div class="install">
         <InstallCommand lang={lang} id="install-command-hero" />
       </div>
+
+      <DesktopDownload lang={lang} />
     </div>
     <Demo lang={lang} />
   </div>

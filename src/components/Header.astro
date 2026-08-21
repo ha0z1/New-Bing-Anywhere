@@ -53,7 +53,7 @@ const links = [
           // <details> rather than a JS-built menu: it opens, closes and takes keyboard
           // focus on its own, so the script below only has to add the two behaviours the
           // element does not provide — closing on outside click and on Escape.
-          <details class="lang" data-lang-menu>
+          <details class="lang" data-lang-menu data-header-menu>
             <summary aria-label={c.footer.langLabel} title={c.footer.langLabel}>
               <Icon name="globe" size={18} />
               <Icon name="chevronDown" size={13} class="caret" />
@@ -124,6 +124,16 @@ const links = [
           </button>
         </div>
       </div>
+
+      <details class="mobile-nav" data-header-menu>
+        <summary aria-label={c.nav.primaryLabel} title={c.nav.primaryLabel}>
+          <span class="menu-open"><Icon name="menu" size={19} /></span>
+          <span class="menu-close"><Icon name="x" size={19} /></span>
+        </summary>
+        <nav aria-label={c.nav.primaryLabel}>
+          {links.map((link) => <a href={link.href}>{link.label}</a>)}
+        </nav>
+      </details>
     </div>
   </div>
 </header>
@@ -189,6 +199,77 @@ const links = [
 
   .nav a:hover {
     color: var(--fg);
+  }
+
+  .mobile-nav {
+    position: relative;
+    display: none;
+  }
+
+  .mobile-nav summary {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    color: var(--fg-muted);
+    background: transparent;
+    border-radius: 7px;
+    cursor: pointer;
+    list-style: none;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
+  }
+
+  .mobile-nav summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-nav summary:hover,
+  .mobile-nav[open] summary {
+    color: var(--fg);
+    background: var(--surface-2);
+  }
+
+  .mobile-nav .menu-close,
+  .mobile-nav[open] .menu-open {
+    display: none;
+  }
+
+  .mobile-nav[open] .menu-close {
+    display: grid;
+  }
+
+  .mobile-nav nav {
+    position: absolute;
+    top: calc(100% + 9px);
+    right: 0;
+    display: grid;
+    width: min(220px, calc(100vw - 32px));
+    padding: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    box-shadow: 0 18px 44px -18px rgb(0 0 0 / 0.9);
+    animation: drop 0.14s ease;
+  }
+
+  .mobile-nav nav a {
+    min-height: 42px;
+    padding: 9px 11px;
+    color: var(--fg-dim);
+    border-radius: 5px;
+    font-size: 14px;
+    transition:
+      color 0.12s ease,
+      background 0.12s ease;
+  }
+
+  .mobile-nav nav a:hover,
+  .mobile-nav nav a:focus-visible {
+    color: var(--fg);
+    background: color-mix(in srgb, var(--surface-2) 60%, var(--fg) 8%);
   }
 
   .tail {
@@ -523,8 +604,20 @@ const links = [
     .nav {
       display: none;
     }
+
+    .mobile-nav {
+      display: block;
+    }
+
     .tail {
+      gap: 10px;
       margin-left: auto;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .tail {
+      gap: 8px;
     }
   }
 </style>
@@ -580,7 +673,7 @@ const links = [
       }
     }
 
-    const menus = () => document.querySelectorAll('details[data-lang-menu][open]')
+    const menus = () => document.querySelectorAll('details[data-header-menu][open]')
     const accountMenu = document.querySelector('[data-account-menu]')
 
     const closeAccountMenu = () => {
@@ -590,7 +683,12 @@ const links = [
     }
 
     document.addEventListener('click', (event) => {
-      for (const menu of menus()) if (!menu.contains(event.target)) menu.open = false
+      for (const menu of menus()) {
+        if (!menu.contains(event.target)) menu.open = false
+      }
+
+      const menuLink = event.target instanceof Element ? event.target.closest('details[data-header-menu] a') : null
+      if (menuLink) menuLink.closest('details').open = false
       if (accountMenu && !accountMenu.contains(event.target)) closeAccountMenu()
     })
 

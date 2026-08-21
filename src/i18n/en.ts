@@ -43,6 +43,14 @@ export const en = {
     scriptLink: 'Read the script first',
     requirement: 'Requires tmux and Node.js 22.5+',
   },
+  download: {
+    label: 'Desktop app',
+    mac: 'macOS',
+    windows: 'Windows',
+    soon: 'Soon',
+    soonTitle: 'Not available to download yet',
+    note: 'Desktop builds are in development. Until they land, the install line above is the way in - the app runs in any browser',
+  },
   demo: {
     caption: 'One workspace for local and remote machines — every task and tab in view',
     tabs: ['tmux.online', 'localhost:51984'],

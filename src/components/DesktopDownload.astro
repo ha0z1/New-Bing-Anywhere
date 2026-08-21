@@ -1,0 +1,145 @@
+---
+import { useCopy, type Lang } from '../i18n'
+
+/**
+ * The desktop builds, before there are any.
+ *
+ * Shown disabled on purpose rather than hidden: people arrive looking for an app to download, and
+ * "not yet" answers that question where "nothing here" only makes them look harder. The buttons
+ * carry `disabled` and `aria-disabled` so a pointer, a keyboard and a screen reader all get the
+ * same answer, and the note underneath points at the install line above, which does work today.
+ *
+ * When the builds exist, each button becomes an anchor to its artifact and the note goes.
+ */
+interface Props {
+  lang: Lang
+}
+const { lang } = Astro.props
+const c = useCopy(lang)
+
+/**
+ * Filled brand marks, inlined rather than run through `Icon.astro`.
+ *
+ * That component draws the site's own icon set, which is stroked line art; a logo is a solid
+ * shape and would come out as an outline of itself. Inline also means the mark inherits the
+ * button's colour and costs no request.
+ *
+ * Apple's is its published mark. Windows has no equivalent in the icon set this site borrows
+ * from, and its logo is four squares in a grid, so it is drawn here rather than copied.
+ */
+const MARKS: Record<string, string> = {
+  mac: '<path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>',
+  windows: '<path d="M3.6 4.9 10.7 4v7.4H3.6zM12.2 3.8 20.4 2.6v8.8h-8.2zM3.6 12.6h7.1V20L3.6 19.1zM12.2 12.6h8.2v8.8l-8.2-1.2z"/>',
+}
+
+const platforms = [
+  { id: 'mac', label: c.download.mac },
+  { id: 'windows', label: c.download.windows },
+]
+---
+
+<div class="download">
+  <p class="label">{c.download.label}</p>
+  <div class="row">
+    {
+      platforms.map((p) => (
+        <button type="button" class="btn" disabled aria-disabled="true" title={c.download.soonTitle}>
+          <svg
+            class="mark"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            focusable="false"
+            set:html={MARKS[p.id]}
+          />
+          <span class="name">{p.label}</span>
+          <span class="tag">{c.download.soon}</span>
+        </button>
+      ))
+    }
+  </div>
+  <p class="note">{c.download.note}</p>
+</div>
+
+<style>
+  .download {
+    width: 100%;
+    max-width: 560px;
+    margin-top: 22px;
+  }
+
+  .label {
+    color: var(--fg-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  /**
+   * Dimmed but never invisible: the button has to stay readable, because the platform name is the
+   * information. `not-allowed` is the honest cursor here; the tag says the rest.
+   */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--fg-dim);
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: not-allowed;
+    opacity: 0.72;
+  }
+
+  .mark {
+    flex: none;
+    opacity: 0.85;
+  }
+
+  .name {
+    font-weight: 500;
+  }
+
+  .tag {
+    padding: 2px 6px;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+
+  .note {
+    margin-top: 10px;
+    color: var(--fg-muted);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 520px) {
+    .download {
+      margin-top: 18px;
+    }
+
+    .btn {
+      flex: 1 1 auto;
+      justify-content: center;
+    }
+  }
+</style>
