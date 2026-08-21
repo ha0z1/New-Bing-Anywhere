@@ -27,6 +27,28 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.18',
+    date: '2026-08-21',
+    changes: {
+      en: [
+        'Task folders now have a clearer hierarchy with folder and machine icons, indented children, and a separate ungrouped section',
+        'Folder and machine totals now count tabs, including live merged tabs, instead of counting only task rows',
+      ],
+      ja: [
+        'タスクフォルダーの階層を明確化。フォルダーとマシンのアイコン、子タスクのインデント、独立した未分類セクションを追加',
+        'フォルダーとマシンの件数はタスク行ではなくタブ数を表示し、ライブで結合されたタブも集計',
+      ],
+      ko: [
+        '작업 폴더 계층이 더 명확해졌습니다. 폴더와 컴퓨터 아이콘, 하위 작업 들여쓰기, 별도의 미분류 섹션을 추가했습니다',
+        '폴더와 컴퓨터 합계가 작업 행 수 대신 탭 수를 표시하며, 실시간으로 병합된 탭도 포함합니다',
+      ],
+      'zh-Hant': [
+        '任務文件夾層級更清楚：加入文件夾與機器圖示、子任務縮排，以及獨立的未分組區段',
+        '文件夾與機器總數現在計算分頁，包含即時合併進來的分頁，不再只計算任務列',
+      ],
+    },
+  },
+  {
     version: '0.0.17',
     date: '2026-08-20',
     changes: {
