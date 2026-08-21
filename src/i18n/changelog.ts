@@ -27,6 +27,18 @@ export const changesFor = (release: Release, lang: Lang): { items: string[]; tra
 
 export const releases: Release[] = [
   {
+    version: '0.0.17',
+    date: '2026-08-20',
+    changes: {
+      en: [
+        'A host that cannot be reached now shows that it is still being retried, with a button to try again straight away instead of waiting for the next poll',
+      ],
+      ja: ['到達できないホストは、再試行が続いていることを表示するようになりました。次のポーリングを待たずにすぐ再試行できるボタン付き'],
+      ko: ['연결할 수 없는 호스트가 계속 재시도 중임을 표시합니다. 다음 폴링을 기다리지 않고 바로 다시 시도하는 버튼도 함께'],
+      'zh-Hant': ['無法連線的主機現在會顯示仍在重試，並附上立即重試的按鈕，不必等下一次輪詢'],
+    },
+  },
+  {
     version: '0.0.16',
     date: '2026-08-20',
     changes: {
